@@ -1,4 +1,3 @@
-
 import 'package:iitt/controllers/image_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/image_viewer.dart';
@@ -23,7 +22,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   void initState() {
     super.initState();
     _initializeCamera();
-    Future.delayed(Duration(seconds: 1),(){
+    Future.delayed(Duration(seconds: 1), () {
       setState(() {
         show = true;
       });
@@ -38,7 +37,9 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   Future<void> _initializeCamera() async {
     try {
-      cameraDescription = await availableCameras().then((value) => value.firstWhere((element) => element.lensDirection == CameraLensDirection.back));
+      cameraDescription = await availableCameras().then((value) =>
+          value.firstWhere(
+              (element) => element.lensDirection == CameraLensDirection.back));
       if (cameraDescription != null) {
         controller = CameraController(cameraDescription, ResolutionPreset.high);
         controller.initialize().then((value) {
@@ -61,15 +62,17 @@ class _ImageCaptureState extends State<ImageCapture> {
     return Scaffold(
       body: Column(
         children: [
-          show == false ? Container(
-            width: w,
-            height: h * 0.8,
-            color: Colors.black,
-          ) : SizedBox (
-            width: w,
-            height: h * 0.8,
-            child: CameraPreview(controller),
-          ),
+          show == false
+              ? Container(
+                  width: w,
+                  height: h * 0.8,
+                  color: Colors.black,
+                )
+              : SizedBox(
+                  width: w,
+                  height: h * 0.8,
+                  child: CameraPreview(controller),
+                ),
           GestureDetector(
             onTap: () {
               _takePicture(imageController);
@@ -77,27 +80,24 @@ class _ImageCaptureState extends State<ImageCapture> {
             child: Container(
               width: w,
               height: h * 0.2,
-              color:const Color.fromARGB(255, 0, 0, 0),
+              color: const Color.fromARGB(255, 0, 0, 0),
               child: Center(
-                child: Container(
-                  width: 70,
-                  height: 70,
-                  decoration: BoxDecoration(
+                  child: Container(
+                width: 70,
+                height: 70,
+                decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
-                    border: Border.all(color: Colors.white, width: 5)
-                  ),
-                  child: Center(
-                    child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: BoxDecoration(
+                    border: Border.all(color: Colors.white, width: 5)),
+                child: Center(
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color:  Colors.white
-                      ),
-                    ),
+                        color: Colors.white),
                   ),
-                )
-              ),
+                ),
+              )),
             ),
           )
         ],
@@ -108,7 +108,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   void _takePicture(imageController) async {
     try {
       //final path = '${Directory.systemTemp.path}/image.png';
-      XFile file =  await controller.takePicture();
+      XFile file = await controller.takePicture();
       capturedImage = file.path;
       imageController.filePath = file.path;
       print(imageController.filePath);
