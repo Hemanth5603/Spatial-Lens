@@ -130,8 +130,8 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     onTap: () async {
+                      await userController.registerUser();
                       Get.to(ImageCapture());
-                      //await userController.signInWithEmailPassword();
                     },
                   ),
                   const SizedBox(

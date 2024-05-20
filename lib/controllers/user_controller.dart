@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:iitt/models/user_model.dart';
@@ -54,7 +55,7 @@ class UserController extends GetxController {
   }
 
   Future<void> registerUser() async {
-    final uri = Uri.parse("localhost:3000/iitt/register");
+    final uri = Uri.parse("127.0.0.1:3000/iitt/register");
 
     Map<dynamic, String> data = {
       "name": name.text,
@@ -64,6 +65,9 @@ class UserController extends GetxController {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
+      userModel = UserModel.fromJson(data);
+    } else {
+      if (kDebugMode) print("Error Registering user");
     }
   }
 }
