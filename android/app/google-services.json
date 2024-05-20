@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "884283395686",
+    "project_id": "anewmeat-73e27",
+    "storage_bucket": "anewmeat-73e27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884283395686:android:44445035f756a543aca7a7",
+        "android_client_info": {
+          "package_name": "com.example.anewmeat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUbsAmiRlRqPr2r7ys5IxFvc99eE1fIC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:884283395686:android:e37dcaaee6aae1e4aca7a7",
+        "android_client_info": {
+          "package_name": "com.example.anewmeat_admin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUbsAmiRlRqPr2r7ys5IxFvc99eE1fIC0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
