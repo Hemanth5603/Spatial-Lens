@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
@@ -12,6 +13,7 @@ import 'package:http/http.dart' as http;
 class UserController extends GetxController {
   UserModel userModel = UserModel();
   TextEditingController name = TextEditingController();
+  var isLoading = false.obs;
 
   @override
   onInit() {
@@ -56,6 +58,7 @@ class UserController extends GetxController {
 
   Future<void> registerUser() async {
     final uri = Uri.parse("127.0.0.1:3000/iitt/register");
+    isLoading(true);
 
     Map<dynamic, String> data = {
       "name": name.text,
@@ -69,5 +72,6 @@ class UserController extends GetxController {
     } else {
       if (kDebugMode) print("Error Registering user");
     }
+    isLoading(false);
   }
 }

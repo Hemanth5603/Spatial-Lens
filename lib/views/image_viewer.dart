@@ -23,7 +23,7 @@ class _ImageViewerState extends State<ImageViewer> {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     List<String> items = ["Agriculture", "Building", "Forest", "Water Bodies"];
-    String? selectedItem;
+    String? selectedItem = "Building";
 
     UserController userController = Get.put(UserController());
     return Scaffold(
@@ -129,6 +129,7 @@ class _ImageViewerState extends State<ImageViewer> {
             Container(
                 width: w,
                 height: h * 0.08,
+                padding: EdgeInsets.all(10),
                 child: Center(
                   child: DropdownButton<String>(
                     isExpanded: true,
