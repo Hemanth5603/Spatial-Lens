@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/image_capture.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<Login> createState() => LoginState();
 }
 
-class _RegisterState extends State<Register> {
+class LoginState extends State<Login> {
   UserController userController = Get.put(UserController());
   @override
   void initState() {
@@ -63,7 +64,7 @@ class _RegisterState extends State<Register> {
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text("Welcome Back !",
                         style: TextStyle(
-                            fontFamily: 'man-b',
+                            fontFamily: 'poppins',
                             fontSize: 35,
                             fontWeight: FontWeight.bold)),
                   ),
@@ -83,12 +84,47 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.name,
+                                controller: userController.email,
                                 keyboardType: TextInputType.emailAddress,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'man-r'),
                                 decoration: const InputDecoration(
-                                  hintText: "Name",
+                                  hintText: "Email",
+                                  hintStyle: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 106, 106, 106)),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: h * 0.12,
+                            width: w * 0.8,
+                            child: Center(
+                              child: TextField(
+                                controller: userController.password,
+                                keyboardType: TextInputType.emailAddress,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: const InputDecoration(
+                                  hintText: "Password",
                                   hintStyle: TextStyle(
                                       color:
                                           Color.fromARGB(255, 106, 106, 106)),
@@ -108,6 +144,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 40,
                   ),
+
                   InkWell(
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -116,22 +153,21 @@ class _RegisterState extends State<Register> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: const Color.fromARGB(255, 0, 0, 0),
                                   width: 2),
                               color: Colors.black,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
-                              "Register",
+                              "Sign in",
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),
                           )),
                     ),
                     onTap: () async {
-                      await userController.registerUser();
-                      Get.to(ImageCapture());
+                      await userController.loginUser();
                     },
                   ),
                   const SizedBox(
@@ -141,17 +177,19 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Already Have an account ? ",
+                        "Don't Have an Account ? ",
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       GestureDetector(
                         child: const Text(
-                          "Sign in",
+                          "Sign Up",
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Get.back();
+                          Get.off(const Register(),
+                              transition: Transition.rightToLeft,
+                              duration: 300.milliseconds);
                         },
                       )
                     ],
@@ -169,7 +207,10 @@ class _RegisterState extends State<Register> {
                           height: 2,
                         ),
                         Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(fontSize: 12, color: Colors.grey))
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                fontFamily: 'poppins'))
                       ],
                     ),
                   )

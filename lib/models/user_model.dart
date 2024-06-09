@@ -5,6 +5,7 @@ class UserModel {
   String? status;
   double? latitude;
   double? longitude;
+  String? email;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -17,6 +18,7 @@ class UserModel {
     _data['id'] = id;
     _data['name'] = name;
     _data['status'] = status;
+    _data['email'] = email;
     return _data;
   }
 }

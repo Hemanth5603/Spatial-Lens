@@ -9,10 +9,14 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
+import 'package:iitt/views/image_capture.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController {
   UserModel userModel = UserModel();
   TextEditingController name = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController password = TextEditingController();
   var isLoading = false.obs;
 
   @override
@@ -69,8 +73,35 @@ class UserController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
+      Get.to(ImageCapture(),
+          transition: Transition.rightToLeft, duration: 300.milliseconds);
     } else {
       if (kDebugMode) print("Error Registering user");
+    }
+    isLoading(false);
+  }
+
+  Future<void> loginUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final uri = Uri.parse("");
+    isLoading(true);
+
+    Map<dynamic, String> data = {
+      "email": email.text,
+      "password": password.text,
+    };
+
+    var response = await post(uri, body: data);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      prefs.setInt("isLoggedIn", 1);
+      userModel = UserModel.fromJson(data);
+      Get.to(ImageCapture(),
+          transition: Transition.rightToLeft, duration: 300.milliseconds);
+    } else {
+      if (kDebugMode) print("Error Logining User");
     }
     isLoading(false);
   }
