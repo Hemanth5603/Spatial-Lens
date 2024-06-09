@@ -112,7 +112,9 @@ class _ImageCaptureState extends State<ImageCapture> {
       capturedImage = file.path;
       imageController.filePath = file.path;
       print(imageController.filePath);
-      Get.to(ImageViewer(path: capturedImage));
+      userController.getCurrentLocation();
+      Get.to(ImageViewer(path: capturedImage),
+          transition: Transition.rightToLeft, duration: 300.milliseconds);
     } on CameraException catch (e) {
       print(e.code);
       print(e.description);

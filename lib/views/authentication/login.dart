@@ -39,16 +39,17 @@ class LoginState extends State<Login> {
           children: [
             Container(
               width: w,
-              height: h * 0.4,
+              height: h * 0.3,
               decoration: BoxDecoration(),
               child: Center(
                 child: Container(
-                  width: w * 0.2,
-                  height: w * 0.2,
+                  width: w * 0.5,
+                  height: h * 0.2,
                   padding: EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.black),
+                      image: DecorationImage(
+                          image: AssetImage('assets/icons/iittnif.png'))),
                 ),
               ),
             ),
@@ -62,14 +63,25 @@ class LoginState extends State<Login> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Welcome Back !",
+                    child: Text("Welcome to",
+                        textAlign: TextAlign.left,
                         style: TextStyle(
+                          fontFamily: 'poppins',
+                          fontSize: 20,
+                        )),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text("IITTNif App",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            letterSpacing: 1,
                             fontFamily: 'poppins',
-                            fontSize: 35,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(
-                    height: 16,
+                    height: 25,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -120,7 +132,7 @@ class LoginState extends State<Login> {
                             child: Center(
                               child: TextField(
                                 controller: userController.password,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.visiblePassword,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
@@ -144,7 +156,6 @@ class LoginState extends State<Login> {
                   const SizedBox(
                     height: 40,
                   ),
-
                   InkWell(
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -187,7 +198,7 @@ class LoginState extends State<Login> {
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Get.off(const Register(),
+                          Get.off(() => const Register(),
                               transition: Transition.rightToLeft,
                               duration: 300.milliseconds);
                         },

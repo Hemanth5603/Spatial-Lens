@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/image_capture.dart';
 
 class Register extends StatefulWidget {
@@ -30,7 +31,7 @@ class _RegisterState extends State<Register> {
     ));
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -38,21 +39,22 @@ class _RegisterState extends State<Register> {
           children: [
             Container(
               width: w,
-              height: h * 0.4,
-              decoration: BoxDecoration(),
+              height: h * 0.3,
+              decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
-                  width: w * 0.2,
-                  height: w * 0.2,
-                  padding: EdgeInsets.all(10),
+                  width: w * 0.5,
+                  height: h * 0.2,
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.black),
+                      image: DecorationImage(
+                          image: AssetImage('assets/icons/iittnif.png'))),
                 ),
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 0,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -154,7 +156,7 @@ class _RegisterState extends State<Register> {
                             child: Center(
                               child: TextField(
                                 controller: userController.password,
-                                keyboardType: TextInputType.emailAddress,
+                                keyboardType: TextInputType.visiblePassword,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
@@ -221,7 +223,9 @@ class _RegisterState extends State<Register> {
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Get.back();
+                          Get.off(() => const Login(),
+                              transition: Transition.leftToRight,
+                              duration: 300.milliseconds);
                         },
                       )
                     ],

@@ -18,6 +18,9 @@ class UserController extends GetxController {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   var isLoading = false.obs;
+  double latitude = 0;
+  double longitude = 0;
+  String address = " ";
 
   @override
   onInit() {
@@ -51,21 +54,27 @@ class UserController extends GetxController {
       Placemark place = placemarks[0];
       print(position.latitude);
 
-      userModel.latitude = position.latitude;
-      userModel.longitude = position.longitude;
-      //userModel.address ="${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}".obs();
-      // =  "${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}".obs();
+      //userModel.latitude = position.latitude;
+      //userModel.longitude = position.longitude;
+      latitude = position.latitude;
+      longitude = position.longitude;
+      address =
+          "${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}"
+              .obs();
     } catch (e) {
       print(e);
     }
   }
 
   Future<void> registerUser() async {
-    final uri = Uri.parse("127.0.0.1:3000/iitt/register");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final uri = Uri.parse("http://13.60.93.136:8080/iitt/register");
     isLoading(true);
 
     Map<dynamic, String> data = {
       "name": name.text,
+      "email": email.text,
+      "password": password.text
     };
 
     var response = await post(uri, body: data);
@@ -73,10 +82,14 @@ class UserController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
+      prefs.setInt("isLoggedIn", 1);
+      prefs.setString("id", userModel.id.toString());
       Get.to(ImageCapture(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
+      print(data.toString());
     } else {
       if (kDebugMode) print("Error Registering user");
+      Get.snackbar("Error", "Cannot Register");
     }
     isLoading(false);
   }
@@ -84,9 +97,8 @@ class UserController extends GetxController {
   Future<void> loginUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final uri = Uri.parse("");
+    final uri = Uri.parse("http://13.60.93.136:8080/iitt/login");
     isLoading(true);
-
     Map<dynamic, String> data = {
       "email": email.text,
       "password": password.text,
@@ -96,12 +108,14 @@ class UserController extends GetxController {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
-      prefs.setInt("isLoggedIn", 1);
       userModel = UserModel.fromJson(data);
+      prefs.setInt("isLoggedIn", 1);
+      prefs.setString("id", userModel.id.toString());
       Get.to(ImageCapture(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
     } else {
       if (kDebugMode) print("Error Logining User");
+      Get.snackbar("Error", "Cannot Login, Try Again!!");
     }
     isLoading(false);
   }
