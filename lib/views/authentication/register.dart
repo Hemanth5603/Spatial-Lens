@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/image_capture.dart';
@@ -61,12 +62,13 @@ class _RegisterState extends State<Register> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text("Hi There!",
                         style: TextStyle(
                             fontFamily: 'poppins',
                             fontSize: 45,
+                            color: AppConstants.customYellow,
                             fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(
@@ -188,16 +190,17 @@ class _RegisterState extends State<Register> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  width: 2),
-                              color: Colors.black,
+                                  color: Color.fromARGB(47, 0, 0, 0), width: 2),
+                              color: AppConstants.customYellow,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
                               "Register",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),

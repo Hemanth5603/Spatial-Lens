@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/image_capture.dart';
@@ -66,19 +67,20 @@ class LoginState extends State<Login> {
                     child: Text("Welcome to",
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                          fontFamily: 'poppins',
-                          fontSize: 20,
-                        )),
+                            fontFamily: 'poppins',
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold)),
                   ),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("IITTNif App",
+                    child: Text("IITTNiF",
                         textAlign: TextAlign.left,
                         style: TextStyle(
-                            letterSpacing: 1,
+                            letterSpacing: 1.5,
                             fontFamily: 'poppins',
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold)),
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: AppConstants.customYellow)),
                   ),
                   const SizedBox(
                     height: 25,
@@ -103,8 +105,8 @@ class LoginState extends State<Login> {
                                 decoration: const InputDecoration(
                                   hintText: "Email",
                                   hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 106, 106, 106)),
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'poppins'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -164,16 +166,17 @@ class LoginState extends State<Login> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: const Color.fromARGB(255, 0, 0, 0),
-                                  width: 2),
-                              color: Colors.black,
+                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                              color: AppConstants.customYellow,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
                               "Sign in",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),

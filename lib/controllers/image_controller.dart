@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ImageController extends GetxController {
+class DataController extends GetxController {
   String filePath = "";
   var isLoading = false.obs;
-
+  TextEditingController remarks = TextEditingController();
   UserController userController = Get.put(UserController());
 
   Future<bool> uploadData(String category) async {
@@ -22,6 +22,7 @@ class ImageController extends GetxController {
       request.fields['longitude'] = userController.longitude.toString();
       request.fields['id'] = prefs.getString("id")!;
       request.fields['category'] = category;
+      request.fields['remarks'] = remarks.text.toString();
 
       request.files.add(await http.MultipartFile.fromPath('image', filePath));
 

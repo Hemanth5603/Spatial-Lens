@@ -15,7 +15,7 @@ class _ImageCaptureState extends State<ImageCapture> {
   late CameraDescription cameraDescription;
   String capturedImage = "";
   bool show = false;
-  ImageController imageController = Get.put(ImageController());
+  DataController dataController = Get.put(DataController());
   UserController userController = Get.put(UserController());
 
   @override
@@ -75,7 +75,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                 ),
           GestureDetector(
             onTap: () {
-              _takePicture(imageController);
+              _takePicture(DataController);
             },
             child: Container(
               width: w,
@@ -105,13 +105,13 @@ class _ImageCaptureState extends State<ImageCapture> {
     );
   }
 
-  void _takePicture(imageController) async {
+  void _takePicture(DataController) async {
     try {
       //final path = '${Directory.systemTemp.path}/image.png';
       XFile file = await controller.takePicture();
       capturedImage = file.path;
-      imageController.filePath = file.path;
-      print(imageController.filePath);
+      dataController.filePath = file.path;
+      print(dataController.filePath);
       userController.getCurrentLocation();
       Get.to(ImageViewer(path: capturedImage),
           transition: Transition.rightToLeft, duration: 300.milliseconds);

@@ -5,8 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/image_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/components/success_upload_bottomsheet.dart';
 import 'package:iitt/views/image_capture.dart';
 
 class ImageViewer extends StatefulWidget {
@@ -21,15 +23,7 @@ class ImageViewer extends StatefulWidget {
 }
 
 class _ImageViewerState extends State<ImageViewer> {
-  List<String> choices = [
-    "Agriculture",
-    "Building",
-    "Forest",
-    "Water Bodies",
-    "Coastal",
-    "Urban"
-  ];
-  String? selectedItem = "Land";
+  String? selectedItem = "Default";
   void setSelectedValue(String? value) {
     setState(() => selectedItem = value);
   }
@@ -40,11 +34,12 @@ class _ImageViewerState extends State<ImageViewer> {
     double h = MediaQuery.of(context).size.height;
 
     UserController userController = Get.put(UserController());
-    ImageController imageController = Get.put(ImageController());
+    DataController dataController = Get.put(DataController());
+
     return Scaffold(
       bottomNavigationBar: GestureDetector(
         onTap: () async {
-          bool res = await imageController.uploadData(selectedItem!);
+          bool res = await dataController.uploadData(selectedItem!);
           if (res) {
             showModalBottomSheet(
                 context: context,
@@ -62,7 +57,7 @@ class _ImageViewerState extends State<ImageViewer> {
           decoration: BoxDecoration(
               color: Colors.black, borderRadius: BorderRadius.circular(10)),
           child: Obx(
-            () => imageController.isLoading.value
+            () => dataController.isLoading.value
                 ? const Center(
                     child: CircularProgressIndicator(
                       color: Colors.white,
@@ -83,10 +78,10 @@ class _ImageViewerState extends State<ImageViewer> {
       ),
       appBar: AppBar(
           title: const Text(
-        'Confirm Image',
+        'Review Data',
         style: TextStyle(
           fontSize: 18,
-          fontFamily: 'man-sb',
+          fontFamily: 'poppins',
           color: Colors.black,
         ),
       )),
@@ -120,7 +115,7 @@ class _ImageViewerState extends State<ImageViewer> {
             ),
             Container(
               width: w,
-              height: h * 0.05,
+              height: h * 0.03,
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +139,7 @@ class _ImageViewerState extends State<ImageViewer> {
             ),
             Container(
               width: w,
-              height: h * 0.05,
+              height: h * 0.03,
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -168,9 +163,11 @@ class _ImageViewerState extends State<ImageViewer> {
             ),
             Container(
               width: w,
-              height: h * 0.05,
+              height: h * 0.04,
+              alignment: Alignment.centerRight,
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
@@ -180,14 +177,16 @@ class _ImageViewerState extends State<ImageViewer> {
                         fontFamily: 'poppins',
                         fontWeight: FontWeight.bold),
                   ),
-                  Container(
+                  SizedBox(
                     width: w * 0.6,
+                    height: 40,
                     child: Text(
                       userController.address.toString(),
+                      textAlign: TextAlign.end,
                       style: const TextStyle(
-                          fontFamily: 'poppins',
-                          fontSize: 12,
-                          overflow: TextOverflow.ellipsis),
+                        fontFamily: 'poppins',
+                        fontSize: 12,
+                      ),
                     ),
                   ),
                 ],
@@ -218,18 +217,22 @@ class _ImageViewerState extends State<ImageViewer> {
                   selectedItem = value;
                 });
               },
-              itemCount: choices.length,
+              itemCount: AppConstants.choices.length,
               itemBuilder: (state, i) {
                 return ChoiceChip(
-                  selected: state.selected(choices[i]),
-                  onSelected: state.onSelected(choices[i]),
+                  padding: EdgeInsets.all(3),
+                  selected: state.selected(AppConstants.choices[i]),
+                  onSelected: state.onSelected(AppConstants.choices[i]),
                   label: Text(
-                    choices[i],
-                    style: TextStyle(fontFamily: 'poppins'),
+                    AppConstants.choices[i],
+                    style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 10,
+                        fontWeight: FontWeight.w300),
                   ),
                   selectedColor: Color.fromARGB(
                       255, 136, 255, 156), // Change selected color to red
-                  avatar: state.selected(choices[i])
+                  avatar: state.selected(AppConstants.choices[i])
                       ? Icon(Icons.check) // Show check mark if selected
                       : null,
                 );
@@ -245,63 +248,41 @@ class _ImageViewerState extends State<ImageViewer> {
             ),
             Container(
               width: w,
-              height: h * 0.20,
+              height: 20,
+              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              child: const Text(
+                "Remarks",
+                style: TextStyle(
+                    fontSize: 18,
+                    fontFamily: 'poppins',
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.all(10),
+              width: w,
+              height: 100,
+              child: TextField(
+                controller: dataController.remarks,
+                keyboardType: TextInputType.emailAddress,
+                textAlignVertical: TextAlignVertical.bottom,
+                style: const TextStyle(fontFamily: 'poppins', fontSize: 14),
+                maxLines: 10,
+                decoration: const InputDecoration(
+                  hintText: "Add Comment on data....",
+                  hintStyle: TextStyle(
+                      color: Color.fromARGB(255, 106, 106, 106),
+                      fontFamily: 'poppins',
+                      fontSize: 12),
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Color.fromARGB(255, 0, 0, 0), width: 5),
+                  ),
+                ),
+              ),
             )
           ],
         ),
-      ),
-    );
-  }
-}
-
-class BottomSheetContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-    return Container(
-      height: 300, // Set the height of the bottom sheet
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            width: w,
-            height: h * 0.1,
-            margin: EdgeInsets.only(top: 30),
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/icons/check.png"))),
-          ),
-          SizedBox(height: 20),
-          Text(
-            'Data Uploaded Successfully ',
-            style: TextStyle(fontSize: 20.0, fontFamily: 'poppins'),
-          ),
-          Spacer(), // Push the bottom container to the bottom
-          GestureDetector(
-            onTap: () {
-              Get.offAll(ImageCapture(),
-                  transition: Transition.leftToRight,
-                  duration: 300.milliseconds);
-            },
-            child: Container(
-              height: 50,
-              margin: EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 0, 0, 0),
-                  borderRadius: BorderRadius.circular(10)),
-              child: Center(
-                child: Text(
-                  'Go Back !',
-                  style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: 'poppins',
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

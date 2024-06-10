@@ -3,12 +3,15 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/get_rx.dart';
+import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
+import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -17,11 +20,14 @@ class UserController extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
   var isLoading = false.obs;
   double latitude = 0;
   double longitude = 0;
   String address = " ";
-
+  String street = "";
+  RxString locality = "".obs;
+  RxString country = "".obs;
   @override
   onInit() {
     super.onInit();
@@ -61,6 +67,9 @@ class UserController extends GetxController {
       address =
           "${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}"
               .obs();
+      street = place.street!;
+      locality.value = place.locality ?? "";
+      country.value = place.country ?? "";
     } catch (e) {
       print(e);
     }
@@ -84,7 +93,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
-      Get.to(ImageCapture(),
+      Get.to(const Home(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
       print(data.toString());
     } else {
@@ -111,7 +120,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
-      Get.to(ImageCapture(),
+      Get.to(const Home(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
     } else {
       if (kDebugMode) print("Error Logining User");
