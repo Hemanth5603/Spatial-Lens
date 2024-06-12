@@ -20,6 +20,8 @@ class UserController extends GetxController {
   TextEditingController name = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController dob = TextEditingController();
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -83,7 +85,12 @@ class UserController extends GetxController {
     Map<dynamic, String> data = {
       "name": name.text,
       "email": email.text,
-      "password": password.text
+      "password": password.text,
+      "phone": phone.text,
+      "dob": dob.text,
+      "contributions": 0.toString(),
+      "rank": 0.toString(),
+      "location": locality.value.toString(),
     };
 
     var response = await post(uri, body: data);

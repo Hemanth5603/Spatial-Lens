@@ -47,4 +47,5 @@ class AppConstants {
   static Color customRedLight2 = Color.fromARGB(252, 255, 223, 227);
   static Color customGreen = const Color.fromARGB(255, 27, 133, 84);
   static Color customYellow = const Color.fromARGB(255, 194, 178, 138);
+  static Color customBlue = Color.fromARGB(255, 0, 86, 224);
 }

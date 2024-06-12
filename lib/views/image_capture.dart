@@ -1,4 +1,5 @@
-import 'package:iitt/controllers/image_controller.dart';
+import 'package:flutter/widgets.dart';
+import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/image_viewer.dart';
 import 'package:camera/camera.dart';
@@ -7,7 +8,7 @@ import 'package:get/get.dart';
 
 class ImageCapture extends StatefulWidget {
   @override
-  _ImageCaptureState createState() => _ImageCaptureState();
+  State<ImageCapture> createState() => _ImageCaptureState();
 }
 
 class _ImageCaptureState extends State<ImageCapture> {
@@ -31,7 +32,6 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   void dispose() {
-    controller.dispose();
     super.dispose();
   }
 

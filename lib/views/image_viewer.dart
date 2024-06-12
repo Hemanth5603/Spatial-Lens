@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:iitt/constants/app_constants.dart';
-import 'package:iitt/controllers/image_controller.dart';
+import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
 import 'package:iitt/views/image_capture.dart';

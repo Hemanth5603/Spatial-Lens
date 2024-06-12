@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
+import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
 
 class Register extends StatefulWidget {
@@ -18,6 +19,20 @@ class _RegisterState extends State<Register> {
   @override
   void initState() {
     super.initState();
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null && pickedDate != DateTime.now()) {
+      setState(() {
+        userController.dob.text = "${pickedDate.toLocal()}".split(' ')[0];
+      });
+    }
   }
 
   @override
@@ -40,7 +55,7 @@ class _RegisterState extends State<Register> {
           children: [
             Container(
               width: w,
-              height: h * 0.3,
+              height: h * 0.2,
               decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
@@ -68,7 +83,7 @@ class _RegisterState extends State<Register> {
                         style: TextStyle(
                             fontFamily: 'poppins',
                             fontSize: 45,
-                            color: AppConstants.customYellow,
+                            color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   ),
                   const SizedBox(
@@ -157,6 +172,84 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
+                                controller: userController.phone,
+                                keyboardType: TextInputType.phone,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: const InputDecoration(
+                                  hintText: "Phone",
+                                  hintStyle: TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'poppins'),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    height: 45,
+                    width: w,
+                    padding: const EdgeInsets.only(left: 12, top: 12),
+                    child: Row(
+                      children: [
+                        Container(
+                          height: h * 0.12,
+                          width: w * 0.8,
+                          margin: EdgeInsets.only(left: 12),
+                          child: Center(
+                            child: GestureDetector(
+                              onTap: () => _selectDate(context),
+                              child: AbsorbPointer(
+                                child: TextField(
+                                  controller: userController.dob,
+                                  decoration: const InputDecoration(
+                                    hintText: "Data of birth",
+                                    hintStyle: TextStyle(
+                                        color:
+                                            Color.fromARGB(255, 106, 106, 106),
+                                        fontFamily: 'poppins'),
+                                    border: UnderlineInputBorder(
+                                      borderSide: BorderSide(
+                                          color: Color.fromARGB(255, 0, 0, 0),
+                                          width: 5),
+                                    ),
+                                  ),
+                                  style: const TextStyle(fontFamily: 'poppins'),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: h * 0.12,
+                            width: w * 0.8,
+                            child: Center(
+                              child: TextField(
                                 controller: userController.password,
                                 keyboardType: TextInputType.visiblePassword,
                                 textAlignVertical: TextAlignVertical.bottom,
@@ -206,7 +299,7 @@ class _RegisterState extends State<Register> {
                     ),
                     onTap: () async {
                       await userController.registerUser();
-                      Get.to(ImageCapture());
+                      Get.to(Home());
                     },
                   ),
                   const SizedBox(

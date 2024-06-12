@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -20,19 +21,39 @@ class _ProfilePageState extends State<ProfilePage> {
             children: [
               Container(
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                height: 250,
                 alignment: Alignment.center,
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 50,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: IconButton(
+                                  onPressed: () {
+                                    Get.back();
+                                  },
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    size: 30,
+                                    color: Colors.black,
+                                  )),
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
                         width: 110,
                         height: 110,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(
-                                color: AppConstants.customRed, width: 4),
+                                color: AppConstants.customBlue, width: 4),
                             image: DecorationImage(
                                 fit: BoxFit.cover,
                                 image: NetworkImage(
@@ -55,24 +76,116 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.all(8),
+                height: 120,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Container(
+                        margin: EdgeInsets.all(5),
+                        height: 100,
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromARGB(101, 207, 207, 207),
+                                  blurRadius: 20)
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "53",
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Total Contributions",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 100,
+                        margin: EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                  color: Color.fromARGB(101, 207, 207, 207),
+                                  blurRadius: 20)
+                            ]),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "2",
+                              style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  "Rank",
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
                 height: 300,
                 margin: EdgeInsets.all(15),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       "Personal Information",
                       style: TextStyle(
                         fontFamily: 'poppins',
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width,
-                      height: 200,
+                      height: 220,
                       margin: EdgeInsets.all(5),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
@@ -88,8 +201,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 10,
                           ),
                           ProfileTile(Icons.email_outlined, "Email",
-                              "shemanth.kgp@gmail.com"),
-                          ProfileTile(Icons.call, "Phone", "+91 7997435603"),
+                              "shemanth.kgp@gmail.com", false),
+                          ProfileTile(
+                              Icons.call, "Phone", "+91 7997435603", false),
+                          ProfileTile(Icons.calendar_month, "Date of birth",
+                              "05-06-2003", false),
+                          ProfileTile(
+                              Icons.location_pin, "Location", "Tirupati", true),
                         ],
                       ),
                     ),
@@ -103,7 +221,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  Widget ProfileTile(icon, title, value) {
+  Widget ProfileTile(icon, title, value, lastTile) {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 50,
@@ -159,12 +277,13 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(
             height: 0,
           ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            width: MediaQuery.of(context).size.width,
-            height: 1,
-            color: const Color.fromARGB(255, 224, 224, 224),
-          )
+          if (lastTile == false)
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              width: MediaQuery.of(context).size.width,
+              height: 1,
+              color: const Color.fromARGB(255, 224, 224, 224),
+            )
         ],
       ),
     );
