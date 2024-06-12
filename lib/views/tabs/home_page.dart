@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/camera_controller.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/components/activity_card.dart';
@@ -18,17 +19,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
-  late CameraController controller;
-  late CameraDescription cameraDescription;
-  String capturedImage = "";
   bool show = false;
+
   DataController dataController = Get.put(DataController());
   UserController userController = Get.put(UserController());
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera();
     Future.delayed(const Duration(seconds: 1), () {
       setState(() {
         show = true;
@@ -37,31 +35,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
-  Future<void> _initializeCamera() async {
-    try {
-      cameraDescription = await availableCameras().then((value) =>
-          value.firstWhere(
-              (element) => element.lensDirection == CameraLensDirection.back));
-      controller = CameraController(cameraDescription, ResolutionPreset.high);
-      controller.initialize().then((value) {
-        if (!mounted) {
-          return;
-        }
-        setState(() {});
-      });
-    } on CameraException catch (e) {
-      print(e.code);
-      print(e.description);
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final Camera camera = Get.put(Camera());
     return Scaffold(
         body: DefaultTabController(
       length: 1,
@@ -78,7 +53,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 500,
+                        height: 550,
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 begin: FractionalOffset.topCenter,
@@ -91,7 +66,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                       Positioned(
                         top: 50,
                         left: 10,
-                        height: 450,
+                        height: 500,
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
@@ -167,7 +142,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 80,
+                                    height: 50,
                                   ),
                                   Center(
                                     child: Container(
@@ -194,7 +169,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                 child: Stack(
                                                   children: [
                                                     CircularCameraPreview(
-                                                        controller: controller),
+                                                        controller: camera
+                                                            .cameraController),
                                                     Container(
                                                       width: 220,
                                                       height: 220,
@@ -221,6 +197,54 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   ],
                                                 ),
                                               )),
+                                  ),
+                                  const SizedBox(
+                                    height: 15,
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.to(ImageCapture(),
+                                          transition: Transition.rightToLeft,
+                                          duration: 300.milliseconds);
+                                    },
+                                    child: Center(
+                                      child: Container(
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.4,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(45),
+                                            color: Colors.white),
+                                        child: Center(
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                "Open Camera",
+                                                style: TextStyle(
+                                                    fontFamily: 'man-r',
+                                                    fontSize: 12,
+                                                    color:
+                                                        AppConstants.customBlue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Icon(
+                                                Icons.arrow_forward_ios_rounded,
+                                                size: 15,
+                                                color: AppConstants.customBlue,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   )
                                 ],
                               ),
