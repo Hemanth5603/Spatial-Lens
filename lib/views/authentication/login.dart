@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/image_capture.dart';
 
-class Register extends StatefulWidget {
-  const Register({super.key});
+class Login extends StatefulWidget {
+  const Login({super.key});
 
   @override
-  State<Register> createState() => _RegisterState();
+  State<Login> createState() => LoginState();
 }
 
-class _RegisterState extends State<Register> {
+class LoginState extends State<Login> {
   UserController userController = Get.put(UserController());
   @override
   void initState() {
@@ -38,16 +40,17 @@ class _RegisterState extends State<Register> {
           children: [
             Container(
               width: w,
-              height: h * 0.4,
+              height: h * 0.3,
               decoration: BoxDecoration(),
               child: Center(
                 child: Container(
-                  width: w * 0.2,
-                  height: w * 0.2,
+                  width: w * 0.5,
+                  height: h * 0.2,
                   padding: EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.black),
+                      image: DecorationImage(
+                          image: AssetImage('assets/icons/iittnif.png'))),
                 ),
               ),
             ),
@@ -61,14 +64,26 @@ class _RegisterState extends State<Register> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Welcome Back !",
+                    child: Text("Welcome to",
+                        textAlign: TextAlign.left,
                         style: TextStyle(
-                            fontFamily: 'man-b',
-                            fontSize: 35,
+                            fontFamily: 'poppins',
+                            fontSize: 14,
                             fontWeight: FontWeight.bold)),
                   ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text("IITTNiF",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            letterSpacing: 1.5,
+                            fontFamily: 'poppins',
+                            fontSize: 50,
+                            fontWeight: FontWeight.bold,
+                            color: AppConstants.customYellow)),
+                  ),
                   const SizedBox(
-                    height: 16,
+                    height: 25,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -83,12 +98,47 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.name,
+                                controller: userController.email,
                                 keyboardType: TextInputType.emailAddress,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'man-r'),
                                 decoration: const InputDecoration(
-                                  hintText: "Name",
+                                  hintText: "Email",
+                                  hintStyle: TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'poppins'),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: h * 0.12,
+                            width: w * 0.8,
+                            child: Center(
+                              child: TextField(
+                                controller: userController.password,
+                                keyboardType: TextInputType.visiblePassword,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: const InputDecoration(
+                                  hintText: "Password",
                                   hintStyle: TextStyle(
                                       color:
                                           Color.fromARGB(255, 106, 106, 106)),
@@ -116,22 +166,22 @@ class _RegisterState extends State<Register> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  width: 2),
-                              color: Colors.black,
+                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                              color: AppConstants.customYellow,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
-                              "Register",
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
+                              "Sign in",
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),
                     onTap: () async {
-                      await userController.registerUser();
-                      Get.to(ImageCapture());
+                      await userController.loginUser();
                     },
                   ),
                   const SizedBox(
@@ -141,17 +191,19 @@ class _RegisterState extends State<Register> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Already Have an account ? ",
+                        "Don't Have an Account ? ",
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       GestureDetector(
                         child: const Text(
-                          "Sign in",
+                          "Sign Up",
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Get.back();
+                          Get.off(() => const Register(),
+                              transition: Transition.rightToLeft,
+                              duration: 300.milliseconds);
                         },
                       )
                     ],
@@ -169,7 +221,10 @@ class _RegisterState extends State<Register> {
                           height: 2,
                         ),
                         Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(fontSize: 12, color: Colors.grey))
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                                fontFamily: 'poppins'))
                       ],
                     ),
                   )
