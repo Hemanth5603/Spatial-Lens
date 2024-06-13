@@ -30,8 +30,8 @@ class MainApp extends StatelessWidget {
       theme: ThemeData(
           fontFamily: 'poppins',
           scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-          primaryColor: AppConstants.customRed,
-          colorScheme: ColorScheme.light(primary: AppConstants.customRedLight)),
+          primaryColor: AppConstants.customBlue,
+          colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         body: isLoggedIn == 1 ? const Home() : const Login(),

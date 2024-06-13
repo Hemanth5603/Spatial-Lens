@@ -1,21 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/user_controller.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
+
+  
 }
 
+
 class _ProfilePageState extends State<ProfilePage> {
+  UserController userController = Get.put(UserController());
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    userController.getUser();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 247, 248, 253),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child:Obx(() => userController.isLoading.value ? const Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
@@ -64,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         height: 10,
                       ),
                       Text(
-                        "Hemanth Srinivas",
+                        userController.userModel.name ?? "User",
                         style: TextStyle(
                             fontSize: 18,
                             fontFamily: 'poppins',
@@ -98,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "53",
+                              userController.userModel.contributions.toString(),
                               style: TextStyle(
                                   fontFamily: 'poppins',
                                   fontSize: 22,
@@ -139,7 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              "2",
+                              userController.userModel.rank.toString(),
                               style: TextStyle(
                                   fontFamily: 'poppins',
                                   fontSize: 22,
@@ -201,13 +213,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             height: 10,
                           ),
                           ProfileTile(Icons.email_outlined, "Email",
-                              "shemanth.kgp@gmail.com", false),
+                              userController.userModel.email, false),
                           ProfileTile(
-                              Icons.call, "Phone", "+91 7997435603", false),
+                              Icons.call, "Phone", "+91 ${userController.userModel.phone}", false),
                           ProfileTile(Icons.calendar_month, "Date of birth",
-                              "05-06-2003", false),
+                              userController.userModel.dob, false),
                           ProfileTile(
-                              Icons.location_pin, "Location", "Tirupati", true),
+                              Icons.location_pin, "Location", userController.userModel.location, true),
                         ],
                       ),
                     ),
@@ -218,6 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+      )
     );
   }
 

@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:http/http.dart';
+import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -132,6 +133,32 @@ class UserController extends GetxController {
     } else {
       if (kDebugMode) print("Error Logining User");
       Get.snackbar("Error", "Cannot Login, Try Again!!");
+    }
+    isLoading(false);
+  }
+
+
+  Future<void> getUser() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.getUser}");
+    isLoading(true);
+    String id = prefs.getString("id") ?? "7";
+
+    Map<dynamic, String> data = {
+      "id":id,
+    };
+
+    var response = await post(uri, body: data);
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      userModel = UserModel.fromJson(data);
+      print(data.toString());
+      
+    } else {
+      if (kDebugMode) print("Error Fetching User Data");
+      Get.snackbar("Error", "Cannot Fetch UserData, Try Again!!");
     }
     isLoading(false);
   }
