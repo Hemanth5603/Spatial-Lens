@@ -113,54 +113,10 @@ class _ImageViewerState extends State<ImageViewer> {
                     fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
-              width: w,
-              height: h * 0.03,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Latitude : ",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    userController.latitude.toString(),
-                    style: const TextStyle(
-                      fontFamily: 'poppins',
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
+            Padding(
+              padding:EdgeInsets.all(10)
             ),
-            Container(
-              width: w,
-              height: h * 0.03,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    "Longitude : ",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    userController.longitude.toString(),
-                    style: const TextStyle(
-                      fontFamily: 'poppins',
-                      fontSize: 18,
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            
             Container(
               width: w,
               height: h * 0.04,
