@@ -8,6 +8,7 @@ import 'package:http/http.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/models/activity_model.dart';
+import 'package:iitt/models/leaderboard_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController extends GetxController {
@@ -21,6 +22,7 @@ class DataController extends GetxController {
   TextEditingController remarks = TextEditingController();
   UserController userController = Get.put(UserController());
   ActivityModel activityModel = ActivityModel();
+  LeaderboardModel leaderboardModel = LeaderboardModel();
 
   Future<bool> uploadData(String category) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -68,6 +70,24 @@ class DataController extends GetxController {
     } else {
       if (kDebugMode) print("Error fetcing activity data");
       Get.snackbar("Error", "Cannot fetch data");
+    }
+    isLoading(false);
+  }
+
+  Future<void> getLeaderBoard() async {
+    String url = "${ApiConstants.baseUrl}${ApiConstants.getLeaderBoard}";
+    print(url);
+    isLoading(true);
+    var response = await get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      leaderboardModel = LeaderboardModel.fromJson(data);
+
+      print(data.toString());
+    } else {
+      if (kDebugMode) print("Error Fetching LeaderBoard");
+      Get.snackbar("Error", "Cannot fetch LeaderBoard");
     }
     isLoading(false);
   }

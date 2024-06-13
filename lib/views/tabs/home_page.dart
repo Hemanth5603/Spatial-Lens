@@ -6,9 +6,11 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/camera_controller.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/models/leaderboard_model.dart';
 import 'package:iitt/views/components/activity_card.dart';
 import 'package:iitt/views/components/circular_camera_preview.dart';
 import 'package:iitt/views/image_capture.dart';
+import 'package:iitt/views/leaderboard.dart';
 import 'package:iitt/views/tabs/profile_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,7 +68,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             ])),
                       ),
                       Positioned(
-                        top: 30,
+                        top: 10,
                         left: 10,
                         height: 500,
                         width: MediaQuery.of(context).size.width,
@@ -269,7 +271,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   ),
                   GestureDetector(
                       onTap: () {
-                        Get.to(() => ImageCapture(),
+                        Get.to(() => const LeaderboardPage(),
                             transition: Transition.rightToLeft,
                             duration: 300.milliseconds);
                       },
@@ -311,10 +313,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                 right: -20,
                                 bottom: -20,
                                 child: Transform.rotate(
-                                  angle: -100,
+                                  angle: -95.05,
                                   child: Container(
-                                    width: 120,
-                                    height: 120,
+                                    width: 130,
+                                    height: 130,
                                     decoration: BoxDecoration(
                                         image: DecorationImage(
                                             colorFilter:

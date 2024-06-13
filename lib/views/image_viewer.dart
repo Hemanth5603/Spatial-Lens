@@ -90,13 +90,20 @@ class _ImageViewerState extends State<ImageViewer> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: w,
-              height: h * 0.6,
-              child: Image.file(
-                alignment: Alignment.topLeft,
-                File(widget.path),
-                fit: BoxFit.fill,
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: SizedBox(
+                  width: w,
+                  height: h * 0.7,
+                  child: Image.file(
+                    alignment: Alignment.topCenter,
+                    File(widget.path),
+                    fit: BoxFit.fitWidth,
+                    filterQuality: FilterQuality.medium,
+                  ),
+                ),
               ),
             ),
             SizedBox(
@@ -106,11 +113,12 @@ class _ImageViewerState extends State<ImageViewer> {
               padding: EdgeInsets.all(10),
               width: w,
               height: h * 0.06,
-              child: const Text(
+              child: Text(
                 "Image Information",
                 style: TextStyle(
                     fontFamily: 'poppins',
                     fontSize: 22,
+                    color: AppConstants.customBlue,
                     fontWeight: FontWeight.bold),
               ),
             ),
@@ -198,14 +206,15 @@ class _ImageViewerState extends State<ImageViewer> {
               width: w,
               height: h * 0.04,
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     "Select Category :",
                     style: TextStyle(
                         fontSize: 18,
                         fontFamily: 'poppins',
+                        color: AppConstants.customBlue,
                         fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -252,10 +261,11 @@ class _ImageViewerState extends State<ImageViewer> {
               width: w,
               height: 20,
               margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
-              child: const Text(
+              child: Text(
                 "Remarks",
                 style: TextStyle(
                     fontSize: 18,
+                    color: AppConstants.customBlue,
                     fontFamily: 'poppins',
                     fontWeight: FontWeight.bold),
               ),

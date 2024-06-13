@@ -8,10 +8,7 @@ class ProfilePage extends StatefulWidget {
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
-
-  
 }
-
 
 class _ProfilePageState extends State<ProfilePage> {
   UserController userController = Get.put(UserController());
@@ -22,216 +19,288 @@ class _ProfilePageState extends State<ProfilePage> {
     super.initState();
     userController.getUser();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 248, 253),
-      body: SafeArea(
-        child:Obx(() => userController.isLoading.value ? const Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 250,
-                alignment: Alignment.center,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 50,
-                        child: Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: IconButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  icon: Icon(
-                                    Icons.arrow_back_ios,
-                                    size: 30,
-                                    color: Colors.black,
-                                  )),
-                            )
-                          ],
-                        ),
-                      ),
-                      Container(
-                        width: 110,
-                        height: 110,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                                color: AppConstants.customBlue, width: 4),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-                                ))),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        userController.userModel.name ?? "User",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontFamily: 'poppins',
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.all(8),
-                height: 120,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        margin: EdgeInsets.all(5),
-                        height: 100,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromARGB(101, 207, 207, 207),
-                                  blurRadius: 20)
-                            ]),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              userController.userModel.contributions.toString(),
-                              style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
+        backgroundColor: Color.fromARGB(255, 247, 248, 253),
+        body: SafeArea(
+          child: Obx(
+            () => userController.isLoading.value
+                ? const Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 250,
+                          alignment: Alignment.center,
+                          child: Center(
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Text(
-                                  "Total Contributions",
-                                  style: TextStyle(
-                                    fontSize: 12,
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 50,
+                                  child: Row(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: IconButton(
+                                            onPressed: () {
+                                              Get.back();
+                                            },
+                                            icon: Icon(
+                                              Icons.arrow_back_ios,
+                                              size: 30,
+                                              color: Colors.black,
+                                            )),
+                                      )
+                                    ],
                                   ),
+                                ),
+                                Container(
+                                  width: 110,
+                                  height: 110,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      border: Border.all(
+                                          color: AppConstants.customBlue,
+                                          width: 4),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(
+                                            "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
+                                          ))),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  userController.userModel.name ?? "User",
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      fontFamily: 'poppins',
+                                      fontWeight: FontWeight.bold),
                                 )
                               ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 100,
-                        margin: EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Color.fromARGB(101, 207, 207, 207),
-                                  blurRadius: 20)
-                            ]),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              userController.userModel.rank.toString(),
-                              style: TextStyle(
-                                  fontFamily: 'poppins',
-                                  fontSize: 22,
-                                  fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "Rank",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                height: 300,
-                margin: EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "Personal Information",
-                      style: TextStyle(
-                        fontFamily: 'poppins',
-                        fontSize: 14,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 220,
-                      margin: EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                                color: Color.fromARGB(54, 207, 207, 207),
-                                blurRadius: 20)
-                          ]),
-                      child: Column(
-                        children: [
-                          SizedBox(
-                            height: 10,
                           ),
-                          ProfileTile(Icons.email_outlined, "Email",
-                              userController.userModel.email, false),
-                          ProfileTile(
-                              Icons.call, "Phone", "+91 ${userController.userModel.phone}", false),
-                          ProfileTile(Icons.calendar_month, "Date of birth",
-                              userController.userModel.dob, false),
-                          ProfileTile(
-                              Icons.location_pin, "Location", userController.userModel.location, true),
-                        ],
-                      ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.all(8),
+                          height: 120,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: EdgeInsets.all(5),
+                                  height: 100,
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                101, 207, 207, 207),
+                                            blurRadius: 20)
+                                      ]),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        userController.userModel.contributions
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'poppins',
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Total Contributions",
+                                            style: TextStyle(
+                                              fontSize: 12,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 100,
+                                  margin: EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: Color.fromARGB(
+                                                101, 207, 207, 207),
+                                            blurRadius: 20)
+                                      ]),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        userController.userModel.rank
+                                            .toString(),
+                                        style: TextStyle(
+                                            fontFamily: 'poppins',
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Rank",
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 260,
+                          margin: EdgeInsets.all(20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Personal Information",
+                                style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 220,
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color:
+                                              Color.fromARGB(54, 207, 207, 207),
+                                          blurRadius: 20)
+                                    ]),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    ProfileTile(Icons.email_outlined, "Email",
+                                        userController.userModel.email, false),
+                                    ProfileTile(
+                                        Icons.call,
+                                        "Phone",
+                                        "+91 ${userController.userModel.phone}",
+                                        false),
+                                    ProfileTile(
+                                        Icons.calendar_month,
+                                        "Date of birth",
+                                        userController.userModel.dob,
+                                        false),
+                                    ProfileTile(
+                                        Icons.location_pin,
+                                        "Location",
+                                        userController.userModel.location,
+                                        true),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: 115,
+                          margin: EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                "Settings",
+                                style: TextStyle(
+                                  fontFamily: 'poppins',
+                                  fontSize: 14,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Container(
+                                width: MediaQuery.of(context).size.width,
+                                height: 65,
+                                margin: EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(15),
+                                    color: Colors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color:
+                                              Color.fromARGB(54, 207, 207, 207),
+                                          blurRadius: 20)
+                                    ]),
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        userController.logOut();
+                                      },
+                                      child: ProfileTile(
+                                          Icons.logout, "Logout", "", true),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            ],
+                  ),
           ),
-        ),
-      ),
-      )
-    );
+        ));
   }
 
   Widget ProfileTile(icon, title, value, lastTile) {
