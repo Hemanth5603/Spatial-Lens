@@ -46,6 +46,15 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                         children: [
                           SizedBox(
                             height: 30,
+                            child: Row(
+                              children: [
+                                IconButton(
+                                    onPressed: () {
+                                      Get.back();
+                                    },
+                                    icon: Icon(Icons.arrow_back_ios_rounded))
+                              ],
+                            ),
                           ),
                           Text(
                             "LeaderBoard",

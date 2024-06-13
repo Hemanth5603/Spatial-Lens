@@ -209,11 +209,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                               Container(
                                 width: MediaQuery.of(context).size.width,
+                                padding: EdgeInsets.symmetric(horizontal: 5),
                                 height: 220,
                                 margin: EdgeInsets.all(5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     color: Colors.white,
+                                    border: Border.all(
+                                        color:
+                                            Color.fromARGB(218, 211, 211, 211)),
                                     boxShadow: [
                                       BoxShadow(
                                           color:
@@ -269,6 +273,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 width: MediaQuery.of(context).size.width,
                                 height: 65,
                                 margin: EdgeInsets.all(5),
+                                padding: EdgeInsets.symmetric(horizontal: 5),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
                                     color: Colors.white,
@@ -361,10 +366,9 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           if (lastTile == false)
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
               width: MediaQuery.of(context).size.width,
               height: 1,
-              color: const Color.fromARGB(255, 224, 224, 224),
+              color: Color.fromARGB(190, 224, 224, 224),
             )
         ],
       ),
