@@ -37,6 +37,7 @@ class _ImageViewerState extends State<ImageViewer> {
     DataController dataController = Get.put(DataController());
 
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 247, 252, 255),
       bottomNavigationBar: GestureDetector(
         onTap: () async {
           bool res = await dataController.uploadData(selectedItem!);
@@ -114,37 +115,82 @@ class _ImageViewerState extends State<ImageViewer> {
               ),
             ),
             Padding(
-              padding:EdgeInsets.all(10)
-            ),
-            
-            Container(
-              width: w,
-              height: h * 0.04,
-              alignment: Alignment.centerRight,
-              margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+              padding: EdgeInsets.all(10),
               child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text(
-                    "Address : ",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontFamily: 'poppins',
-                        fontWeight: FontWeight.bold),
-                  ),
-                  SizedBox(
-                    width: w * 0.6,
-                    height: 40,
-                    child: Text(
-                      userController.address.toString(),
-                      textAlign: TextAlign.end,
-                      style: const TextStyle(
-                        fontFamily: 'poppins',
-                        fontSize: 12,
-                      ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2 - 30,
+                    margin: EdgeInsets.all(8),
+                    height: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromARGB(255, 240, 248, 255),
+                              blurRadius: 10)
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          userController.latitude.toString(),
+                          style: TextStyle(
+                              fontFamily: 'man-r',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.customBlue),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Latitude",
+                          style: TextStyle(
+                            fontFamily: 'man-r',
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
                     ),
                   ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 2 - 30,
+                    margin: EdgeInsets.all(8),
+                    height: 80,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.white,
+                        boxShadow: [
+                          BoxShadow(
+                              color: Color.fromARGB(255, 240, 248, 255),
+                              blurRadius: 10)
+                        ]),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          userController.longitude.toString(),
+                          style: TextStyle(
+                              fontFamily: 'man-r',
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.customBlue),
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          "Longitude",
+                          style: TextStyle(
+                            fontFamily: 'man-r',
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

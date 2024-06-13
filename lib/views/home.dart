@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Skeletonizer(enabled: isLoading, child: HomePage()),
+      body: Skeletonizer(enabled: isLoading, child: const HomePage()),
     );
   }
 }

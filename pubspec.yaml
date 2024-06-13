@@ -36,7 +36,7 @@ dependencies:
  
 
 flutter_native_splash:
-  image: assets/icons/iitnif.jpg
+  image: assets/icons/iitnif.png
   color: "#ffffff"
   android: true
 

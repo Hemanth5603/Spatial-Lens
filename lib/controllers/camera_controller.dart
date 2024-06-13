@@ -41,8 +41,13 @@ class Camera extends GetxController {
         await cameraController.initialize();
 
         if (Get.isRegistered<CameraController>()) {
-          isCameraInitialized.value = true;
+          if (cameraController.value.isInitialized) {
+            isCameraInitialized.value = true;
+          }
         }
+        print(
+            "${(cameraController.value.previewSize!.width / 3.3).toString()}");
+        print((cameraController.value.previewSize!.height).toString());
       } else {
         print("Camera permission denied");
       }
