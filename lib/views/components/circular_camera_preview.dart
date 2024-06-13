@@ -18,8 +18,8 @@ class CircularCameraPreview extends StatelessWidget {
         child: FittedBox(
           fit: BoxFit.none,
           child: Container(
-            width: controller.value.previewSize!.width / 3.3,
-            height: controller.value.previewSize!.height,
+            width: 387.87,
+            height: 720,
             child: CameraPreview(controller),
           ),
         ),

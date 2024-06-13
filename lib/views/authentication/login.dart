@@ -5,6 +5,7 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/image_capture.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -18,6 +19,12 @@ class LoginState extends State<Login> {
   @override
   void initState() {
     super.initState();
+    requestPermissions();
+  }
+
+  void requestPermissions() async {
+    var status = await Permission.camera.request();
+    var mic = await Permission.microphone.request();
   }
 
   @override

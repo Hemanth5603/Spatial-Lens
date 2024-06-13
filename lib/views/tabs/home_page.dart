@@ -27,10 +27,12 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 1), () {
-      setState(() {
-        show = true;
-      });
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        setState(() {
+          show = true;
+        });
+      }
     });
   }
 
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
-                        height: 550,
+                        height: 510,
                         decoration: const BoxDecoration(
                             gradient: LinearGradient(
                                 begin: FractionalOffset.topCenter,
@@ -64,7 +66,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                             ])),
                       ),
                       Positioned(
-                        top: 50,
+                        top: 30,
                         left: 10,
                         height: 500,
                         width: MediaQuery.of(context).size.width,
@@ -161,7 +163,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                   blurRadius: 20)
                                             ]),
                                         child: show == false
-                                            ? Container()
+                                            ? Container(
+                                                child: Center(
+                                                  child: Container(
+                                                    width: 50,
+                                                    height: 50,
+                                                    child: const Icon(
+                                                      Icons.camera_alt_rounded,
+                                                      size: 30,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
                                             : GestureDetector(
                                                 onTap: () {
                                                   Get.to(ImageCapture());
@@ -245,15 +258,75 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         ),
                                       ),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
                     ],
                   ),
+                  GestureDetector(
+                      onTap: () {
+                        Get.to(() => ImageCapture(),
+                            transition: Transition.rightToLeft,
+                            duration: 300.milliseconds);
+                      },
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 150,
+                        margin: const EdgeInsets.all(25),
+                        decoration: BoxDecoration(
+                            color: Color.fromARGB(255, 227, 243, 255),
+                            borderRadius: BorderRadius.circular(10)),
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              left: 15,
+                              top: 15,
+                              child: SizedBox(
+                                height: 100,
+                                child: Text(
+                                  "Find Where You Rank !",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: AppConstants.customBlue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              bottom: 15,
+                              left: 15,
+                              child: Text(
+                                "Leaderboard",
+                                style: TextStyle(
+                                    fontFamily: 'poppins',
+                                    fontSize: 14,
+                                    color: AppConstants.customBlue),
+                              ),
+                            ),
+                            Positioned(
+                                right: -20,
+                                bottom: -20,
+                                child: Transform.rotate(
+                                  angle: -100,
+                                  child: Container(
+                                    width: 120,
+                                    height: 120,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            colorFilter:
+                                                ColorFilter.linearToSrgbGamma(),
+                                            image: AssetImage(
+                                              "assets/icons/podium.png",
+                                            ))),
+                                  ),
+                                ))
+                          ],
+                        ),
+                      )),
                   Container(
                     margin: const EdgeInsets.all(15),
                     child: const Text(
