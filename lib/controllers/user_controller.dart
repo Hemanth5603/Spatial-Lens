@@ -12,6 +12,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
+import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -137,7 +138,6 @@ class UserController extends GetxController {
     isLoading(false);
   }
 
-
   Future<void> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -146,7 +146,7 @@ class UserController extends GetxController {
     String id = prefs.getString("id") ?? "7";
 
     Map<dynamic, String> data = {
-      "id":id,
+      "id": id,
     };
 
     var response = await post(uri, body: data);
@@ -155,11 +155,17 @@ class UserController extends GetxController {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
       print(data.toString());
-      
     } else {
       if (kDebugMode) print("Error Fetching User Data");
       Get.snackbar("Error", "Cannot Fetch UserData, Try Again!!");
     }
     isLoading(false);
+  }
+
+  void logOut() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt("isLoggedIn", 0);
+    Get.offAll(const Login(),
+        transition: Transition.rightToLeft, duration: 300.milliseconds);
   }
 }

@@ -4,4 +4,5 @@ class ApiConstants {
   static String login = "/uploadImage";
   static String getActivity = "/iitt/getUserUploads/"; // add user id at end
   static String getUser = "/iitt/getUser";
+  static String getLeaderBoard = "/iitt/getLeaderBoard";
 }
