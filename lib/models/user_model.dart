@@ -10,7 +10,8 @@ class UserModel {
       this.contributions,
       this.dob,
       this.location,
-      this.rank});
+      this.rank,
+      this.profile_image});
   String? email;
   int? id;
   String? name;
@@ -20,6 +21,7 @@ class UserModel {
   int? rank;
   String? dob;
   String? location;
+  String? profile_image;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     email = json['email'];
@@ -30,6 +32,7 @@ class UserModel {
     rank = json['rank'];
     dob = json['dob'];
     location = json['location'];
+    profile_image = json['profile_image'];
     status = json['status'];
   }
 
@@ -44,6 +47,7 @@ class UserModel {
     _data['dob'] = dob;
     _data['location'] = location;
     _data['status'] = status;
+    _data['profile_image'] = profile_image;
     return _data;
   }
 }

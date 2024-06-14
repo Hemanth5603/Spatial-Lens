@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
+import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
 
@@ -298,8 +299,16 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     onTap: () async {
-                      await userController.registerUser();
-                      Get.to(Home());
+                      String err = await userController.registerUser();
+                      if (err != "") {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: err,
+                              );
+                            });
+                      }
                     },
                   ),
                   const SizedBox(

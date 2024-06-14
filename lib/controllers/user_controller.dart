@@ -79,7 +79,26 @@ class UserController extends GetxController {
     }
   }
 
-  Future<void> registerUser() async {
+  Future<String> registerUser() async {
+    if (name.text.isEmpty) {
+      return "Name Field is Empty !";
+    }
+    if (email.text.isEmpty) {
+      return "Email Field cannot be Empty !";
+    }
+    if (!validateEmail(email.text)) {
+      return "Invalid Email Address !";
+    }
+    if (!validatePhoneNumber(phone.text)) {
+      return "Invalid Phone Number";
+    }
+    if (dob.text.isEmpty) {
+      return "Date of Birth cannot be Empty !";
+    }
+    if (password.text.length < 4) {
+      return "Password must be of atleast 4 Characters";
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final uri = Uri.parse("http://13.60.93.136:8080/iitt/register");
     isLoading(true);
@@ -93,6 +112,7 @@ class UserController extends GetxController {
       "contributions": 0.toString(),
       "rank": 0.toString(),
       "location": locality.value.toString(),
+      "profile_image": "default"
     };
 
     var response = await post(uri, body: data);
@@ -110,9 +130,16 @@ class UserController extends GetxController {
       Get.snackbar("Error", "Cannot Register");
     }
     isLoading(false);
+    return "";
   }
 
-  Future<void> loginUser() async {
+  Future<String> loginUser() async {
+    if (!validateEmail(email.text)) {
+      return "Invalid Email Address";
+    }
+    if (password.text.isEmpty) {
+      return "Password Field is Empty !";
+    }
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final uri = Uri.parse("http://13.60.93.136:8080/iitt/login");
@@ -136,6 +163,34 @@ class UserController extends GetxController {
       Get.snackbar("Error", "Cannot Login, Try Again!!");
     }
     isLoading(false);
+    return "";
+  }
+
+  Future<bool> uploadProfileImage(String imagePath) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = "${ApiConstants.baseUrl}${ApiConstants.uploadProfile}";
+    isLoading(true);
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+
+      request.fields['id'] = prefs.getString("id")!;
+
+      request.files
+          .add(await http.MultipartFile.fromPath('profile_image', imagePath));
+
+      var res = await request.send();
+      isLoading(false);
+      if (res.statusCode == 200) {
+        if (kDebugMode) print("Profile Image Upload Successfull.....");
+        return true;
+      } else {
+        if (kDebugMode) print("Upload Unsuccessfull");
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+    return false;
   }
 
   Future<void> getUser() async {
@@ -168,4 +223,55 @@ class UserController extends GetxController {
     Get.offAll(const Login(),
         transition: Transition.rightToLeft, duration: 300.milliseconds);
   }
+}
+
+bool validatePhoneNumber(String phoneNumber) {
+  if (phoneNumber.length != 10) {
+    return false;
+  }
+  for (int i = 3; i < phoneNumber.length; i++) {
+    if (!phoneNumber[i].contains(RegExp(r'[0-9]'))) {
+      return false;
+    }
+  }
+  return true;
+}
+
+bool validateEmail(String email) {
+  if (email.isEmpty) {
+    return false;
+  }
+
+  List<String> parts = email.split("@");
+  if (parts.length != 2) {
+    return false;
+  }
+
+  String username = parts[0];
+  String domain = parts[1];
+
+  if (username.isEmpty || domain.isEmpty) {
+    return false;
+  }
+
+  if (!domain.contains(".") || domain.indexOf(".") <= 0) {
+    return false;
+  }
+
+  if (domain.contains("..")) {
+    return false;
+  }
+
+  List<String> domainParts = domain.split(".");
+  String tld = domainParts.last;
+  if (tld.length < 2 || tld.length > 6) {
+    return false;
+  }
+
+  RegExp usernameRegex = RegExp(r'^[a-zA-Z0-9._-]+$');
+  if (!usernameRegex.hasMatch(username)) {
+    return false;
+  }
+
+  return true;
 }

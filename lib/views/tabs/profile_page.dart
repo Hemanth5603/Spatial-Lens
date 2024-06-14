@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -12,6 +15,18 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   UserController userController = Get.put(UserController());
+  String? profileImage;
+
+  void pickFile() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage?.path != null) {
+      setState(() {
+        profileImage = pickedImage!.path;
+        print(profileImage);
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -23,6 +38,26 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: profileImage == null
+            ? Container(
+                height: 0,
+                width: 0,
+              )
+            : Container(
+                margin: EdgeInsets.all(15),
+                width: MediaQuery.of(context).size.width,
+                height: 60,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: AppConstants.customBlue),
+                child: Center(
+                  child: Text(
+                    "Update Profile",
+                    style: TextStyle(
+                        fontFamily: 'man-r', fontSize: 16, color: Colors.white),
+                  ),
+                ),
+              ),
         backgroundColor: Color.fromARGB(255, 247, 248, 253),
         body: SafeArea(
           child: Obx(
@@ -62,19 +97,85 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ],
                                   ),
                                 ),
-                                Container(
-                                  width: 110,
-                                  height: 110,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      border: Border.all(
-                                          color: AppConstants.customBlue,
-                                          width: 4),
-                                      image: DecorationImage(
-                                          fit: BoxFit.cover,
-                                          image: NetworkImage(
-                                            "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
-                                          ))),
+                                Stack(
+                                  children: [
+                                    Container(
+                                      width: 160,
+                                      height: 160,
+                                      child: Center(
+                                          child: profileImage == null
+                                              ? Container(
+                                                  width: 140,
+                                                  height: 140,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      border: Border.all(
+                                                          color: AppConstants
+                                                              .customBlue,
+                                                          width: 4),
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: NetworkImage(
+                                                            "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg",
+                                                          ))),
+                                                )
+                                              : Container(
+                                                  width: 140,
+                                                  height: 140,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              100),
+                                                      border: Border.all(
+                                                          color: AppConstants
+                                                              .customBlue,
+                                                          width: 4),
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image: FileImage(File(
+                                                              profileImage!)))),
+                                                )),
+                                    ),
+                                    Positioned(
+                                        bottom: 20,
+                                        right: 10,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            pickFile();
+                                            if (profileImage!.isNotEmpty) {
+                                              showBottomSheet(
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return Container(
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .width,
+                                                      height: 200,
+                                                      color: Colors.black,
+                                                    );
+                                                  });
+                                            }
+                                          },
+                                          child: Container(
+                                            width: 40,
+                                            height: 40,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                color: AppConstants.customBlue),
+                                            child: Center(
+                                              child: Icon(
+                                                Icons.edit,
+                                                color: Colors.white,
+                                                size: 15,
+                                              ),
+                                            ),
+                                          ),
+                                        )),
+                                  ],
                                 ),
                                 SizedBox(
                                   height: 10,
