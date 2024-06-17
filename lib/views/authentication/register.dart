@@ -285,7 +285,7 @@ class _RegisterState extends State<Register> {
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: Color.fromARGB(47, 0, 0, 0), width: 2),
-                              color: AppConstants.customYellow,
+                              color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(

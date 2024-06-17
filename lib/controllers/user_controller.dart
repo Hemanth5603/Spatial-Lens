@@ -112,12 +112,14 @@ class UserController extends GetxController {
       "contributions": 0.toString(),
       "rank": 0.toString(),
       "location": locality.value.toString(),
-      "profile_image": "default"
+      "profile_image": "Default"
     };
 
     var response = await post(uri, body: data);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 302) {
+      return "User Already Exists !, Please Sign in";
+    } else if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
@@ -151,7 +153,9 @@ class UserController extends GetxController {
 
     var response = await post(uri, body: data);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 404) {
+      return "User Not Found !, Please Sign Up";
+    } else if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
@@ -210,6 +214,7 @@ class UserController extends GetxController {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
       print(data.toString());
+      print("${userModel.rank}////////////////////");
     } else {
       if (kDebugMode) print("Error Fetching User Data");
       Get.snackbar("Error", "Cannot Fetch UserData, Try Again!!");

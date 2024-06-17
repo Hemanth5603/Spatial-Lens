@@ -32,6 +32,7 @@ class Leaderboard {
     required this.location,
     required this.contributions,
     required this.rank,
+    required this.profileImage,
   });
   int? id;
   String? email;
@@ -42,6 +43,7 @@ class Leaderboard {
   String? location;
   int? contributions;
   int? rank;
+  String? profileImage;
 
   Leaderboard.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -53,6 +55,7 @@ class Leaderboard {
     location = json['location'];
     contributions = json['contributions'];
     rank = json['rank'];
+    profileImage = json['profile_image'];
   }
 
   Map<String, dynamic> toJson() {
@@ -66,6 +69,7 @@ class Leaderboard {
     _data['location'] = location;
     _data['contributions'] = contributions;
     _data['rank'] = rank;
+    _data['profile_image'];
     return _data;
   }
 }

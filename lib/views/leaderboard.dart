@@ -5,8 +5,10 @@ import 'package:flutter_launcher_icons/xml_templates.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
+import 'package:iitt/controllers/user_controller.dart';
 
 class LeaderboardPage extends StatefulWidget {
   const LeaderboardPage({super.key});
@@ -17,14 +19,21 @@ class LeaderboardPage extends StatefulWidget {
 
 class _LeaderboardPageState extends State<LeaderboardPage> {
   DataController dataController = Get.put(DataController());
+  UserController userController = Get.put(UserController());
   @override
   @override
   void initState() {
     super.initState();
     // Delay the getLeaderBoard call to avoid issues during the build process
+    callGetUser();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       dataController.getLeaderBoard();
     });
+    Future.delayed(const Duration(seconds: 2), () {});
+  }
+
+  Future<void> callGetUser() async {
+    await userController.getUser();
   }
 
   @override
@@ -86,7 +95,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           ),
                           Container(
                             width: MediaQuery.of(context).size.width,
-                            height: 185,
+                            height: 200,
                             margin: EdgeInsets.fromLTRB(20, 30, 20, 10),
                             decoration: BoxDecoration(
                                 color: Colors.white,
@@ -104,6 +113,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                   height: 15,
                                 ),
                                 LeaderboardTile(
+                                  userRank: userController.userModel.rank!,
                                   index: 0,
                                   icon: "assets/icons/first.png",
                                   name: dataController.leaderboardModel
@@ -112,10 +122,14 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                   contributions: dataController.leaderboardModel
                                       .leaderboard![0].contributions
                                       .toString(),
+                                  profileImage: dataController.leaderboardModel
+                                      .leaderboard![0].profileImage
+                                      .toString(),
                                   last: false,
                                   isIcon: true,
                                 ),
                                 LeaderboardTile(
+                                  userRank: userController.userModel.rank!,
                                   index: 0,
                                   icon: "assets/icons/second.png",
                                   name: dataController.leaderboardModel
@@ -124,15 +138,22 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                   contributions: dataController.leaderboardModel
                                       .leaderboard![1].contributions
                                       .toString(),
+                                  profileImage: dataController.leaderboardModel
+                                      .leaderboard![1].profileImage
+                                      .toString(),
                                   last: false,
                                   isIcon: true,
                                 ),
                                 LeaderboardTile(
+                                  userRank: userController.userModel.rank!,
                                   index: 0,
                                   icon: "assets/icons/third.png",
                                   name: dataController.leaderboardModel
                                           .leaderboard![2].name ??
                                       "User 3",
+                                  profileImage: dataController.leaderboardModel
+                                      .leaderboard![2].profileImage
+                                      .toString(),
                                   contributions: dataController.leaderboardModel
                                       .leaderboard![2].contributions
                                       .toString(),
@@ -206,15 +227,22 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                         blurRadius: 15)
                                   ],
                                   borderRadius: BorderRadius.circular(15)),
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 15.0),
+                              child: SizedBox(
                                 child: ListView.builder(
                                     itemCount: dataController.leaderboardModel
                                             .leaderboard!.length -
                                         3,
                                     itemBuilder: (context, index) {
+                                      print(
+                                          "${userController.userModel.rank} = ${index + 3}");
                                       return LeaderboardTile(
+                                        userRank:
+                                            userController.userModel.rank!,
+                                        profileImage: dataController
+                                            .leaderboardModel
+                                            .leaderboard![index + 3]
+                                            .profileImage
+                                            .toString(),
                                         index: index,
                                         contributions: dataController
                                             .leaderboardModel
@@ -245,28 +273,39 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
 }
 
 class LeaderboardTile extends StatelessWidget {
+  int userRank;
   int index;
   String icon;
   String name;
   String contributions;
   bool last;
   bool isIcon;
+  String profileImage;
   LeaderboardTile(
       {super.key,
+      required this.userRank,
       required this.index,
       required this.contributions,
       required this.icon,
       required this.name,
       required this.last,
-      required this.isIcon});
+      required this.isIcon,
+      required this.profileImage});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 55,
-      padding: EdgeInsets.symmetric(vertical: 00),
+      height: 60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: userRank == index - 3
+            ? Color.fromARGB(255, 255, 255, 255)
+            : Color.fromARGB(255, 255, 255, 255),
+      ),
+      padding: EdgeInsets.only(bottom: 10, top: 5),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -287,6 +326,31 @@ class LeaderboardTile extends StatelessWidget {
                       : Padding(
                           padding: const EdgeInsets.all(0.0),
                           child: Text((index + 4).toString())),
+                  SizedBox(
+                    width: 16,
+                  ),
+                  profileImage == "Default"
+                      ? Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 233, 243, 255),
+                              borderRadius: BorderRadius.circular(30)),
+                          child: Icon(Icons.person_rounded,
+                              size: 16,
+                              color: Color.fromARGB(190, 23, 110, 182)),
+                        )
+                      : Container(
+                          width: 35,
+                          height: 35,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(50),
+                              border: Border.all(width: 1, color: Colors.white),
+                              image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: NetworkImage(
+                                      "${ApiConstants.s3Url}${profileImage}"))),
+                        ),
                   SizedBox(
                     width: 15,
                   ),
@@ -314,13 +378,17 @@ class LeaderboardTile extends StatelessWidget {
               )
             ],
           ),
-          if (last == false)
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 8),
-              width: MediaQuery.of(context).size.width,
-              height: 1,
-              color: Color.fromARGB(132, 206, 206, 206),
-            )
+          last == false
+              ? Container(
+                  margin: EdgeInsets.only(top: 8),
+                  width: MediaQuery.of(context).size.width,
+                  height: 1,
+                  color: Color.fromARGB(132, 206, 206, 206),
+                )
+              : Container(
+                  width: 0,
+                  height: 0,
+                )
         ],
       ),
     );

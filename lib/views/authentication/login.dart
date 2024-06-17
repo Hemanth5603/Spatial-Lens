@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/register.dart';
+import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -78,7 +79,7 @@ class LoginState extends State<Login> {
                             fontSize: 14,
                             fontWeight: FontWeight.bold)),
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text("IITTNiF",
                         textAlign: TextAlign.left,
@@ -87,7 +88,7 @@ class LoginState extends State<Login> {
                             fontFamily: 'poppins',
                             fontSize: 50,
                             fontWeight: FontWeight.bold,
-                            color: AppConstants.customYellow)),
+                            color: Color.fromARGB(183, 0, 0, 0))),
                   ),
                   const SizedBox(
                     height: 25,
@@ -174,7 +175,7 @@ class LoginState extends State<Login> {
                           decoration: BoxDecoration(
                               border: Border.all(
                                   color: Color.fromARGB(22, 0, 0, 0), width: 2),
-                              color: AppConstants.customYellow,
+                              color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
@@ -188,7 +189,16 @@ class LoginState extends State<Login> {
                           )),
                     ),
                     onTap: () async {
-                      await userController.loginUser();
+                      String err = await userController.loginUser();
+                      if (err != "") {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: err,
+                              );
+                            });
+                      }
                     },
                   ),
                   const SizedBox(

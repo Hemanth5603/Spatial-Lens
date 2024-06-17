@@ -356,9 +356,18 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return activityCard(
+                      index: index,
                       imageUrl: dataController.activityModel.data?[index].Image,
                       category:
                           dataController.activityModel.data?[index].Category,
+                      latitude: dataController
+                          .activityModel.data?[index].Latitude
+                          .toString(),
+                      longitude: dataController
+                          .activityModel.data?[index].Longitude
+                          .toString(),
+                      remarks:
+                          dataController.activityModel.data?[index].Remarks,
                     );
                   },
                 ),

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
@@ -9,6 +10,7 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/models/leaderboard_model.dart';
+import 'package:iitt/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController extends GetxController {
@@ -24,9 +26,12 @@ class DataController extends GetxController {
   ActivityModel activityModel = ActivityModel();
   LeaderboardModel leaderboardModel = LeaderboardModel();
 
-  Future<bool> uploadData(String category) async {
+  Future<String> uploadData(String category) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = "http://13.60.93.136:8080/uploadImage";
+    if (category == "Default") {
+      return "Select Category";
+    }
     isLoading(true);
     try {
       print(category);
@@ -43,15 +48,15 @@ class DataController extends GetxController {
       isLoading(false);
       if (res.statusCode == 200) {
         if (kDebugMode) print("Data Upload Successfull.....");
-        return true;
+        return "";
       } else {
         if (kDebugMode) print("Upload Unsuccessfull");
-        return false;
+        return "Something Went Wrong !";
       }
     } catch (e) {
       if (kDebugMode) print(e);
     }
-    return false;
+    return "";
   }
 
   Future<void> getActivity() async {
@@ -75,10 +80,13 @@ class DataController extends GetxController {
   }
 
   Future<void> getLeaderBoard() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = "${ApiConstants.baseUrl}${ApiConstants.getLeaderBoard}";
     print(url);
     isLoading(true);
     var response = await get(Uri.parse(url));
+
+    userController.userModel.id = int.parse(prefs.getString("id")!);
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());

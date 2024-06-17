@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:884283395686:android:44445035f756a543aca7a7",
         "android_client_info": {
-          "package_name": "com.example.anewmeat"
+          "package_name": "com.example.iittnif"
         }
       },
       "oauth_client": [],
@@ -28,7 +28,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:884283395686:android:e37dcaaee6aae1e4aca7a7",
         "android_client_info": {
-          "package_name": "com.example.anewmeat_admin"
+          "package_name": "com.example.iittnif_admin"
         }
       },
       "oauth_client": [],

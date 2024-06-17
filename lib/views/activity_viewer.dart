@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
@@ -13,18 +14,26 @@ import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
 import 'package:iitt/views/image_capture.dart';
 
-class ImageViewer extends StatefulWidget {
-  String path;
-  ImageViewer({
-    super.key,
-    required this.path,
-  });
+class ActivityViewer extends StatefulWidget {
+  String? imageUrl;
+  String? latitude;
+  String? longitude;
+
+  String? category;
+  String? remarks;
+  ActivityViewer(
+      {super.key,
+      required this.imageUrl,
+      required this.category,
+      required this.latitude,
+      required this.longitude,
+      required this.remarks});
 
   @override
-  State<ImageViewer> createState() => _ImageViewerState();
+  State<ActivityViewer> createState() => _ActivityViewerState();
 }
 
-class _ImageViewerState extends State<ImageViewer> {
+class _ActivityViewerState extends State<ActivityViewer> {
   String? selectedItem = "Default";
   void setSelectedValue(String? value) {
     setState(() => selectedItem = value);
@@ -42,7 +51,7 @@ class _ImageViewerState extends State<ImageViewer> {
         backgroundColor: Color.fromARGB(255, 231, 241, 247),
         appBar: AppBar(
             title: const Text(
-          'Review Data',
+          'Your Activity',
           style: TextStyle(
             fontSize: 18,
             fontFamily: 'poppins',
@@ -57,14 +66,16 @@ class _ImageViewerState extends State<ImageViewer> {
                 padding: const EdgeInsets.all(10.0),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(15),
-                  child: SizedBox(
+                  child: Container(
                     width: w,
                     height: h * 0.7,
-                    child: Image.file(
-                      alignment: Alignment.topCenter,
-                      File(widget.path),
-                      fit: BoxFit.fitWidth,
-                      filterQuality: FilterQuality.medium,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: NetworkImage(
+                            "${ApiConstants.s3Url}${widget.imageUrl}"),
+                        fit: BoxFit
+                            .cover, // Ensure the image covers the container
+                      ),
                     ),
                   ),
                 ),
@@ -93,7 +104,7 @@ class _ImageViewerState extends State<ImageViewer> {
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 30,
                       margin: EdgeInsets.all(8),
-                      height: 70,
+                      height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
@@ -106,7 +117,7 @@ class _ImageViewerState extends State<ImageViewer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            userController.latitude.toStringAsFixed(7),
+                            widget.latitude ?? "0.000000",
                             style: TextStyle(
                                 fontFamily: 'man-r',
                                 fontSize: 18,
@@ -142,7 +153,7 @@ class _ImageViewerState extends State<ImageViewer> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            userController.longitude.toStringAsFixed(7),
+                            widget.longitude ?? "0.000000",
                             style: TextStyle(
                                 fontFamily: 'man-r',
                                 fontSize: 18,
@@ -165,45 +176,45 @@ class _ImageViewerState extends State<ImageViewer> {
                   ],
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(15),
-                height: 80,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: Color.fromARGB(255, 240, 248, 255),
-                        blurRadius: 10)
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text(
-                      "Address",
-                      style: TextStyle(
-                        fontFamily: 'man-r',
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      userController.address.toString(),
-                      style: TextStyle(
-                          fontFamily: 'man-r',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: AppConstants.customBlue),
-                    ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   width: MediaQuery.of(context).size.width,
+              //   margin: EdgeInsets.symmetric(horizontal: 20),
+              //   padding: EdgeInsets.all(15),
+              //   height: 80,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(10),
+              //     color: Colors.white,
+              //     boxShadow: [
+              //       BoxShadow(
+              //           color: Color.fromARGB(255, 240, 248, 255),
+              //           blurRadius: 10)
+              //     ],
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [
+              //       Text(
+              //         "Address",
+              //         style: TextStyle(
+              //           fontFamily: 'man-r',
+              //           fontSize: 12,
+              //         ),
+              //       ),
+              //       Text(
+              //         widget.address ?? "Default",
+              //         style: TextStyle(
+              //             fontFamily: 'man-r',
+              //             fontSize: 15,
+              //             fontWeight: FontWeight.bold,
+              //             color: AppConstants.customBlue),
+              //       ),
+              //       SizedBox(
+              //         height: 5,
+              //       ),
+              //     ],
+              //   ),
+              // ),
               Container(
                 width: w,
                 height: 25,
@@ -222,47 +233,29 @@ class _ImageViewerState extends State<ImageViewer> {
                   ],
                 ),
               ),
-              InlineChoice<String>.single(
-                clearable: true,
-                value: selectedItem,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedItem = value;
-                  });
-                },
-                itemCount: AppConstants.choices.length,
-                itemBuilder: (state, i) {
-                  return ChoiceChip(
-                    padding: EdgeInsets.all(3),
-                    selected: state.selected(AppConstants.choices[i]),
-                    onSelected: state.onSelected(AppConstants.choices[i]),
-                    label: Text(
-                      AppConstants.choices[i],
-                      style: const TextStyle(
-                          fontFamily: 'poppins',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w300),
+              Container(
+                width: w,
+                height: 25,
+                margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      widget.category ?? "Default",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontFamily: 'poppins',
+                        color: AppConstants.customBlue,
+                      ),
                     ),
-                    selectedColor: Color.fromARGB(
-                        255, 136, 255, 156), // Change selected color to red
-                    avatar: state.selected(AppConstants.choices[i])
-                        ? Icon(Icons.check) // Show check mark if selected
-                        : null,
-                  );
-                },
-                listBuilder: ChoiceList.createWrapped(
-                  spacing: 10,
-                  runSpacing: 10,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 25,
-                  ),
+                  ],
                 ),
               ),
               Container(
                 width: w,
                 height: 20,
-                margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
                 child: Text(
                   "Remarks",
                   style: TextStyle(
@@ -292,52 +285,6 @@ class _ImageViewerState extends State<ImageViewer> {
                       borderSide: BorderSide(
                           color: Color.fromARGB(255, 0, 0, 0), width: 5),
                     ),
-                  ),
-                ),
-              ),
-              GestureDetector(
-                onTap: () async {
-                  String res = await dataController.uploadData(selectedItem!);
-                  if (res == "") {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return BottomSheetContent();
-                        });
-                  } else {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return ErrorBottomSheet(
-                            error: res,
-                          );
-                        });
-                  }
-                },
-                child: Container(
-                  width: w,
-                  height: h * 0.06,
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: AppConstants.customBlue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Obx(
-                    () => dataController.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Center(
-                            child: Text(
-                              "Upload Data",
-                              style: TextStyle(
-                                  fontFamily: 'man-r',
-                                  fontSize: 18,
-                                  color: Color.fromARGB(255, 254, 253, 253),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
                   ),
                 ),
               ),
