@@ -11,6 +11,7 @@ import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
+import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
 
 class ImageViewer extends StatefulWidget {
@@ -70,6 +71,46 @@ class _ImageViewerState extends State<ImageViewer> {
                 ),
               ),
               SizedBox(
+                height: 10,
+              ),
+              GestureDetector(
+                  onTap: () async {
+                    Get.back();
+                  },
+                  child: Container(
+                    width: w,
+                    height: h * 0.06,
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border: Border.all(
+                            color: AppConstants.customBlue, width: 1.5),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.restart_alt_rounded,
+                            color: AppConstants.customBlue,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            "Retake",
+                            style: TextStyle(
+                                fontFamily: 'man-r',
+                                fontSize: 16,
+                                color: AppConstants.customBlue,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+              SizedBox(
                 height: 15,
               ),
               Container(
@@ -80,7 +121,7 @@ class _ImageViewerState extends State<ImageViewer> {
                   "Image Information :",
                   style: TextStyle(
                       fontFamily: 'poppins',
-                      fontSize: 18,
+                      fontSize: 16,
                       color: AppConstants.customBlue,
                       fontWeight: FontWeight.bold),
                 ),
@@ -169,7 +210,7 @@ class _ImageViewerState extends State<ImageViewer> {
                 width: MediaQuery.of(context).size.width,
                 margin: EdgeInsets.symmetric(horizontal: 20),
                 padding: EdgeInsets.all(15),
-                height: 80,
+                height: 160,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
@@ -186,17 +227,36 @@ class _ImageViewerState extends State<ImageViewer> {
                     Text(
                       "Address",
                       style: TextStyle(
-                        fontFamily: 'man-r',
-                        fontSize: 12,
-                      ),
-                    ),
-                    Text(
-                      userController.address.toString(),
-                      style: TextStyle(
                           fontFamily: 'man-r',
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: AppConstants.customBlue),
+                          fontSize: 16,
+                          color: AppConstants.customBlue,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                      width: w,
+                      height: 90,
+                      child: TextField(
+                        controller: userController.addresss,
+                        keyboardType: TextInputType.emailAddress,
+                        textAlignVertical: TextAlignVertical.bottom,
+                        style: const TextStyle(
+                            fontFamily: 'poppins', fontSize: 14),
+                        maxLines: 10,
+                        decoration: const InputDecoration(
+                          hintText: "Data Address ..",
+                          hintStyle: TextStyle(
+                              color: Color.fromARGB(255, 106, 106, 106),
+                              fontFamily: 'poppins',
+                              fontSize: 12),
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Color.fromARGB(255, 0, 0, 0), width: 5),
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(
                       height: 5,
@@ -214,7 +274,7 @@ class _ImageViewerState extends State<ImageViewer> {
                     Text(
                       "Select Category :",
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           fontFamily: 'poppins',
                           color: AppConstants.customBlue,
                           fontWeight: FontWeight.bold),
@@ -295,6 +355,35 @@ class _ImageViewerState extends State<ImageViewer> {
                   ),
                 ),
               ),
+              SizedBox(
+                height: 15,
+              ),
+              GestureDetector(
+                  onTap: () async {
+                    Get.off(() => Home(),
+                        transition: Transition.leftToRight,
+                        duration: 300.milliseconds);
+                  },
+                  child: Container(
+                    width: w,
+                    height: h * 0.06,
+                    margin: EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        border:
+                            Border.all(color: AppConstants.customRed, width: 2),
+                        borderRadius: BorderRadius.circular(10)),
+                    child: Center(
+                      child: Text(
+                        "❌  Cancel",
+                        style: TextStyle(
+                            fontFamily: 'man-r',
+                            fontSize: 16,
+                            color: AppConstants.customRed,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  )),
               GestureDetector(
                 onTap: () async {
                   String res = await dataController.uploadData(selectedItem!);

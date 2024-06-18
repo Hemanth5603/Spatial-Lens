@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
+    userController.getCurrentLocation();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {

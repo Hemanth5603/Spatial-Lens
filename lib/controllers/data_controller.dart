@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -41,6 +42,7 @@ class DataController extends GetxController {
       request.fields['id'] = prefs.getString("id")!;
       request.fields['category'] = category;
       request.fields['remarks'] = remarks.text.toString();
+      request.fields['address'] = userController.addresss.toString();
 
       request.files.add(await http.MultipartFile.fromPath('image', filePath));
 
@@ -79,12 +81,33 @@ class DataController extends GetxController {
     isLoading(false);
   }
 
-  Future<void> getLeaderBoard() async {
+  Future<void> getLeaderBoard(limit, category) async {
+    int limitValue = 0;
+
+    switch (limit) {
+      case 'Top 5':
+        limitValue = 5;
+        break;
+      case 'Top 10':
+        limitValue = 10;
+        break;
+      case 'Top 20':
+        limitValue = 20;
+        break;
+      default:
+        limitValue = 0;
+        break;
+    }
+
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = "${ApiConstants.baseUrl}${ApiConstants.getLeaderBoard}";
     print(url);
+    final body = {
+      "limit": limitValue.toString(),
+      "category": category ?? "Default"
+    };
     isLoading(true);
-    var response = await get(Uri.parse(url));
+    var response = await post(Uri.parse(url), body: body);
 
     userController.userModel.id = int.parse(prefs.getString("id")!);
 

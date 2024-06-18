@@ -1,4 +1,6 @@
+import 'package:geocoding/geocoding.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/home.dart';
@@ -6,6 +8,7 @@ import 'package:iitt/views/image_capture.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:iitt/views/image_viewer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
@@ -16,6 +19,7 @@ Future<void> main() async {
           ? 0
           : 1;
   runApp(const MainApp());
+  requestPermissions();
 }
 
 late SharedPreferences prefs;
@@ -34,8 +38,26 @@ class MainApp extends StatelessWidget {
           colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: isLoggedIn == 1 ? const Home() : const Login(),
+        body: isLoggedIn == 1 ? RegisterLocation() : const Login(),
       ),
     );
+  }
+}
+
+Future<void> requestPermissions() async {
+  // Request all permissions at once
+  Map<Permission, PermissionStatus> statuses = await [
+    Permission.location,
+    Permission.camera,
+    Permission.microphone,
+  ].request();
+
+  // Check the statuses and handle them accordingly
+  if (statuses[Permission.location]!.isGranted &&
+      statuses[Permission.camera]!.isGranted &&
+      statuses[Permission.microphone]!.isGranted) {
+    print('All permissions granted');
+  } else {
+    print('One or more permissions denied');
   }
 }

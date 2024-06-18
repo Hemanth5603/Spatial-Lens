@@ -1,32 +1,41 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
-import 'package:iitt/views/authentication/register.dart';
+import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
+import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class RegisterLocation extends StatefulWidget {
+  const RegisterLocation({super.key});
 
   @override
-  State<Login> createState() => LoginState();
+  State<RegisterLocation> createState() => _RegisterLocationState();
 }
 
-class LoginState extends State<Login> {
+class _RegisterLocationState extends State<RegisterLocation> {
   UserController userController = Get.put(UserController());
+  String? selectedState;
   @override
   void initState() {
     super.initState();
-    //requestPermissions();
-    //userController.getCurrentLocation();
   }
 
-  void requestPermissions() async {
-    var status = await Permission.camera.request();
-    var mic = await Permission.microphone.request();
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1950),
+      lastDate: DateTime(2101),
+    );
+    if (pickedDate != null && pickedDate != DateTime.now()) {
+      setState(() {
+        userController.dob.text = "${pickedDate.toLocal()}".split(' ')[0];
+      });
+    }
   }
 
   @override
@@ -41,7 +50,7 @@ class LoginState extends State<Login> {
     ));
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -49,13 +58,13 @@ class LoginState extends State<Login> {
           children: [
             Container(
               width: w,
-              height: h * 0.3,
-              decoration: BoxDecoration(),
+              height: h * 0.2,
+              decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
                   width: w * 0.6,
                   height: h * 0.2,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
@@ -64,7 +73,7 @@ class LoginState extends State<Login> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 0,
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
@@ -73,26 +82,60 @@ class LoginState extends State<Login> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Welcome to",
-                        textAlign: TextAlign.left,
+                    child: Text("Your Location",
                         style: TextStyle(
                             fontFamily: 'poppins',
-                            fontSize: 14,
+                            fontSize: 35,
+                            color: Colors.black,
                             fontWeight: FontWeight.bold)),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text("IITTNiF",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            letterSpacing: 1.5,
-                            fontFamily: 'poppins',
-                            fontSize: 50,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(183, 0, 0, 0))),
-                  ),
                   const SizedBox(
-                    height: 25,
+                    height: 16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(15, 10, 15, 12),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(right: 12),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: AppConstants.customBlue, // Outline color
+                          width: 1, // Outline width
+                        ),
+                        borderRadius:
+                            BorderRadius.circular(8), // Outline border radius
+                      ),
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2<String>(
+                          isExpanded: true,
+                          hint: Text(
+                            'Select State',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          items: AppConstants.indianStates
+                              .map((String item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                      ),
+                                    ),
+                                  ))
+                              .toList(),
+                          value: selectedState,
+                          onChanged: (String? value) {
+                            setState(() {
+                              selectedState = value;
+                            });
+                          },
+                        ),
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(12.0),
@@ -107,12 +150,12 @@ class LoginState extends State<Login> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.email,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.city,
+                                keyboardType: TextInputType.name,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'man-r'),
+                                style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
-                                  hintText: "Email",
+                                  hintText: "City",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
                                       fontFamily: 'poppins'),
@@ -142,15 +185,15 @@ class LoginState extends State<Login> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.password,
-                                keyboardType: TextInputType.visiblePassword,
+                                controller: userController.pincode,
+                                keyboardType: TextInputType.number,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
-                                  hintText: "Password",
+                                  hintText: "Pincode",
                                   hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 106, 106, 106)),
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'poppins'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -165,6 +208,9 @@ class LoginState extends State<Login> {
                     ),
                   ),
                   const SizedBox(
+                    height: 10,
+                  ),
+                  const SizedBox(
                     height: 40,
                   ),
                   InkWell(
@@ -175,22 +221,23 @@ class LoginState extends State<Login> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                                  color: Color.fromARGB(47, 0, 0, 0), width: 2),
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
-                              "Sign in",
+                              "Register",
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),
                     onTap: () async {
-                      String err = await userController.loginUser();
+                      String err =
+                          await userController.registerUser(selectedState);
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,
@@ -209,18 +256,18 @@ class LoginState extends State<Login> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        "Don't Have an Account ? ",
+                        "Already Have an account ? ",
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       GestureDetector(
                         child: const Text(
-                          "Sign Up",
+                          "Sign in",
                           style: TextStyle(
                               fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          Get.off(() => const Register(),
-                              transition: Transition.rightToLeft,
+                          Get.off(() => const Login(),
+                              transition: Transition.leftToRight,
                               duration: 300.milliseconds);
                         },
                       )
@@ -239,10 +286,7 @@ class LoginState extends State<Login> {
                           height: 2,
                         ),
                         Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontFamily: 'poppins'))
+                            style: TextStyle(fontSize: 12, color: Colors.grey))
                       ],
                     ),
                   )

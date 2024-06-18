@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/home.dart';
@@ -60,13 +61,13 @@ class _RegisterState extends State<Register> {
               decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
-                  width: w * 0.5,
+                  width: w * 0.6,
                   height: h * 0.2,
                   padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
-                          image: AssetImage('assets/icons/iittnif.png'))),
+                          image: AssetImage('assets/icons/iittnmicps.png'))),
                 ),
               ),
             ),
@@ -108,7 +109,42 @@ class _RegisterState extends State<Register> {
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
-                                  hintText: "Name",
+                                  hintText: "First Name",
+                                  hintStyle: TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'poppins'),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: h * 0.12,
+                            width: w * 0.8,
+                            child: Center(
+                              child: TextField(
+                                controller: userController.name,
+                                keyboardType: TextInputType.emailAddress,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: const InputDecoration(
+                                  hintText: "Last Name",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
                                       fontFamily: 'poppins'),
@@ -290,7 +326,7 @@ class _RegisterState extends State<Register> {
                                   const BorderRadius.all(Radius.circular(10))),
                           child: const Center(
                             child: Text(
-                              "Register",
+                              "Continue",
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -299,16 +335,9 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     onTap: () async {
-                      String err = await userController.registerUser();
-                      if (err != "") {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return ErrorBottomSheet(
-                                error: err,
-                              );
-                            });
-                      }
+                      Get.to(() => const RegisterLocation(),
+                          transition: Transition.rightToLeft,
+                          duration: 300.milliseconds);
                     },
                   ),
                   const SizedBox(

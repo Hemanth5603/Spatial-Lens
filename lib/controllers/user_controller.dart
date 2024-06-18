@@ -24,6 +24,10 @@ class UserController extends GetxController {
   TextEditingController password = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController dob = TextEditingController();
+  TextEditingController addresss = TextEditingController();
+  TextEditingController district = TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController pincode = TextEditingController();
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -64,13 +68,17 @@ class UserController extends GetxController {
       Placemark place = placemarks[0];
       print(position.latitude);
 
-      //userModel.latitude = position.latitude;
-      //userModel.longitude = position.longitude;
+      userModel.latitude = position.latitude;
+      userModel.longitude = position.longitude;
       latitude = position.latitude;
       longitude = position.longitude;
       address =
           "${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}"
               .obs();
+      addresss.text =
+          "${place.street},${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}"
+              .obs();
+
       street = place.street!;
       locality.value = place.locality ?? "";
       country.value = place.country ?? "";
@@ -79,7 +87,7 @@ class UserController extends GetxController {
     }
   }
 
-  Future<String> registerUser() async {
+  Future<String> registerUser(state) async {
     if (name.text.isEmpty) {
       return "Name Field is Empty !";
     }
@@ -100,7 +108,7 @@ class UserController extends GetxController {
     }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final uri = Uri.parse("http://13.60.93.136:8080/iitt/register");
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.register}");
     isLoading(true);
 
     Map<dynamic, String> data = {
@@ -112,7 +120,10 @@ class UserController extends GetxController {
       "contributions": 0.toString(),
       "rank": 0.toString(),
       "location": locality.value.toString(),
-      "profile_image": "Default"
+      "profile_image": "Default",
+      "state": state,
+      "city": city.text,
+      "pincode": pincode.toString()
     };
 
     var response = await post(uri, body: data);

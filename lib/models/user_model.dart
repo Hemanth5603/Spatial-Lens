@@ -11,7 +11,9 @@ class UserModel {
       this.dob,
       this.location,
       this.rank,
-      this.profile_image});
+      this.profile_image,
+      this.longitude,
+      this.latitude});
   String? email;
   int? id;
   String? name;
@@ -21,6 +23,8 @@ class UserModel {
   int? rank;
   String? dob;
   String? location;
+  double? latitude;
+  double? longitude;
   String? profile_image;
 
   UserModel.fromJson(Map<String, dynamic> json) {
