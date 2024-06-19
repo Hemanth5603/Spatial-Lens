@@ -8,6 +8,7 @@ import 'package:iitt/views/image_capture.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:iitt/views/image_viewer.dart';
+import 'package:iitt/views/tabs/home_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,7 +39,7 @@ class MainApp extends StatelessWidget {
           colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: isLoggedIn == 1 ? RegisterLocation() : const Login(),
+        body: isLoggedIn == 1 ? Home() : const Login(),
       ),
     );
   }

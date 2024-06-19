@@ -19,7 +19,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController {
   UserModel userModel = UserModel();
-  TextEditingController name = TextEditingController();
+  TextEditingController firstname = TextEditingController();
+  TextEditingController lasttname = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   TextEditingController phone = TextEditingController();
@@ -28,6 +29,7 @@ class UserController extends GetxController {
   TextEditingController district = TextEditingController();
   TextEditingController city = TextEditingController();
   TextEditingController pincode = TextEditingController();
+  TextEditingController occupation = TextEditingController();
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -87,9 +89,12 @@ class UserController extends GetxController {
     }
   }
 
-  Future<String> registerUser(state) async {
-    if (name.text.isEmpty) {
-      return "Name Field is Empty !";
+  Future<String> registerUser(String state) async {
+    if (firstname.text.isEmpty) {
+      return "First Name Field cannot be Empty !";
+    }
+    if (lasttname.text.isEmpty) {
+      return "Last Name Field cannot be Empty !";
     }
     if (email.text.isEmpty) {
       return "Email Field cannot be Empty !";
@@ -100,44 +105,56 @@ class UserController extends GetxController {
     if (!validatePhoneNumber(phone.text)) {
       return "Invalid Phone Number";
     }
-    if (dob.text.isEmpty) {
-      return "Date of Birth cannot be Empty !";
-    }
     if (password.text.length < 4) {
       return "Password must be of atleast 4 Characters";
+    }
+    if (city.text.isEmpty) {
+      return "City Field Cannot be Empty !";
+    }
+    if (pincode.text.isEmpty) {
+      return "Pincode Field cannot be Empty";
+    }
+    if (pincode.text.length != 6) {
+      return "Invalid Pincode !";
     }
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.register}");
     isLoading(true);
 
-    Map<dynamic, String> data = {
-      "name": name.text,
+    Map<String, String> data = {
+      "name": "${firstname.text} ${lasttname.text}",
       "email": email.text,
       "password": password.text,
       "phone": phone.text,
-      "dob": dob.text,
+      "dob": "00-00-0000",
+      "profileimage": "Default",
+      "firstname": firstname.text,
+      "lastname": lasttname.text,
       "contributions": 0.toString(),
       "rank": 0.toString(),
       "location": locality.value.toString(),
-      "profile_image": "Default",
       "state": state,
       "city": city.text,
-      "pincode": pincode.toString()
+      "pincode": pincode.text,
+      "occupation": "Default",
     };
 
-    var response = await post(uri, body: data);
+    var response = await http.post(
+      uri,
+      body: data,
+    );
 
     if (response.statusCode == 302) {
       return "User Already Exists !, Please Sign in";
     } else if (response.statusCode == 200) {
-      var data = jsonDecode(response.body.toString());
-      userModel = UserModel.fromJson(data);
+      var responseData = jsonDecode(response.body.toString());
+      userModel = UserModel.fromJson(responseData);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
       Get.to(const Home(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
-      print(data.toString());
+      print(responseData.toString());
     } else {
       if (kDebugMode) print("Error Registering user");
       Get.snackbar("Error", "Cannot Register");
@@ -181,9 +198,41 @@ class UserController extends GetxController {
     return "";
   }
 
+  Future<bool> updateProfile(String imagePath) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String url = "${ApiConstants.baseUrl}${ApiConstants.updateProfile}";
+    isLoading(true);
+    try {
+      var request = http.MultipartRequest('POST', Uri.parse(url));
+      request.fields['id'] = prefs.getString("id")!;
+      request.fields['firstname'] = firstname.text;
+      request.fields['lastname'] = lasttname.text;
+      request.fields['occupation'] = occupation.text;
+      request.fields['dob'] = dob.text;
+      if (imagePath != "null") {
+        request.files
+            .add(await http.MultipartFile.fromPath('profileimage', imagePath));
+      }
+
+      var res = await request.send();
+      isLoading(false);
+      if (res.statusCode == 200) {
+        if (kDebugMode) print("Profile Update Successfull.....");
+        return true;
+      } else {
+        if (kDebugMode) print("Upload Unsuccessfull");
+        return false;
+      }
+    } catch (e) {
+      if (kDebugMode) print(e);
+    }
+
+    return true;
+  }
+
   Future<bool> uploadProfileImage(String imagePath) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = "${ApiConstants.baseUrl}${ApiConstants.uploadProfile}";
+    String url = "${ApiConstants.baseUrl}${ApiConstants.updateProfile}";
     isLoading(true);
     try {
       var request = http.MultipartRequest('POST', Uri.parse(url));
@@ -208,6 +257,28 @@ class UserController extends GetxController {
     return false;
   }
 
+  String fieldsValidator() {
+    if (firstname.text.isEmpty) {
+      return "Name Field is Empty !";
+    }
+    if (lasttname.text.isEmpty) {
+      return "Last Name is Empty !";
+    }
+    if (email.text.isEmpty) {
+      return "Email Field cannot be Empty !";
+    }
+    if (!validateEmail(email.text)) {
+      return "Invalid Email Address !";
+    }
+    if (!validatePhoneNumber(phone.text)) {
+      return "Invalid Phone Number";
+    }
+    if (password.text.length < 8) {
+      return "Password must be of atleast 8 Characters";
+    }
+    return "";
+  }
+
   Future<void> getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -224,8 +295,10 @@ class UserController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       userModel = UserModel.fromJson(data);
-      print(data.toString());
-      print("${userModel.rank}////////////////////");
+      firstname.text = userModel.first_name!;
+      lasttname.text = userModel.last_name!;
+      email.text = userModel.email!;
+      phone.text = userModel.phone!;
     } else {
       if (kDebugMode) print("Error Fetching User Data");
       Get.snackbar("Error", "Cannot Fetch UserData, Try Again!!");

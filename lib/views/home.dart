@@ -6,7 +6,7 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/main.dart';
 import 'package:iitt/views/tabs/home_page.dart';
-import 'package:iitt/views/tabs/profile_page.dart';
+import 'package:iitt/views/tabs/profile/profile_page.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class Home extends StatefulWidget {

@@ -14,22 +14,44 @@ class ErrorBottomSheet extends StatelessWidget {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return Container(
-      height: 170,
+      height: 160,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           const SizedBox(height: 20),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Text(
-              error,
-              style: TextStyle(
-                  fontSize: 20.0,
-                  fontFamily: 'poppins',
-                  color: AppConstants.customRed,
-                  fontWeight: FontWeight.bold),
-            ),
+          Row(
+            children: [
+              SizedBox(
+                width: 15,
+              ),
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color.fromARGB(255, 201, 201, 201)),
+                child: Center(
+                  child: Icon(
+                    Icons.error_rounded,
+                    color: AppConstants.customRedLight,
+                  ),
+                ),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                child: Text(
+                  error,
+                  style: TextStyle(
+                      fontSize: 16.0,
+                      fontFamily: 'poppins',
+                      color: AppConstants.customRed,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
           Spacer(), // Push the bottom container to the bottom
           GestureDetector(

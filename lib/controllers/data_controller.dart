@@ -42,7 +42,7 @@ class DataController extends GetxController {
       request.fields['id'] = prefs.getString("id")!;
       request.fields['category'] = category;
       request.fields['remarks'] = remarks.text.toString();
-      request.fields['address'] = userController.addresss.toString();
+      request.fields['address'] = userController.addresss.text;
 
       request.files.add(await http.MultipartFile.fromPath('image', filePath));
 

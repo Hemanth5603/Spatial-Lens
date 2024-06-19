@@ -236,8 +236,8 @@ class _RegisterLocationState extends State<RegisterLocation> {
                           )),
                     ),
                     onTap: () async {
-                      String err =
-                          await userController.registerUser(selectedState);
+                      String err = await userController
+                          .registerUser(selectedState ?? "Default");
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,

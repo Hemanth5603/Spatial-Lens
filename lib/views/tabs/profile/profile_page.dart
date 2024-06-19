@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/tabs/profile/edit_profile.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -83,7 +84,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   right: 10,
                   child: GestureDetector(
                     onTap: () {
-                      pickImageFromGallery();
+                      //pickImageFromGallery();
+                      Get.to(() => const EditProfile(),
+                          transition: Transition.rightToLeft,
+                          duration: 300.milliseconds);
                     },
                     child: _buildEditIcon(),
                   ),
@@ -127,36 +131,38 @@ class _ProfilePageState extends State<ProfilePage> {
       width: 160,
       height: 160,
       child: Center(
-        child: profileImage == "null"
-            ? Container(
-                width: 140,
-                height: 140,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppConstants.customBlue, width: 4),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: userController.userModel.profile_image == "Default"
-                        ? NetworkImage(
-                            "https://t3.ftcdn.net/jpg/02/43/12/34/360_F_243123463_zTooub557xEWABDLk0jJklDyLSGl2jrr.jpg")
-                        : NetworkImage(
-                            "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
-                  ),
-                ),
-              )
-            : Container(
-                width: 140,
-                height: 140,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100),
-                  border: Border.all(color: AppConstants.customBlue, width: 4),
-                  image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: FileImage(File(profileImage!)),
-                  ),
-                ),
-              ),
-      ),
+          child: Center(
+              child: userController.userModel.profile_image == "Default"
+                  ? Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                            color: AppConstants.customBlue, width: 4),
+                      ),
+                      child: IconButton(
+                          onPressed: () {},
+                          icon: const Icon(
+                            Icons.person_2_rounded,
+                            size: 50,
+                            color: Color.fromARGB(255, 204, 220, 255),
+                          )),
+                    )
+                  : Container(
+                      width: 140,
+                      height: 140,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100),
+                        border: Border.all(
+                            color: AppConstants.customBlue, width: 4),
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                              "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
+                        ),
+                      ),
+                    ))),
     );
   }
 
@@ -179,32 +185,32 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildBottomUpdateProfileButton() {
-    return profileImage == "null"
-        ? Container(height: 0, width: 0)
-        : GestureDetector(
-            onTap: () {
-              userController.uploadProfileImage(profileImage!);
-              setState(() {
-                profileImage = "null";
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.all(15),
-              width: MediaQuery.of(context).size.width,
-              height: 60,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                color: AppConstants.customBlue,
-              ),
-              child: Center(
-                child: Text(
-                  "Update Profile",
-                  style: TextStyle(
-                      fontFamily: 'man-r', fontSize: 16, color: Colors.white),
-                ),
-              ),
-            ),
-          );
+    return GestureDetector(
+      onTap: () {
+        //userController.uploadProfileImage(profileImage!);
+        setState(() {
+          profileImage = "null";
+        });
+        Get.to(() => const EditProfile(),
+            transition: Transition.rightToLeft, duration: 300.milliseconds);
+      },
+      child: Container(
+        margin: EdgeInsets.all(15),
+        width: MediaQuery.of(context).size.width,
+        height: 50,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: AppConstants.customBlue,
+        ),
+        child: Center(
+          child: Text(
+            "Update Profile",
+            style: TextStyle(
+                fontFamily: 'man-r', fontSize: 16, color: Colors.white),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget _buildUserStats() {

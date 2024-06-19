@@ -11,7 +11,7 @@ import 'package:iitt/views/components/activity_card.dart';
 import 'package:iitt/views/components/circular_camera_preview.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:iitt/views/leaderboard.dart';
-import 'package:iitt/views/tabs/profile_page.dart';
+import 'package:iitt/views/tabs/profile/profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,6 +30,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     userController.getCurrentLocation();
+    userController.getUser();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         setState(() {
@@ -93,13 +94,19 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                           const SizedBox(
                                             height: 25,
                                           ),
-                                          const Text(
-                                            "Hi There ! 👋",
-                                            style: TextStyle(
-                                                fontFamily: 'poppins',
-                                                fontSize: 40,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.7,
+                                            child: Text(
+                                              "Hi ${userController.userModel.first_name} ! 👋",
+                                              style: TextStyle(
+                                                  fontFamily: 'poppins',
+                                                  fontSize: 30,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                           Row(
                                             children: [

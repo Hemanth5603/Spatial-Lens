@@ -6,5 +6,5 @@ class ApiConstants {
   static String getActivity = "/iitt/getUserUploads/"; // add user id at end
   static String getUser = "/iitt/getUser";
   static String getLeaderBoard = "/iitt/getLeaderBoard";
-  static String uploadProfile = "/iitt/uploadProfile";
+  static String updateProfile = "/iitt/updateProfile";
 }

@@ -23,20 +23,6 @@ class _RegisterState extends State<Register> {
     super.initState();
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    final DateTime? pickedDate = await showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(1950),
-      lastDate: DateTime(2101),
-    );
-    if (pickedDate != null && pickedDate != DateTime.now()) {
-      setState(() {
-        userController.dob.text = "${pickedDate.toLocal()}".split(' ')[0];
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     double h = MediaQuery.of(context).size.height;
@@ -104,8 +90,8 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.name,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.firstname,
+                                keyboardType: TextInputType.name,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
@@ -139,8 +125,8 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.name,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.lasttname,
+                                keyboardType: TextInputType.name,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
@@ -234,43 +220,6 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 45,
-                    width: w,
-                    padding: const EdgeInsets.only(left: 12, top: 12),
-                    child: Row(
-                      children: [
-                        Container(
-                          height: h * 0.12,
-                          width: w * 0.8,
-                          margin: EdgeInsets.only(left: 12),
-                          child: Center(
-                            child: GestureDetector(
-                              onTap: () => _selectDate(context),
-                              child: AbsorbPointer(
-                                child: TextField(
-                                  controller: userController.dob,
-                                  decoration: const InputDecoration(
-                                    hintText: "Data of birth",
-                                    hintStyle: TextStyle(
-                                        color:
-                                            Color.fromARGB(255, 106, 106, 106),
-                                        fontFamily: 'poppins'),
-                                    border: UnderlineInputBorder(
-                                      borderSide: BorderSide(
-                                          color: Color.fromARGB(255, 0, 0, 0),
-                                          width: 5),
-                                    ),
-                                  ),
-                                  style: const TextStyle(fontFamily: 'poppins'),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -335,9 +284,20 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     onTap: () async {
-                      Get.to(() => const RegisterLocation(),
-                          transition: Transition.rightToLeft,
-                          duration: 300.milliseconds);
+                      String err = userController.fieldsValidator();
+                      if (err != "") {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: err,
+                              );
+                            });
+                      } else {
+                        Get.to(() => const RegisterLocation(),
+                            transition: Transition.rightToLeft,
+                            duration: 300.milliseconds);
+                      }
                     },
                   ),
                   const SizedBox(

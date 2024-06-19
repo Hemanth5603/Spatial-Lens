@@ -21,7 +21,7 @@ class LoginState extends State<Login> {
   void initState() {
     super.initState();
     //requestPermissions();
-    //userController.getCurrentLocation();
+    userController.getCurrentLocation();
   }
 
   void requestPermissions() async {
