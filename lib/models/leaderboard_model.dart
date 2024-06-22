@@ -55,7 +55,7 @@ class Leaderboard {
     location = json['location'];
     contributions = json['contributions'];
     rank = json['rank'];
-    profileImage = json['profile_image'];
+    profileImage = json['profileimage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -69,7 +69,7 @@ class Leaderboard {
     _data['location'] = location;
     _data['contributions'] = contributions;
     _data['rank'] = rank;
-    _data['profile_image'];
+    _data['profileimage'];
     return _data;
   }
 }

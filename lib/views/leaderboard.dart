@@ -325,7 +325,7 @@ class LeaderboardTile extends StatelessWidget {
         Container(
           height: 58,
           decoration: BoxDecoration(
-              color: userRank == index + 1
+              color: userRank == index + 1 && contributions != "0"
                   ? AppConstants.customBlue
                   : Color.fromARGB(255, 255, 255, 255),
               borderRadius: index == 0
@@ -405,7 +405,7 @@ class LeaderboardTile extends StatelessWidget {
                           fontSize: 12,
                           fontFamily: 'man-r',
                           fontWeight: FontWeight.w500,
-                          color: userRank == index + 1
+                          color: userRank == index + 1 && contributions != "0"
                               ? Colors.white
                               : const Color.fromARGB(255, 48, 48, 48),
                         ),

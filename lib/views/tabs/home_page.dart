@@ -376,6 +376,9 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           .toString(),
                       remarks:
                           dataController.activityModel.data?[index].Remarks,
+                      address:
+                          dataController.activityModel.data?[index].address ??
+                              "Deafult Address",
                     );
                   },
                 ),

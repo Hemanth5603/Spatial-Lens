@@ -20,20 +20,21 @@ class ActivityModel {
 }
 
 class Data {
-  Data({
-    required this.Id,
-    required this.Latitude,
-    required this.Longitude,
-    required this.Image,
-    required this.Category,
-    required this.Remarks,
-  });
+  Data(
+      {required this.Id,
+      required this.Latitude,
+      required this.Longitude,
+      required this.Image,
+      required this.Category,
+      required this.Remarks,
+      required this.address});
   int? Id;
   double? Latitude;
   double? Longitude;
   String? Image;
   String? Category;
   String? Remarks;
+  String? address;
 
   Data.fromJson(Map<String, dynamic> json) {
     Id = json['Id'];
@@ -42,11 +43,13 @@ class Data {
     Image = json['Image'];
     Category = json['Category'];
     Remarks = json['Remarks'];
+    address = json['address'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['Id'] = Id;
+    _data['address'] = address;
     _data['Latitude'] = Latitude;
     _data['Longitude'] = Longitude;
     _data['Image'] = Image;

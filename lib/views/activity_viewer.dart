@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:choice/choice.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,7 @@ class ActivityViewer extends StatefulWidget {
   String? imageUrl;
   String? latitude;
   String? longitude;
-
+  String? address;
   String? category;
   String? remarks;
   ActivityViewer(
@@ -27,6 +28,7 @@ class ActivityViewer extends StatefulWidget {
       required this.category,
       required this.latitude,
       required this.longitude,
+      required this.address,
       required this.remarks});
 
   @override
@@ -92,7 +94,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                   style: TextStyle(
                       fontFamily: 'poppins',
                       fontSize: 18,
-                      color: AppConstants.customBlue,
+                      color: Colors.black,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -176,45 +178,45 @@ class _ActivityViewerState extends State<ActivityViewer> {
                   ],
                 ),
               ),
-              // Container(
-              //   width: MediaQuery.of(context).size.width,
-              //   margin: EdgeInsets.symmetric(horizontal: 20),
-              //   padding: EdgeInsets.all(15),
-              //   height: 80,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(10),
-              //     color: Colors.white,
-              //     boxShadow: [
-              //       BoxShadow(
-              //           color: Color.fromARGB(255, 240, 248, 255),
-              //           blurRadius: 10)
-              //     ],
-              //   ),
-              //   child: Column(
-              //     crossAxisAlignment: CrossAxisAlignment.start,
-              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //     children: [
-              //       Text(
-              //         "Address",
-              //         style: TextStyle(
-              //           fontFamily: 'man-r',
-              //           fontSize: 12,
-              //         ),
-              //       ),
-              //       Text(
-              //         widget.address ?? "Default",
-              //         style: TextStyle(
-              //             fontFamily: 'man-r',
-              //             fontSize: 15,
-              //             fontWeight: FontWeight.bold,
-              //             color: AppConstants.customBlue),
-              //       ),
-              //       SizedBox(
-              //         height: 5,
-              //       ),
-              //     ],
-              //   ),
-              // ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                padding: EdgeInsets.all(15),
+                height: 80,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Color.fromARGB(255, 240, 248, 255),
+                        blurRadius: 10)
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Text(
+                      "Address",
+                      style: TextStyle(
+                        fontFamily: 'man-r',
+                        fontSize: 12,
+                      ),
+                    ),
+                    Text(
+                      widget.address ?? "Default",
+                      style: TextStyle(
+                          fontFamily: 'man-r',
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppConstants.customBlue),
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                  ],
+                ),
+              ),
               Container(
                 width: w,
                 height: 25,
@@ -227,67 +229,55 @@ class _ActivityViewerState extends State<ActivityViewer> {
                       style: TextStyle(
                           fontSize: 18,
                           fontFamily: 'poppins',
-                          color: AppConstants.customBlue,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
               ),
               Container(
-                width: w,
-                height: 25,
-                margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
+                  width: widget.category!.length * 12,
+                  height: 35,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      color: Colors.white),
+                  margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+                  child: Center(
+                    child: Text(
                       widget.category ?? "Default",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 15,
                         fontFamily: 'poppins',
                         color: AppConstants.customBlue,
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  )),
               Container(
                 width: w,
                 height: 20,
                 margin:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
-                child: Text(
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                child: const Text(
                   "Remarks",
                   style: TextStyle(
                       fontSize: 18,
-                      color: AppConstants.customBlue,
+                      color: Colors.black,
                       fontFamily: 'poppins',
                       fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(10),
-                width: w,
-                height: 100,
-                child: TextField(
-                  controller: dataController.remarks,
-                  keyboardType: TextInputType.emailAddress,
-                  textAlignVertical: TextAlignVertical.bottom,
-                  style: const TextStyle(fontFamily: 'poppins', fontSize: 14),
-                  maxLines: 10,
-                  decoration: const InputDecoration(
-                    hintText: "Add Comment on data....",
-                    hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 106, 106, 106),
-                        fontFamily: 'poppins',
-                        fontSize: 12),
-                    border: OutlineInputBorder(
-                      borderSide: BorderSide(
-                          color: Color.fromARGB(255, 0, 0, 0), width: 5),
-                    ),
-                  ),
-                ),
-              ),
+                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  width: w,
+                  height: 100,
+                  child: Text(
+                    widget.remarks ?? "No Remarks",
+                    style: TextStyle(
+                        fontFamily: 'man-r',
+                        fontSize: 14,
+                        overflow: TextOverflow.ellipsis,
+                        color: AppConstants.customBlue),
+                  )),
               Container(
                 width: w,
                 height: h * 0.25,

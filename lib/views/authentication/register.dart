@@ -284,20 +284,21 @@ class _RegisterState extends State<Register> {
                           )),
                     ),
                     onTap: () async {
-                      String err = userController.fieldsValidator();
-                      if (err != "") {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return ErrorBottomSheet(
-                                error: err,
-                              );
-                            });
-                      } else {
-                        Get.to(() => const RegisterLocation(),
-                            transition: Transition.rightToLeft,
-                            duration: 300.milliseconds);
-                      }
+                      userController.sendOTP();
+                      // String err = userController.fieldsValidator();
+                      // if (err != "") {
+                      //   showModalBottomSheet(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return ErrorBottomSheet(
+                      //           error: err,
+                      //         );
+                      //       });
+                      // } else {
+                      //   Get.to(() => const RegisterLocation(),
+                      //       transition: Transition.rightToLeft,
+                      //       duration: 300.milliseconds);
+                      // }
                     },
                   ),
                   const SizedBox(

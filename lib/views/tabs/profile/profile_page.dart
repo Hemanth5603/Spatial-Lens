@@ -433,11 +433,14 @@ class _ProfilePageState extends State<ProfilePage> {
               Container(
                 margin: EdgeInsets.only(right: 15),
                 child: Text(
-                  value,
+                  value == "Default" ? "Update your Profile" : value,
                   style: TextStyle(
                       fontFamily: 'poppins',
                       fontSize: 12,
-                      fontWeight: FontWeight.w700),
+                      fontWeight: FontWeight.w700,
+                      color: value == "Default"
+                          ? const Color.fromARGB(255, 206, 206, 206)
+                          : Colors.black),
                 ),
               ),
             ],

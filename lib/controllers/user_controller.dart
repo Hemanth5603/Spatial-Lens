@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:email_otp/email_otp.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/models/user_model.dart';
@@ -89,6 +91,39 @@ class UserController extends GetxController {
     }
   }
 
+  void sendOTP() async {
+    EmailOTP myauth = EmailOTP();
+
+    myauth.setConfig(
+      appEmail: "shemanth2003.vskp@gmail.com",
+      appName: "IITTNiF",
+      userEmail: "shemanth.kgp@gmail.com",
+      otpLength: 6,
+      otpType: OTPType.digitsOnly,
+    );
+    if (await myauth.sendOTP() == true) {
+      print("OTP has been sent /////////////////////////");
+    } else {
+      print("OTP failed");
+    }
+  }
+
+  Future<void> googleSignIn() async {
+    const List<String> scopes = <String>[
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ];
+
+    GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+    try {
+      var res = await _googleSignIn.signInSilently();
+    } catch (error) {
+      print(error);
+    }
+  }
+
   Future<String> registerUser(String state) async {
     if (firstname.text.isEmpty) {
       return "First Name Field cannot be Empty !";
@@ -127,7 +162,7 @@ class UserController extends GetxController {
       "email": email.text,
       "password": password.text,
       "phone": phone.text,
-      "dob": "00-00-0000",
+      "dob": "Default",
       "profileimage": "Default",
       "firstname": firstname.text,
       "lastname": lasttname.text,

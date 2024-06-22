@@ -293,6 +293,24 @@ class _EditProfileState extends State<EditProfile> {
                 height: h * 0.08,
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: TextField(
+                  readOnly: true,
+                  controller: userController.phone,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    labelText: "Phone Number",
+                    border: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.grey)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: AppConstants.customBlue)),
+                  ),
+                ),
+              ),
+              Container(
+                width: w,
+                height: h * 0.08,
+                margin: const EdgeInsets.symmetric(vertical: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: Row(
                   children: [
                     Expanded(
@@ -321,24 +339,6 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                   ],
-                ),
-              ),
-              Container(
-                width: w,
-                height: h * 0.08,
-                margin: const EdgeInsets.symmetric(vertical: 8),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(
-                  readOnly: true,
-                  controller: userController.phone,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    labelText: "Phone Number",
-                    border: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey)),
-                    focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: AppConstants.customBlue)),
-                  ),
                 ),
               ),
               Container(

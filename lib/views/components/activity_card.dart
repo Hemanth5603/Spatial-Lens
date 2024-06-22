@@ -16,10 +16,11 @@ class activityCard extends StatelessWidget {
       required this.index,
       required this.latitude,
       required this.longitude,
+      required this.address,
       required this.remarks});
   String? imageUrl;
   String? category;
-
+  String? address;
   String? latitude;
   String? longitude;
   String? remarks;
@@ -35,6 +36,7 @@ class activityCard extends StatelessWidget {
                 category: category!,
                 latitude: latitude!,
                 longitude: longitude!,
+                address: address!,
                 remarks: remarks ?? "No Remarks"),
             transition: Transition.rightToLeft,
             duration: 300.milliseconds);
