@@ -1,45 +1,51 @@
 {
   "project_info": {
-    "project_number": "884283395686",
-    "project_id": "anewmeat-73e27",
-    "storage_bucket": "anewmeat-73e27.appspot.com"
+    "project_number": "674705689666",
+    "project_id": "iittnif",
+    "storage_bucket": "iittnif.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:884283395686:android:44445035f756a543aca7a7",
+        "mobilesdk_app_id": "1:674705689666:android:c5759cd6b30e10481cf1db",
         "android_client_info": {
           "package_name": "com.example.iittnif"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "674705689666-o5qrskj7aape6a236eq1fikjl69sfjt1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.iittnif",
+            "certificate_hash": "194c5ab4ed283635e0b9fb282aace6e1e4e6614b"
+          }
+        },
+        {
+          "client_id": "674705689666-imkg34dj9fm8pr9etu8l58lbelar3oap.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDUbsAmiRlRqPr2r7ys5IxFvc99eE1fIC0"
+          "current_key": "AIzaSyCK3mv4M-9W4jjVFv42gPYDqgfWs_QjE3g"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:884283395686:android:e37dcaaee6aae1e4aca7a7",
-        "android_client_info": {
-          "package_name": "com.example.iittnif_admin"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDUbsAmiRlRqPr2r7ys5IxFvc99eE1fIC0"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "674705689666-imkg34dj9fm8pr9etu8l58lbelar3oap.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "674705689666-nvaea84ls4ce93c1ngs2disateo1pl5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.iittnif"
+              }
+            }
+          ]
         }
       }
     }
