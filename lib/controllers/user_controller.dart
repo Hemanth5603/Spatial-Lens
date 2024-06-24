@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:math';
 
 import 'package:email_otp/email_otp.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -99,18 +100,21 @@ class UserController extends GetxController {
   }
 
   Future<void> googleSignIn() async {
-    const List<String> scopes = <String>[
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ];
+    final GoogleSignInAccount? gUser = await GoogleSignIn().signIn();
+    final GoogleSignInAuthentication gAuth = await gUser!.authentication;
 
-    GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: scopes,
+    final credential = GoogleAuthProvider.credential(
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
     );
-    try {
-      var res = await _googleSignIn.signInSilently();
-    } catch (error) {
-      print(error);
+
+    UserCredential response =
+      await FirebaseAuth.instance.signInWithCredential(credential);
+  
+    if(response.credential!= null){
+      Get.offAll(const Home(),duration:const Duration(milliseconds: 400),transition: Transition.downToUp);
+    }else{
+      Get.snackbar('Error', 'Google sign in error');
     }
   }
 
