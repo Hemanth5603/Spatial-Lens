@@ -205,32 +205,6 @@ class LoginState extends State<Login> {
                   const SizedBox(
                     height: 15,
                   ),
-                  InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Container(
-                          height: 50,
-                          width: w * 0.89,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
-                              color: AppConstants.customBlue,
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10))),
-                          child: const Center(
-                            child: Text(
-                              "Google Sign in",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Color.fromARGB(255, 255, 255, 255),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          )),
-                    ),
-                    onTap: () async {
-                      userController.googleSignIn();
-                    },
-                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -16,6 +16,9 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
+bool resendOtp = false;
+bool isEmailVerified = false;
+
 class _RegisterState extends State<Register> {
   UserController userController = Get.put(UserController());
   @override
@@ -182,44 +185,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: Container(
-                      height: 45,
-                      width: w,
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Row(
-                        children: [
-                          SizedBox(
-                            height: h * 0.12,
-                            width: w * 0.8,
-                            child: Center(
-                              child: TextField(
-                                controller: userController.phone,
-                                keyboardType: TextInputType.phone,
-                                textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'poppins'),
-                                decoration: const InputDecoration(
-                                  hintText: "Phone",
-                                  hintStyle: TextStyle(
-                                      color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
-                                  border: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        width: 5),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -258,8 +223,125 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Container(
+                      height: 45,
+                      width: w,
+                      padding: const EdgeInsets.only(left: 12),
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            height: h * 0.12,
+                            width: w * 0.52,
+                            child: Center(
+                              child: TextField(
+                                controller: userController.otp,
+                                keyboardType: TextInputType.number,
+                                textAlignVertical: TextAlignVertical.bottom,
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: const InputDecoration(
+                                  hintText: "Verify your Email",
+                                  hintStyle: TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'man-r'),
+                                  border: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          GestureDetector(
+                            onTap: () async {
+                              String err = await userController.sendOTP();
+                              if (err != "") {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return ErrorBottomSheet(
+                                        error: err,
+                                      );
+                                    });
+                              }
+                              setState(() {
+                                resendOtp = true;
+                              });
+                            },
+                            child: Container(
+                              width: 100,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 247, 250, 255),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Center(
+                                child: Text(
+                                  resendOtp ? "Resend Email" : "Send OTP",
+                                  style: TextStyle(
+                                      fontFamily: 'man-r',
+                                      fontSize: 10,
+                                      color: AppConstants.customBlue),
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(
-                    height: 40,
+                    height: 5,
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      var err = await userController.verifyOTP();
+                      if (err != "") {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: err,
+                              );
+                            });
+                      } else {
+                        setState(() {
+                          isEmailVerified = true;
+                        });
+                      }
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Container(
+                        width: w,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                                color: Color.fromARGB(47, 0, 0, 0), width: 2),
+                            color: AppConstants.customBlue),
+                        child: Center(
+                            child: Obx(
+                          () => userController.isLoading.value
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,'
+                                  strokeWidth: 2,'
+                                )
+                              : const Text(
+                                  "Verify OTP",
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
+                        )),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   InkWell(
                     child: Padding(
@@ -269,36 +351,41 @@ class _RegisterState extends State<Register> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(47, 0, 0, 0), width: 2),
-                              color: AppConstants.customBlue,
+                                  color: isEmailVerified
+                                      ? Color.fromARGB(47, 0, 0, 0)
+                                      : const Color.fromARGB(19, 0, 0, 0),
+                                  width: 2),
+                              color: isEmailVerified
+                                  ? AppConstants.customBlue
+                                  : Color.fromARGB(134, 0, 86, 224),
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               "Continue",
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.white,
+                                  color: isEmailVerified
+                                      ? Colors.white
+                                      : const Color.fromARGB(87, 255, 255, 255),
                                   fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),
                     onTap: () async {
-                      userController.sendOTP();
-                      // String err = userController.fieldsValidator();
-                      // if (err != "") {
-                      //   showModalBottomSheet(
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return ErrorBottomSheet(
-                      //           error: err,
-                      //         );
-                      //       });
-                      // } else {
-                      //   Get.to(() => const RegisterLocation(),
-                      //       transition: Transition.rightToLeft,
-                      //       duration: 300.milliseconds);
-                      // }
+                      if (!isEmailVerified) {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: "Please Verify your Email ID!",
+                              );
+                            });
+                      } else {
+                        Get.to(() => const RegisterLocation(),
+                            transition: Transition.rightToLeft,
+                            duration: 300.milliseconds);
+                      }
                     },
                   ),
                   const SizedBox(

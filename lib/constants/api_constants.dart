@@ -7,4 +7,6 @@ class ApiConstants {
   static String getUser = "/iitt/getUser";
   static String getLeaderBoard = "/iitt/getLeaderBoard";
   static String updateProfile = "/iitt/updateProfile";
+  static String sendEmail = "/iitt/sendEmail";
+  static String verifyOtp = "/iitt/verifyOtp";
 }

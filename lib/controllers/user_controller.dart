@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:ffi';
+import 'dart:math';
 
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/foundation.dart';
@@ -9,6 +11,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:iitt/constants/api_constants.dart';
+import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -32,6 +35,7 @@ class UserController extends GetxController {
   TextEditingController city = TextEditingController();
   TextEditingController pincode = TextEditingController();
   TextEditingController occupation = TextEditingController();
+  TextEditingController otp = TextEditingController();
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -40,6 +44,9 @@ class UserController extends GetxController {
   String street = "";
   RxString locality = "".obs;
   RxString country = "".obs;
+  String token = "";
+  bool isEmailVerified = false;
+
   @override
   onInit() {
     super.onInit();
@@ -91,23 +98,6 @@ class UserController extends GetxController {
     }
   }
 
-  void sendOTP() async {
-    EmailOTP myauth = EmailOTP();
-
-    myauth.setConfig(
-      appEmail: "shemanth2003.vskp@gmail.com",
-      appName: "IITTNiF",
-      userEmail: "shemanth.kgp@gmail.com",
-      otpLength: 6,
-      otpType: OTPType.digitsOnly,
-    );
-    if (await myauth.sendOTP() == true) {
-      print("OTP has been sent /////////////////////////");
-    } else {
-      print("OTP failed");
-    }
-  }
-
   Future<void> googleSignIn() async {
     const List<String> scopes = <String>[
       'email',
@@ -137,9 +127,7 @@ class UserController extends GetxController {
     if (!validateEmail(email.text)) {
       return "Invalid Email Address !";
     }
-    if (!validatePhoneNumber(phone.text)) {
-      return "Invalid Phone Number";
-    }
+
     if (password.text.length < 4) {
       return "Password must be of atleast 4 Characters";
     }
@@ -161,7 +149,7 @@ class UserController extends GetxController {
       "name": "${firstname.text} ${lasttname.text}",
       "email": email.text,
       "password": password.text,
-      "phone": phone.text,
+      "phone": "Default",
       "dob": "Default",
       "profileimage": "Default",
       "firstname": firstname.text,
@@ -195,6 +183,69 @@ class UserController extends GetxController {
       Get.snackbar("Error", "Cannot Register");
     }
     isLoading(false);
+    return "";
+  }
+
+  Future<String> sendOTP() async {
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.sendEmail}");
+    if (email.text.isEmpty) {
+      return "Please Enter Email ID to send OTP!";
+    }
+
+    token = generateRandomToken();
+
+    final body = {"to": email.text, "token": token};
+
+    var response = await http.post(
+      uri,
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      Get.snackbar(
+          "OTP Sent Successfully", "OTP has been sent to the given mail ID",
+          margin: const EdgeInsets.all(15),
+          backgroundColor: Color.fromARGB(255, 240, 249, 255),
+          colorText: AppConstants.customBlue,
+          duration: const Duration(seconds: 3));
+
+      print("OTP Sent Successfully");
+    } else {
+      if (kDebugMode) print("Cannot send OTP ");
+    }
+
+    return "";
+  }
+
+  Future<String> verifyOTP() async {
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifyOtp}");
+    if (email.text.isEmpty) {
+      return "Please Enter Email ID to verify!";
+    }
+    if (otp.text.isEmpty) {
+      return "Please Enter OTP !";
+    }
+    isLoading(true);
+
+    final body = {"token": token, "otp": otp.text};
+
+    var response = await http.post(
+      uri,
+      body: body,
+    );
+    isLoading(false);
+    if (response.statusCode == 404) {
+      return "Entered OTP is Expired, Please Resend OTP !";
+    } else if (response.statusCode == 400) {
+      return "Entered OTP is Incorrect !!";
+    } else {
+      Get.snackbar("Verification Successfull",
+          "Your Email ID has been verified Successfully !!",
+          margin: const EdgeInsets.all(15),
+          backgroundColor: Color.fromARGB(255, 238, 248, 255),
+          colorText: AppConstants.customBlue,
+          duration: const Duration(seconds: 3));
+    }
+
     return "";
   }
 
@@ -398,4 +449,18 @@ bool validateEmail(String email) {
   }
 
   return true;
+}
+
+String generateRandomToken() {
+  const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  final random = Random.secure();
+  return String.fromCharCodes(
+    Iterable.generate(
+      7,
+      (_) => chars.codeUnitAt(
+        random.nextInt(chars.length),
+      ),
+    ),
+  );
 }
