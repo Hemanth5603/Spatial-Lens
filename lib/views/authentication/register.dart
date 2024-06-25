@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -18,12 +20,35 @@ class Register extends StatefulWidget {
 
 bool resendOtp = false;
 bool isEmailVerified = false;
+int timer = 60;
 
 class _RegisterState extends State<Register> {
   UserController userController = Get.put(UserController());
+  int timer = 60; // Initial timer value
+  bool resendOtp = false;
+  Timer? _timer;
+
+  void startTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        if (this.timer > 0) {
+          this.timer--;
+        } else {
+          _timer!.cancel();
+          resendOtp = true;
+        }
+      });
+    });
+  }
+
   @override
-  void initState() {
-    super.initState();
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
   }
 
   @override
@@ -260,6 +285,7 @@ class _RegisterState extends State<Register> {
                           GestureDetector(
                             onTap: () async {
                               String err = await userController.sendOTP();
+                              startTimer();
                               if (err != "") {
                                 showModalBottomSheet(
                                     context: context,
@@ -281,7 +307,10 @@ class _RegisterState extends State<Register> {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Center(
                                 child: Text(
-                                  resendOtp ? "Resend Email" : "Send OTP",
+                                  resendOtp
+                                      ? "Resend Email \n $timer"
+                                      : "Send OTP",
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                       fontFamily: 'man-r',
                                       fontSize: 10,
@@ -293,6 +322,9 @@ class _RegisterState extends State<Register> {
                         ],
                       ),
                     ),
+                  ),
+                  SizedBox(
+                    height: 5,
                   ),
                   const SizedBox(
                     height: 5,
@@ -328,8 +360,8 @@ class _RegisterState extends State<Register> {
                             child: Obx(
                           () => userController.isLoading.value
                               ? const CircularProgressIndicator(
-                                  color: Colors.white,'
-                                  strokeWidth: 2,'
+                                  color: Colors.white,
+                                  strokeWidth: 2,
                                 )
                               : const Text(
                                   "Verify OTP",
