@@ -27,6 +27,7 @@ class _RegisterState extends State<Register> {
   int timer = 60; // Initial timer value
   bool resendOtp = false;
   Timer? _timer;
+  bool _isObscured = true;
 
   void startTimer() {
     if (_timer != null) {
@@ -126,7 +127,7 @@ class _RegisterState extends State<Register> {
                                   hintText: "First Name",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
+                                      fontFamily: 'man-r'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -161,7 +162,7 @@ class _RegisterState extends State<Register> {
                                   hintText: "Last Name",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
+                                      fontFamily: 'man-r'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -188,15 +189,15 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.email,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.phone,
+                                keyboardType: TextInputType.phone,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'poppins'),
+                                style: const TextStyle(fontFamily: 'man-r'),
                                 decoration: const InputDecoration(
-                                  hintText: "Email",
+                                  hintText: "Phone Number",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
+                                      fontFamily: 'man-r'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -228,17 +229,31 @@ class _RegisterState extends State<Register> {
                               child: TextField(
                                 controller: userController.password,
                                 keyboardType: TextInputType.visiblePassword,
+                                obscureText: _isObscured,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: "Password",
-                                  hintStyle: TextStyle(
+                                  hintStyle: const TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
-                                  border: UnderlineInputBorder(
+                                      fontFamily: 'man-r'),
+                                  border: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         width: 5),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isObscured
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppConstants.customBlue,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscured = !_isObscured;
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
@@ -248,7 +263,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  Padding(
+                  /*Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
                       height: 45,
@@ -266,10 +281,11 @@ class _RegisterState extends State<Register> {
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
-                                  hintText: "Verify your Email",
+                                  hintText: "Enter OTP",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'man-r'),
+                                      fontFamily: 'man-r',
+                                      fontSize: 14),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -300,29 +316,28 @@ class _RegisterState extends State<Register> {
                               });
                             },
                             child: Container(
-                              width: 100,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 247, 250, 255),
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Center(
-                                child: Text(
-                                  resendOtp
-                                      ? "Resend Email \n $timer"
-                                      : "Send OTP",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontFamily: 'man-r',
-                                      fontSize: 10,
-                                      color: AppConstants.customBlue),
-                                ),
-                              ),
-                            ),
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: Color.fromARGB(255, 247, 250, 255),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    resendOtp
+                                        ? "Resend OTP \n $timer"
+                                        : "Send OTP",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontFamily: 'man-r',
+                                        fontSize: 10,
+                                        color: AppConstants.customBlue),
+                                  ),
+                                )),
                           )
                         ],
                       ),
                     ),
-                  ),
+                  ),*/
                   SizedBox(
                     height: 5,
                   ),
@@ -331,20 +346,23 @@ class _RegisterState extends State<Register> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      var err = await userController.verifyOTP();
-                      if (err != "") {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return ErrorBottomSheet(
-                                error: err,
-                              );
-                            });
-                      } else {
-                        setState(() {
-                          isEmailVerified = true;
-                        });
-                      }
+                      // var err = await userController.verifyOTP();
+                      // if (err != "") {
+                      //   showModalBottomSheet(
+                      //       context: context,
+                      //       builder: (context) {
+                      //         return ErrorBottomSheet(
+                      //           error: err,
+                      //         );
+                      //       });
+                      // } else {
+                      //   setState(() {
+                      //     isEmailVerified = true;
+                      //   });
+                      // }
+                      Get.to(const RegisterLocation(),
+                          transition: Transition.rightToLeft,
+                          duration: 300.milliseconds);
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
@@ -364,7 +382,7 @@ class _RegisterState extends State<Register> {
                                   strokeWidth: 2,
                                 )
                               : const Text(
-                                  "Verify OTP",
+                                  "Continue",
                                   style: TextStyle(
                                       fontSize: 18, color: Colors.white),
                                 ),
@@ -375,53 +393,53 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: 20,
                   ),
-                  InkWell(
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Container(
-                          height: 50,
-                          width: w * 0.89,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: isEmailVerified
-                                      ? Color.fromARGB(47, 0, 0, 0)
-                                      : const Color.fromARGB(19, 0, 0, 0),
-                                  width: 2),
-                              color: isEmailVerified
-                                  ? AppConstants.customBlue
-                                  : Color.fromARGB(134, 0, 86, 224),
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10))),
-                          child: Center(
-                            child: Text(
-                              "Continue",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: isEmailVerified
-                                      ? Colors.white
-                                      : const Color.fromARGB(87, 255, 255, 255),
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          )),
-                    ),
-                    onTap: () async {
-                      if (!isEmailVerified) {
-                        showModalBottomSheet(
-                            context: context,
-                            builder: (context) {
-                              return ErrorBottomSheet(
-                                error: "Please Verify your Email ID!",
-                              );
-                            });
-                      } else {
-                        Get.to(() => const RegisterLocation(),
-                            transition: Transition.rightToLeft,
-                            duration: 300.milliseconds);
-                      }
-                    },
-                  ),
+                  // InkWell(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.all(12.0),
+                  //     child: Container(
+                  //         height: 50,
+                  //         width: w * 0.89,
+                  //         decoration: BoxDecoration(
+                  //             border: Border.all(
+                  //                 color: isEmailVerified
+                  //                     ? Color.fromARGB(47, 0, 0, 0)
+                  //                     : const Color.fromARGB(19, 0, 0, 0),
+                  //                 width: 2),
+                  //             color: isEmailVerified
+                  //                 ? AppConstants.customBlue
+                  //                 : Color.fromARGB(134, 0, 86, 224),
+                  //             borderRadius:
+                  //                 const BorderRadius.all(Radius.circular(10))),
+                  //         child: Center(
+                  //           child: Text(
+                  //             "Continue",
+                  //             style: TextStyle(
+                  //                 fontSize: 20,
+                  //                 color: isEmailVerified
+                  //                     ? Colors.white
+                  //                     : const Color.fromARGB(87, 255, 255, 255),
+                  //                 fontWeight: FontWeight.w300),
+                  //           ),
+                  //         )),
+                  //   ),
+                  //   onTap: () async {
+                  //     if (!isEmailVerified) {
+                  //       showModalBottomSheet(
+                  //           context: context,
+                  //           builder: (context) {
+                  //             return ErrorBottomSheet(
+                  //               error: "Please Verify your Email ID!",
+                  //             );
+                  //           });
+                  //     } else {
+                  //       Get.to(() => const RegisterLocation(),
+                  //           transition: Transition.rightToLeft,
+                  //           duration: 300.milliseconds);
+                  //     }
+                  //   },
+                  // ),
                   const SizedBox(
-                    height: 15,
+                    height: 5,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

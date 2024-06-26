@@ -13,11 +13,13 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/models/otp_model.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
+import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
@@ -47,6 +49,8 @@ class UserController extends GetxController {
   RxString country = "".obs;
   String token = "";
   bool isEmailVerified = false;
+  String otpRequestID = "";
+  OTPModel otpModel = OTPModel();
 
   @override
   onInit() {
@@ -109,11 +113,13 @@ class UserController extends GetxController {
     );
 
     UserCredential response =
-      await FirebaseAuth.instance.signInWithCredential(credential);
-  
-    if(response.credential!= null){
-      Get.offAll(const Home(),duration:const Duration(milliseconds: 400),transition: Transition.downToUp);
-    }else{
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
+    if (response.credential != null) {
+      Get.offAll(const Home(),
+          duration: const Duration(milliseconds: 400),
+          transition: Transition.downToUp);
+    } else {
       Get.snackbar('Error', 'Google sign in error');
     }
   }
@@ -124,12 +130,6 @@ class UserController extends GetxController {
     }
     if (lasttname.text.isEmpty) {
       return "Last Name Field cannot be Empty !";
-    }
-    if (email.text.isEmpty) {
-      return "Email Field cannot be Empty !";
-    }
-    if (!validateEmail(email.text)) {
-      return "Invalid Email Address !";
     }
 
     if (password.text.length < 4) {
@@ -151,9 +151,9 @@ class UserController extends GetxController {
 
     Map<String, String> data = {
       "name": "${firstname.text} ${lasttname.text}",
-      "email": email.text,
+      "email": "Default",
       "password": password.text,
-      "phone": "Default",
+      "phone": phone.text,
       "dob": "Default",
       "profileimage": "Default",
       "firstname": firstname.text,
@@ -179,7 +179,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(responseData);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
-      Get.to(const Home(),
+      Get.offAll(const Home(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
       print(responseData.toString());
     } else {
@@ -191,22 +191,28 @@ class UserController extends GetxController {
   }
 
   Future<String> sendOTP() async {
-    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.sendEmail}");
-    if (email.text.isEmpty) {
-      return "Please Enter Email ID to send OTP!";
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.sendSms}");
+    if (phone.text.isEmpty) {
+      return "Please Enter Phone Number to send OTP!";
     }
-
     token = generateRandomToken();
 
-    final body = {"to": email.text, "token": token};
+    final body = {"phone": "91${phone.text}"};
 
     var response = await http.post(
       uri,
       body: body,
     );
     if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      otpModel = OTPModel.fromJson(data);
+      otpRequestID = otpModel.requestId!;
+      print(
+          "${otpModel.requestId}////////////////////////////////////////////////////////////");
+      print(
+          "${otpModel.statusCode}////////////////////////////////////////////////////////////");
       Get.snackbar(
-          "OTP Sent Successfully", "OTP has been sent to the given mail ID",
+          "OTP Sent Successfully", "OTP has been sent to given phone number",
           margin: const EdgeInsets.all(15),
           backgroundColor: Color.fromARGB(255, 240, 249, 255),
           colorText: AppConstants.customBlue,
@@ -221,51 +227,64 @@ class UserController extends GetxController {
   }
 
   Future<String> verifyOTP() async {
-    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifyOtp}");
-    if (email.text.isEmpty) {
-      return "Please Enter Email ID to verify!";
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifySms}");
+    if (phone.text.isEmpty) {
+      return "Please Enter Phone Number to verify!";
     }
     if (otp.text.isEmpty) {
       return "Please Enter OTP !";
     }
     isLoading(true);
-
-    final body = {"token": token, "otp": otp.text};
+    print(
+        "${otpRequestID}////////////////////////////////////////////////////////////");
+    final body = {"request_id": otpRequestID, "otp": otp.text};
 
     var response = await http.post(
       uri,
       body: body,
     );
     isLoading(false);
-    if (response.statusCode == 404) {
-      return "Entered OTP is Expired, Please Resend OTP !";
-    } else if (response.statusCode == 400) {
-      return "Entered OTP is Incorrect !!";
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body.toString());
+      otpModel = OTPModel.fromJson(data);
+      if (otpModel.statusCode == "16") {
+        return "The entered OTP is incorrect !";
+      } else if (otpModel.statusCode == "6") {
+        return "The entered OTP has been expired !, Please resend OTP";
+      } else if (otpModel.statusCode == "0") {
+        // Get.snackbar("Verification Successfull",
+        //     "Your Phone Number has been verified Successfully !!",
+        //     margin: const EdgeInsets.all(15),
+        //     backgroundColor: Color.fromARGB(255, 238, 248, 255),
+        //     colorText: AppConstants.customBlue,
+        //     duration: const Duration(seconds: 3));
+        // Future.delayed(1.seconds);
+        Get.to(const RegisterLocation(),
+            transition: Transition.rightToLeft, duration: 300.milliseconds);
+      } else {
+        print(
+            "OTP verification failed ///////////////////////////////////////// :: ${otpModel.statusCode}");
+      }
     } else {
-      Get.snackbar("Verification Successfull",
-          "Your Email ID has been verified Successfully !!",
-          margin: const EdgeInsets.all(15),
-          backgroundColor: Color.fromARGB(255, 238, 248, 255),
-          colorText: AppConstants.customBlue,
-          duration: const Duration(seconds: 3));
+      return "Something Went Wrong ! Try again later";
     }
 
     return "";
   }
 
   Future<String> loginUser() async {
-    if (!validateEmail(email.text)) {
-      return "Invalid Email Address";
+    if (!validatePhoneNumber(phone.text)) {
+      return "Invalid Phone Number !";
     }
     if (password.text.isEmpty) {
       return "Password Field is Empty !";
     }
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    final uri = Uri.parse("http://13.60.93.136:8080/iitt/login");
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.login}");
     isLoading(true);
     Map<dynamic, String> data = {
-      "email": email.text,
+      "phone": phone.text,
       "password": password.text,
     };
 
@@ -282,7 +301,7 @@ class UserController extends GetxController {
           transition: Transition.rightToLeft, duration: 300.milliseconds);
     } else {
       if (kDebugMode) print("Error Logining User");
-      Get.snackbar("Error", "Cannot Login, Try Again!!");
+      Get.snackbar("Error", "Cannot Login, Try Again!!"); // Do something
     }
     isLoading(false);
     return "";

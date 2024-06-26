@@ -107,15 +107,15 @@ class LoginState extends State<Login> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.email,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.phone,
+                                keyboardType: TextInputType.phone,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'man-r'),
                                 decoration: const InputDecoration(
-                                  hintText: "Email",
+                                  hintText: "Phone",
                                   hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'poppins'),
+                                      fontFamily: 'man-r'),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
