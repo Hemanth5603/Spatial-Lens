@@ -275,12 +275,10 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   readOnly: true,
-                  controller: userController.email,
-                  keyboardType: TextInputType.emailAddress,
+                  controller: userController.phone,
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                    labelText: 'Email ID',
-                    labelStyle:
-                        const TextStyle(fontFamily: 'poppins', fontSize: 14),
+                    labelText: "Phone Number",
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
                     focusedBorder: OutlineInputBorder(
@@ -294,11 +292,12 @@ class _EditProfileState extends State<EditProfile> {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
-                  readOnly: true,
-                  controller: userController.phone,
-                  keyboardType: TextInputType.phone,
+                  controller: userController.email,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: "Phone Number",
+                    labelText: 'Email ID',
+                    labelStyle:
+                        const TextStyle(fontFamily: 'poppins', fontSize: 14),
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
                     focusedBorder: OutlineInputBorder(

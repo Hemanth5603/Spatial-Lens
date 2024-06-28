@@ -7,7 +7,7 @@ package = "com.example.iittnif">
 <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
         
     <application
-        android:label="IITT"
+        android:label="IITTNiF"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon"
         android:enableOnBackInvokedCallback="true"

@@ -225,15 +225,21 @@ class _RegisterLocationState extends State<RegisterLocation> {
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: const Center(
-                            child: Text(
-                              "Register",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w300),
-                            ),
-                          )),
+                          child: Center(
+                              child: Obx(
+                            () => userController.isLoading.value
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2,
+                                  )
+                                : const Text(
+                                    "Register",
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w300),
+                                  ),
+                          ))),
                     ),
                     onTap: () async {
                       String err = await userController

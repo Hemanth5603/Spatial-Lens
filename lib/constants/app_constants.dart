@@ -42,6 +42,9 @@ class AppConstants {
     "Water",
     "Forestry",
     "Geology",
+    "Office",
+    "Lakes",
+    "Shop",
   ];
 
   static List<String> limits = [

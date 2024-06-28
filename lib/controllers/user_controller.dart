@@ -144,10 +144,13 @@ class UserController extends GetxController {
     if (pincode.text.length != 6) {
       return "Invalid Pincode !";
     }
-
+    if (state.isEmpty || state.toString() == "") {
+      return "Select Your State !";
+    }
+    isLoading(true);
+    await getCurrentLocation();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.register}");
-    isLoading(true);
 
     Map<String, String> data = {
       "name": "${firstname.text} ${lasttname.text}",
@@ -228,46 +231,48 @@ class UserController extends GetxController {
 
   Future<String> verifyOTP() async {
     final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifySms}");
-    if (phone.text.isEmpty) {
-      return "Please Enter Phone Number to verify!";
+    String err = fieldsValidator();
+    if (err != "")
+      return err;
+    else {
+      Get.to(const RegisterLocation(),
+          transition: Transition.rightToLeft, duration: 300.milliseconds);
     }
-    if (otp.text.isEmpty) {
-      return "Please Enter OTP !";
-    }
-    isLoading(true);
-    print(
-        "${otpRequestID}////////////////////////////////////////////////////////////");
-    final body = {"request_id": otpRequestID, "otp": otp.text};
 
-    var response = await http.post(
-      uri,
-      body: body,
-    );
-    isLoading(false);
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body.toString());
-      otpModel = OTPModel.fromJson(data);
-      if (otpModel.statusCode == "16") {
-        return "The entered OTP is incorrect !";
-      } else if (otpModel.statusCode == "6") {
-        return "The entered OTP has been expired !, Please resend OTP";
-      } else if (otpModel.statusCode == "0") {
-        // Get.snackbar("Verification Successfull",
-        //     "Your Phone Number has been verified Successfully !!",
-        //     margin: const EdgeInsets.all(15),
-        //     backgroundColor: Color.fromARGB(255, 238, 248, 255),
-        //     colorText: AppConstants.customBlue,
-        //     duration: const Duration(seconds: 3));
-        // Future.delayed(1.seconds);
-        Get.to(const RegisterLocation(),
-            transition: Transition.rightToLeft, duration: 300.milliseconds);
-      } else {
-        print(
-            "OTP verification failed ///////////////////////////////////////// :: ${otpModel.statusCode}");
-      }
-    } else {
-      return "Something Went Wrong ! Try again later";
-    }
+    // isLoading(true);
+    // print(
+    //     "${otpRequestID}////////////////////////////////////////////////////////////");
+    // final body = {"request_id": otpRequestID, "otp": otp.text};
+
+    // var response = await http.post(
+    //   uri,
+    //   body: body,
+    // );
+    // isLoading(false);
+    // if (response.statusCode == 200) {
+    //   var data = jsonDecode(response.body.toString());
+    //   otpModel = OTPModel.fromJson(data);
+    //   if (otpModel.statusCode == "16") {
+    //     return "The entered OTP is incorrect !";
+    //   } else if (otpModel.statusCode == "6") {
+    //     return "The entered OTP has been expired !, Please resend OTP";
+    //   } else if (otpModel.statusCode == "0") {
+    //     // Get.snackbar("Verification Successfull",
+    //     //     "Your Phone Number has been verified Successfully !!",
+    //     //     margin: const EdgeInsets.all(15),
+    //     //     backgroundColor: Color.fromARGB(255, 238, 248, 255),
+    //     //     colorText: AppConstants.customBlue,
+    //     //     duration: const Duration(seconds: 3));
+    //     // Future.delayed(1.seconds);
+    //     Get.to(const RegisterLocation(),
+    //         transition: Transition.rightToLeft, duration: 300.milliseconds);
+    //   } else {
+    //     print(
+    //         "OTP verification failed ///////////////////////////////////////// :: ${otpModel.statusCode}");
+    //   }
+    // } else {
+    //   return "Something Went Wrong ! Try again later";
+    // }
 
     return "";
   }
@@ -297,7 +302,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
-      Get.to(const Home(),
+      Get.offAll(const Home(),
           transition: Transition.rightToLeft, duration: 300.milliseconds);
     } else {
       if (kDebugMode) print("Error Logining User");
@@ -318,6 +323,7 @@ class UserController extends GetxController {
       request.fields['lastname'] = lasttname.text;
       request.fields['occupation'] = occupation.text;
       request.fields['dob'] = dob.text;
+      request.fields['email'] = email.text;
       if (imagePath != "null") {
         request.files
             .add(await http.MultipartFile.fromPath('profileimage', imagePath));
@@ -373,11 +379,8 @@ class UserController extends GetxController {
     if (lasttname.text.isEmpty) {
       return "Last Name is Empty !";
     }
-    if (email.text.isEmpty) {
-      return "Email Field cannot be Empty !";
-    }
-    if (!validateEmail(email.text)) {
-      return "Invalid Email Address !";
+    if (phone.text.isEmpty) {
+      return "Phone Number cannot be empty !";
     }
     if (!validatePhoneNumber(phone.text)) {
       return "Invalid Phone Number";
@@ -406,7 +409,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(data);
       firstname.text = userModel.first_name!;
       lasttname.text = userModel.last_name!;
-      email.text = userModel.email!;
+      //email.text = userModel.email!;
       phone.text = userModel.phone!;
     } else {
       if (kDebugMode) print("Error Fetching User Data");

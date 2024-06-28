@@ -346,23 +346,20 @@ class _RegisterState extends State<Register> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      // var err = await userController.verifyOTP();
-                      // if (err != "") {
-                      //   showModalBottomSheet(
-                      //       context: context,
-                      //       builder: (context) {
-                      //         return ErrorBottomSheet(
-                      //           error: err,
-                      //         );
-                      //       });
-                      // } else {
-                      //   setState(() {
-                      //     isEmailVerified = true;
-                      //   });
-                      // }
-                      Get.to(const RegisterLocation(),
-                          transition: Transition.rightToLeft,
-                          duration: 300.milliseconds);
+                      var err = await userController.verifyOTP();
+                      if (err != "") {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return ErrorBottomSheet(
+                                error: err,
+                              );
+                            });
+                      } else {
+                        setState(() {
+                          isEmailVerified = true;
+                        });
+                      }
                     },
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),

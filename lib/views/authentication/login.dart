@@ -213,10 +213,12 @@ class LoginState extends State<Login> {
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       GestureDetector(
-                        child: const Text(
+                        child: Text(
                           "Sign Up",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.customBlue),
                         ),
                         onTap: () {
                           Get.off(() => const Register(),

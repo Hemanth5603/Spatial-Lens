@@ -12,6 +12,7 @@ import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/models/leaderboard_model.dart';
 import 'package:iitt/models/user_model.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController extends GetxController {
@@ -29,7 +30,9 @@ class DataController extends GetxController {
 
   Future<String> uploadData(String category) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String url = "http://13.60.93.136:8080/uploadImage";
+    String formattedTime = DateFormat('HH:mm:ss').format(DateTime.now());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+    String url = "${ApiConstants.baseUrl}${ApiConstants.uploadData}";
     if (category == "Default") {
       return "Select Category";
     }
@@ -43,6 +46,8 @@ class DataController extends GetxController {
       request.fields['category'] = category;
       request.fields['remarks'] = remarks.text.toString();
       request.fields['address'] = userController.addresss.text;
+      request.fields['date'] = formattedDate;
+      request.fields['time'] = formattedTime;
 
       request.files.add(await http.MultipartFile.fromPath('image', filePath));
 
