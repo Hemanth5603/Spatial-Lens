@@ -22,6 +22,9 @@ class ActivityViewer extends StatefulWidget {
   String? address;
   String? category;
   String? remarks;
+  String? date;
+  String? time;
+  int? isApproved;
   ActivityViewer(
       {super.key,
       required this.imageUrl,
@@ -29,7 +32,10 @@ class ActivityViewer extends StatefulWidget {
       required this.latitude,
       required this.longitude,
       required this.address,
-      required this.remarks});
+      required this.remarks,
+      required this.date,
+      required this.time,
+      required this.isApproved});
 
   @override
   State<ActivityViewer> createState() => _ActivityViewerState();

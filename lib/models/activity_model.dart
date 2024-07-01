@@ -27,7 +27,11 @@ class Data {
       required this.Image,
       required this.Category,
       required this.Remarks,
-      required this.address});
+      required this.address,
+      required this.date,
+      required this.time,
+      required this.dataId,
+      required this.isApproved});
   int? Id;
   double? Latitude;
   double? Longitude;
@@ -35,6 +39,10 @@ class Data {
   String? Category;
   String? Remarks;
   String? address;
+  String? time;
+  String? date;
+  int? isApproved;
+  int? dataId;
 
   Data.fromJson(Map<String, dynamic> json) {
     Id = json['Id'];
@@ -43,7 +51,11 @@ class Data {
     Image = json['Image'];
     Category = json['Category'];
     Remarks = json['Remarks'];
-    address = json['address'];
+    address = json['Address'];
+    time = json['Time'];
+    date = json['Date'];
+    isApproved = json['IsApproved'];
+    dataId = json['DateId'];
   }
 
   Map<String, dynamic> toJson() {
@@ -55,6 +67,7 @@ class Data {
     _data['Image'] = Image;
     _data['Category'] = Category;
     _data['Remarks'] = Remarks;
+
     return _data;
   }
 }

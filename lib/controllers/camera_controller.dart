@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -11,6 +12,9 @@ class Camera extends GetxController {
   bool show = false;
 
   var isCameraInitialized = false.obs;
+  var zoomLevel = 1.0.obs;
+  var maxZoomLevel = 1.0.obs;
+  var minZoomLevel = 1.0.obs;
 
   @override
   void onInit() {
@@ -39,20 +43,26 @@ class Camera extends GetxController {
             CameraController(cameraDescription, ResolutionPreset.high);
 
         await cameraController.initialize();
+        minZoomLevel.value = await cameraController.getMinZoomLevel();
+        maxZoomLevel.value = await cameraController.getMaxZoomLevel();
 
         if (Get.isRegistered<CameraController>()) {
           if (cameraController.value.isInitialized) {
             isCameraInitialized.value = true;
           }
         }
-        print(
-            "${(cameraController.value.previewSize!.width / 3.3).toString()}");
-        print((cameraController.value.previewSize!.height).toString());
       } else {
-        print("Camera permission denied");
+        if (kDebugMode) print("Camera permission denied");
       }
     } on CameraException catch (e) {
       print('CameraException: ${e.code}\n${e.description}');
+    }
+  }
+
+  void setZoom(double zoom) {
+    if (zoom >= minZoomLevel.value && zoom <= maxZoomLevel.value) {
+      zoomLevel.value = zoom;
+      cameraController.setZoomLevel(zoom);
     }
   }
 }

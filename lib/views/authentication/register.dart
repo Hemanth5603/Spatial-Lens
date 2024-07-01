@@ -192,16 +192,28 @@ class _RegisterState extends State<Register> {
                                 controller: userController.phone,
                                 keyboardType: TextInputType.phone,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'man-r'),
-                                decoration: const InputDecoration(
+                                style: TextStyle(fontFamily: 'man-r'),
+                                decoration: InputDecoration(
+                                  prefixIcon: Container(
+                                    width: 10,
+                                    height: 10,
+                                    alignment: Alignment.bottomCenter,
+                                    padding: EdgeInsets.only(bottom: 9),
+                                    child: Text(
+                                      "+91",
+                                      style: TextStyle(fontFamily: 'man-r'),
+                                    ),
+                                  ),
                                   hintText: "Phone Number",
                                   hintStyle: TextStyle(
-                                      color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'man-r'),
+                                    color: Color.fromARGB(255, 106, 106, 106),
+                                    fontFamily: 'man-r',
+                                  ),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        width: 5),
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -211,6 +223,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
+
                   const SizedBox(
                     height: 10,
                   ),
@@ -446,10 +459,12 @@ class _RegisterState extends State<Register> {
                         style: TextStyle(fontSize: 14, color: Colors.black),
                       ),
                       GestureDetector(
-                        child: const Text(
+                        child: Text(
                           "Sign in",
                           style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: AppConstants.customBlue),
                         ),
                         onTap: () {
                           Get.off(() => const Login(),

@@ -42,6 +42,62 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        bottomNavigationBar: Container(
+          width: MediaQuery.of(context).size.width,
+          height: 60,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(15), topRight: Radius.circular(15)),
+            color: AppConstants.customBlue,
+          ),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Row(
+                  children: [
+                    // Container(
+                    //   width: 40,
+                    //   height: 40,
+                    //   decoration: BoxDecoration(
+                    //       borderRadius: BorderRadius.circular(150),
+                    //       image: DecorationImage(
+                    //           image: NetworkImage(
+                    //               "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
+                    //           fit: BoxFit.cover),
+                    //       color: Colors.white),
+                    // ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Text(
+                      "Your Rank :",
+                      style: TextStyle(
+                          fontFamily: 'man-r',
+                          fontSize: 18,
+                          color: Colors.white),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(150),
+                      color: Colors.white),
+                  child: Center(
+                      child: Text(userController.userModel.contributions == 0
+                          ? " - "
+                          : userController.userModel.rank.toString())),
+                ),
+              ],
+            ),
+          ),
+        ),
         backgroundColor: Color.fromARGB(255, 248, 252, 255),
         body: SafeArea(
           child: SingleChildScrollView(
@@ -52,14 +108,18 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    height: 30,
+                    height: 10,
                     child: Row(
                       children: [
-                        IconButton(
-                            onPressed: () {
-                              Get.back();
-                            },
-                            icon: Icon(Icons.arrow_back_ios_rounded))
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: IconButton(
+                              onPressed: () {
+                                Get.back();
+                                print("ppreseed");
+                              },
+                              icon: Icon(Icons.arrow_back_ios_rounded)),
+                        )
                       ],
                     ),
                   ),
@@ -77,8 +137,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   ),
                   Center(
                     child: Container(
-                      width: 120,
-                      height: 120,
+                      width: 100,
+                      height: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(150),
                           color: Color.fromARGB(255, 207, 233, 255),
@@ -239,7 +299,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   ),
                   Container(
                     width: MediaQuery.of(context).size.width,
-                    height: 420,
+                    height: MediaQuery.of(context).size.height * 0.47,
                     margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
@@ -250,7 +310,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                               color: Color.fromARGB(200, 240, 248, 255),
                               blurRadius: 15)
                         ],
-                        borderRadius: BorderRadius.circular(15)),
+                        borderRadius: BorderRadius.circular(10)),
                     child: Obx(() => dataController.isLoading.value
                         ? const Center(
                             child: CircularProgressIndicator(),
@@ -325,14 +385,14 @@ class LeaderboardTile extends StatelessWidget {
         Container(
           height: 58,
           decoration: BoxDecoration(
-              color: userRank == index + 1 && contributions != "0"
-                  ? AppConstants.customBlue
-                  : Color.fromARGB(255, 255, 255, 255),
+              // color: userRank == index + 1 && contributions != "0"
+              //     ? AppConstants.customBlue
+              color: Color.fromARGB(255, 255, 255, 255),
               borderRadius: index == 0
                   ? BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15))
-                  : BorderRadius.circular(0)),
+                  : BorderRadius.circular(15)),
           padding: EdgeInsets.only(bottom: 10, top: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -405,9 +465,9 @@ class LeaderboardTile extends StatelessWidget {
                           fontSize: 12,
                           fontFamily: 'man-r',
                           fontWeight: FontWeight.w500,
-                          color: userRank == index + 1 && contributions != "0"
-                              ? Colors.white
-                              : const Color.fromARGB(255, 48, 48, 48),
+                          color: //userRank == index + 1 && contributions != "0"
+                              //? Colors.white
+                              const Color.fromARGB(255, 48, 48, 48),
                         ),
                       ),
                     ],
@@ -439,7 +499,12 @@ class LeaderboardTile extends StatelessWidget {
             : Container(
                 width: 0,
                 height: 0,
+              ),
+        last == true
+            ? SizedBox(
+                height: 60,
               )
+            : SizedBox()
       ],
     );
   }

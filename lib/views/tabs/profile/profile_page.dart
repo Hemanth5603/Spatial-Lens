@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/tabs/profile/edit_profile.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +18,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final UserController userController = Get.put(UserController());
+  AuthController authController = Get.put(AuthController());
   String? profileImage = "null";
 
   void pickImageFromGallery() async {
@@ -42,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 247, 248, 253),
+      backgroundColor: const Color.fromARGB(255, 247, 248, 253),
       body: SafeArea(
         child: Obx(() {
           if (userController.isLoading.value) {
@@ -379,7 +381,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
-                    userController.logOut();
+                    authController.logOut();
                   },
                   child: _buildProfileTile(Icons.logout, "Logout", "", true),
                 ),

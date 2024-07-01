@@ -48,6 +48,7 @@ class DataController extends GetxController {
       request.fields['address'] = userController.addresss.text;
       request.fields['date'] = formattedDate;
       request.fields['time'] = formattedTime;
+      request.fields['is_approved'] = "0";
 
       request.files.add(await http.MultipartFile.fromPath('image', filePath));
 

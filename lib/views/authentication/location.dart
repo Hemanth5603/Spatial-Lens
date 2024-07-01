@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
@@ -18,6 +19,7 @@ class RegisterLocation extends StatefulWidget {
 
 class _RegisterLocationState extends State<RegisterLocation> {
   UserController userController = Get.put(UserController());
+  AuthController authController = Get.put(AuthController());
   String? selectedState;
   @override
   void initState() {
@@ -242,7 +244,7 @@ class _RegisterLocationState extends State<RegisterLocation> {
                           ))),
                     ),
                     onTap: () async {
-                      String err = await userController
+                      String err = await authController
                           .registerUser(selectedState ?? "Default");
                       if (err != "") {
                         showModalBottomSheet(

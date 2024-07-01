@@ -9,21 +9,28 @@ import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/views/activity_viewer.dart';
 
 class activityCard extends StatelessWidget {
-  activityCard(
-      {super.key,
-      required this.imageUrl,
-      required this.category,
-      required this.index,
-      required this.latitude,
-      required this.longitude,
-      required this.address,
-      required this.remarks});
+  activityCard({
+    super.key,
+    required this.imageUrl,
+    required this.category,
+    required this.index,
+    required this.latitude,
+    required this.longitude,
+    required this.address,
+    required this.remarks,
+    required this.date,
+    required this.time,
+    required this.isApproved,
+  });
   String? imageUrl;
   String? category;
   String? address;
   String? latitude;
   String? longitude;
   String? remarks;
+  String? date;
+  String? time;
+  int? isApproved;
 
   int index;
   @override
@@ -37,7 +44,10 @@ class activityCard extends StatelessWidget {
                 latitude: latitude!,
                 longitude: longitude!,
                 address: address!,
-                remarks: remarks ?? "No Remarks"),
+                remarks: remarks ?? "No Remarks",
+                date: date!,
+                time: time!,
+                isApproved: isApproved!),
             transition: Transition.rightToLeft,
             duration: 300.milliseconds);
       },
@@ -79,12 +89,40 @@ class activityCard extends StatelessWidget {
                     )
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Icon(
-                    Icons.arrow_forward_ios_rounded,
-                    color: AppConstants.customBlue,
-                  ),
+                Row(
+                  children: [
+                    if (isApproved == 0)
+                      Padding(
+                          padding: EdgeInsets.all(0),
+                          child: Image.asset(
+                            'assets/icons/pending.png',
+                            width: 25,
+                            color: Colors.orange,
+                          )),
+                    if (isApproved == 1)
+                      Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Image.asset(
+                          'assets/icons/accept.png',
+                          width: 22,
+                        ),
+                      ),
+                    if (isApproved == 2)
+                      Padding(
+                        padding: EdgeInsets.all(0),
+                        child: Image.asset(
+                          'assets/icons/decline.png',
+                          width: 32,
+                        ),
+                      ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        color: AppConstants.customBlue,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

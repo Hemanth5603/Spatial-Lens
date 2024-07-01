@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
@@ -17,6 +18,7 @@ class Login extends StatefulWidget {
 
 class LoginState extends State<Login> {
   UserController userController = Get.put(UserController());
+  AuthController authController = Get.put(AuthController());
   @override
   void initState() {
     super.initState();
@@ -110,16 +112,28 @@ class LoginState extends State<Login> {
                                 controller: userController.phone,
                                 keyboardType: TextInputType.phone,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'man-r'),
-                                decoration: const InputDecoration(
-                                  hintText: "Phone",
+                                style: TextStyle(fontFamily: 'man-r'),
+                                decoration: InputDecoration(
+                                  prefixIcon: Container(
+                                    width: 0,
+                                    height: 10,
+                                    alignment: Alignment.bottomCenter,
+                                    padding: EdgeInsets.only(bottom: 9),
+                                    child: Text(
+                                      "+91",
+                                      style: TextStyle(fontFamily: 'man-r'),
+                                    ),
+                                  ),
+                                  hintText: "Phone Number",
                                   hintStyle: TextStyle(
-                                      color: Color.fromARGB(255, 106, 106, 106),
-                                      fontFamily: 'man-r'),
+                                    color: Color.fromARGB(255, 106, 106, 106),
+                                    fontFamily: 'man-r',
+                                  ),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        width: 5),
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      width: 1,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -179,18 +193,18 @@ class LoginState extends State<Login> {
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: const Center(
+                          child: Center(
                             child: Text(
                               "Sign in",
                               style: TextStyle(
                                   fontSize: 20,
-                                  color: Color.fromARGB(255, 255, 255, 255),
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w300),
                             ),
                           )),
                     ),
                     onTap: () async {
-                      String err = await userController.loginUser();
+                      String err = await authController.loginUser();
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,
@@ -216,7 +230,7 @@ class LoginState extends State<Login> {
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                              fontSize: 14,
+                              fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: AppConstants.customBlue),
                         ),

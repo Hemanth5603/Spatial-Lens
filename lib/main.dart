@@ -1,8 +1,7 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
-import 'package:iitt/firebase_options.dart';
+
 import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/authentication/register.dart';
@@ -22,9 +21,7 @@ Future<void> main() async {
       prefs.getInt("isLoggedIn") == null || prefs.getInt("isLoggedIn") == 0
           ? 0
           : 1;
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
   runApp(const MainApp());
 
   requestPermissions();
