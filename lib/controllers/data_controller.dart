@@ -71,7 +71,6 @@ class DataController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? id = prefs.getString("id");
     String url = "${ApiConstants.baseUrl} ${ApiConstants.getActivity}$id";
-    print(url);
     isLoading(true);
     var response = await get(Uri.parse(url));
 

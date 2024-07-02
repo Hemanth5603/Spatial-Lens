@@ -12,4 +12,7 @@ class ApiConstants {
   static String verifyOtp = "/iitt/verifyOtp";
   static String sendSms = "/iitt/sendSms";
   static String verifySms = "/iitt/verifySms";
+  static String expiredOtp = "/iitt/expiredOtp";
+  static String resetPasswordEmail = "/iitt/resetPasswordEmail";
+  static String resetPassword = "/iitt/resetPassword";
 }

@@ -18,6 +18,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:http/http.dart' as http;
 import 'package:iitt/utils/generate_token.dart';
+import 'package:iitt/utils/validate_email.dart';
 import 'package:iitt/utils/validate_phone.dart';
 import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
@@ -39,6 +40,8 @@ class UserController extends GetxController {
   TextEditingController pincode = TextEditingController();
   TextEditingController occupation = TextEditingController();
   TextEditingController otp = TextEditingController();
+  TextEditingController newPassword = TextEditingController();
+  TextEditingController confirmPassword = TextEditingController();
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -163,6 +166,7 @@ class UserController extends GetxController {
   }
 
   Future<String> verifyOTP() async {
+    // Vonage Code ---------------------
     final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifySms}");
     String err = fieldsValidator();
     if (err != "") {
@@ -221,7 +225,8 @@ class UserController extends GetxController {
       request.fields['lastname'] = lasttname.text;
       request.fields['occupation'] = occupation.text;
       request.fields['dob'] = dob.text;
-      request.fields['email'] = email.text;
+      request.fields['phone'] = phone.text;
+
       if (imagePath != "null") {
         request.files
             .add(await http.MultipartFile.fromPath('profileimage', imagePath));
@@ -272,16 +277,16 @@ class UserController extends GetxController {
 
   String fieldsValidator() {
     if (firstname.text.isEmpty) {
-      return "Name Field is Empty !";
+      return "First Name Field is Empty !";
     }
     if (lasttname.text.isEmpty) {
       return "Last Name is Empty !";
     }
-    if (phone.text.isEmpty) {
-      return "Phone Number cannot be empty !";
+    if (email.text.isEmpty) {
+      return "Please Enter Email Address to send OTP!";
     }
-    if (!validatePhoneNumber(phone.text)) {
-      return "Invalid Phone Number";
+    if (!validateEmail(email.text)) {
+      return "Please Enter a valid Email Address";
     }
     if (password.text.length < 8) {
       return "Password must be of atleast 8 Characters";
@@ -307,7 +312,7 @@ class UserController extends GetxController {
       userModel = UserModel.fromJson(data);
       firstname.text = userModel.first_name!;
       lasttname.text = userModel.last_name!;
-      //email.text = userModel.email!;
+      email.text = userModel.email!;
       phone.text = userModel.phone!;
     } else {
       if (kDebugMode) print("Error Fetching User Data");

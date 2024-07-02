@@ -334,12 +334,12 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               children: [
                 SizedBox(height: 10),
-                _buildProfileTile(Icons.call, "Phone",
-                    "+91 ${userController.userModel.phone}"),
-                _buildProfileTile(Icons.location_pin, "Location",
-                    userController.userModel.location!, false),
                 _buildProfileTile(Icons.email_outlined, "Email",
                     userController.userModel.email!),
+                _buildProfileTile(Icons.location_pin, "Location",
+                    userController.userModel.location!, false),
+                _buildProfileTile(
+                    Icons.call, "Phone", "${userController.userModel.phone}"),
                 _buildProfileTile(Icons.calendar_month, "Date of birth",
                     userController.userModel.dob!, true),
               ],
@@ -383,7 +383,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onTap: () {
                     authController.logOut();
                   },
-                  child: _buildProfileTile(Icons.logout, "Logout", "", true),
+                  child: _buildProfileTile(Icons.logout, "Logout", " ", true),
                 ),
               ],
             ),
@@ -435,12 +435,12 @@ class _ProfilePageState extends State<ProfilePage> {
               Container(
                 margin: EdgeInsets.only(right: 15),
                 child: Text(
-                  value == "Default" ? "Update your Profile" : value,
+                  value == "" ? "Update your Profile" : value,
                   style: TextStyle(
                       fontFamily: 'poppins',
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
-                      color: value == "Default"
+                      color: value == ""
                           ? const Color.fromARGB(255, 206, 206, 206)
                           : Colors.black),
                 ),

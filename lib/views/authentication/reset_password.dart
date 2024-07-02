@@ -1,35 +1,34 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/authentication/register.dart';
-import 'package:iitt/views/authentication/reset_email_verification.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
+import 'package:iitt/views/components/success_bottom_sheet.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class ResetPassword extends StatefulWidget {
+  const ResetPassword({super.key});
 
   @override
-  State<Login> createState() => LoginState();
+  State<ResetPassword> createState() => ResetPasswordState();
 }
 
-class LoginState extends State<Login> {
+class ResetPasswordState extends State<ResetPassword> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
+
+  bool _isObscured = true;
+
   @override
   void initState() {
     super.initState();
-    //requestPermissions();
-    userController.getCurrentLocation();
-  }
-
-  void requestPermissions() async {
-    var status = await Permission.camera.request();
-    var mic = await Permission.microphone.request();
   }
 
   @override
@@ -76,21 +75,12 @@ class LoginState extends State<Login> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Welcome to",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontFamily: 'poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text("IITTNiF",
+                    child: Text("Reset Password ",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             letterSpacing: 1.5,
-                            fontFamily: 'poppins',
-                            fontSize: 50,
+                            fontFamily: 'man-r',
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(183, 0, 0, 0))),
                   ),
@@ -110,21 +100,33 @@ class LoginState extends State<Login> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.email,
-                                keyboardType: TextInputType.emailAddress,
+                                controller: userController.newPassword,
+                                keyboardType: TextInputType.visiblePassword,
+                                obscureText: _isObscured,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: const TextStyle(fontFamily: 'man-r'),
-                                decoration: const InputDecoration(
-                                  hintText: "Email",
-                                  hintStyle: TextStyle(
-                                    color: Color.fromARGB(255, 106, 106, 106),
-                                    fontFamily: 'man-r',
-                                  ),
-                                  border: UnderlineInputBorder(
+                                style: const TextStyle(fontFamily: 'poppins'),
+                                decoration: InputDecoration(
+                                  hintText: "Enter New Password",
+                                  hintStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'man-r'),
+                                  border: const UnderlineInputBorder(
                                     borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                      width: 1,
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        width: 5),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isObscured
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppConstants.customBlue,
                                     ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscured = !_isObscured;
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
@@ -147,16 +149,17 @@ class LoginState extends State<Login> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.password,
+                                controller: userController.confirmPassword,
                                 keyboardType: TextInputType.visiblePassword,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
+                                obscureText: true,
                                 decoration: const InputDecoration(
-                                  hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 106, 106, 106)),
-                                  border: UnderlineInputBorder(
+                                  hintText: "Confirm New Password",
+                                  hintStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'man-r'),
+                                  border: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         width: 5),
@@ -164,30 +167,6 @@ class LoginState extends State<Login> {
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print("tap");
-                      Get.to(ResetEmailVerification(),
-                          transition: Transition.rightToLeft,
-                          duration: 300.milliseconds);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          Text(
-                            "Forgot Password ?",
-                            style: TextStyle(
-                                fontFamily: 'man-r',
-                                fontSize: 12,
-                                color: AppConstants.customBlue),
                           ),
                         ],
                       ),
@@ -210,7 +189,7 @@ class LoginState extends State<Login> {
                                   const BorderRadius.all(Radius.circular(10))),
                           child: Center(
                             child: Text(
-                              "Sign in",
+                              "Reset Password",
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -219,7 +198,7 @@ class LoginState extends State<Login> {
                           )),
                     ),
                     onTap: () async {
-                      String err = await authController.loginUser();
+                      String err = await authController.resetPassword();
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,
@@ -228,55 +207,25 @@ class LoginState extends State<Login> {
                                 error: err,
                               );
                             });
+                      } else {
+                        showModalBottomSheet(
+                            context: context,
+                            builder: (context) {
+                              return SuccessBottomSheet(
+                                  successMessage:
+                                      "Reset Password Successfull, Plese Login in",
+                                  buttonText: "Login",
+                                  onPressed: () => Get.offAll(const Login(),
+                                      transition: Transition.leftToRight,
+                                      duration: 300.milliseconds));
+                            });
                       }
                     },
                   ),
                   const SizedBox(
                     height: 15,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't Have an Account ? ",
-                        style: TextStyle(fontSize: 14, color: Colors.black),
-                      ),
-                      GestureDetector(
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: AppConstants.customBlue),
-                        ),
-                        onTap: () {
-                          Get.off(() => const Register(),
-                              transition: Transition.rightToLeft,
-                              duration: 300.milliseconds);
-                        },
-                      )
-                    ],
-                  ),
-                  SizedBox(height: h * 0.22),
-                  Container(
-                    margin: const EdgeInsets.only(left: 80),
-                    child: const Column(
-                      children: [
-                        Text(
-                          "By Continuing you agree ",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                        ),
-                        SizedBox(
-                          height: 2,
-                        ),
-                        Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontFamily: 'poppins'))
-                      ],
-                    ),
-                  )
+                  SizedBox(height: h * 0.15),
                 ],
               ),
             )

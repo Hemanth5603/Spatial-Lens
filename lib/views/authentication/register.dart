@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
+import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
@@ -18,13 +19,10 @@ class Register extends StatefulWidget {
   State<Register> createState() => _RegisterState();
 }
 
-bool resendOtp = false;
-bool isEmailVerified = false;
-int timer = 60;
-
 class _RegisterState extends State<Register> {
   UserController userController = Get.put(UserController());
-  int timer = 60; // Initial timer value
+  AuthController authController = Get.put(AuthController());
+  int timerSeconds = 90; // Initial timer value
   bool resendOtp = false;
   Timer? _timer;
   bool _isObscured = true;
@@ -34,13 +32,15 @@ class _RegisterState extends State<Register> {
       _timer!.cancel();
     }
 
-    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
-        if (this.timer > 0) {
-          this.timer--;
+        if (this.timerSeconds > 0) {
+          this.timerSeconds--;
         } else {
           _timer!.cancel();
-          resendOtp = true;
+          timerSeconds = 90;
+          AuthController().handleExpiredOTP();
+          resendOtp = false;
         }
       });
     });
@@ -189,22 +189,12 @@ class _RegisterState extends State<Register> {
                             width: w * 0.8,
                             child: Center(
                               child: TextField(
-                                controller: userController.phone,
-                                keyboardType: TextInputType.phone,
+                                controller: userController.email,
+                                keyboardType: TextInputType.emailAddress,
                                 textAlignVertical: TextAlignVertical.bottom,
-                                style: TextStyle(fontFamily: 'man-r'),
-                                decoration: InputDecoration(
-                                  prefixIcon: Container(
-                                    width: 10,
-                                    height: 10,
-                                    alignment: Alignment.bottomCenter,
-                                    padding: EdgeInsets.only(bottom: 9),
-                                    child: Text(
-                                      "+91",
-                                      style: TextStyle(fontFamily: 'man-r'),
-                                    ),
-                                  ),
-                                  hintText: "Phone Number",
+                                style: const TextStyle(fontFamily: 'man-r'),
+                                decoration: const InputDecoration(
+                                  hintText: "Email",
                                   hintStyle: TextStyle(
                                     color: Color.fromARGB(255, 106, 106, 106),
                                     fontFamily: 'man-r',
@@ -223,7 +213,6 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-
                   const SizedBox(
                     height: 10,
                   ),
@@ -276,7 +265,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  /*Padding(
+                  Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Container(
                       height: 45,
@@ -313,8 +302,7 @@ class _RegisterState extends State<Register> {
                           ),
                           GestureDetector(
                             onTap: () async {
-                              String err = await userController.sendOTP();
-                              startTimer();
+                              String err = userController.fieldsValidator();
                               if (err != "") {
                                 showModalBottomSheet(
                                     context: context,
@@ -323,34 +311,44 @@ class _RegisterState extends State<Register> {
                                         error: err,
                                       );
                                     });
+                              } else {
+                                if (!resendOtp) {
+                                  authController.sendEmailOTP();
+                                }
+                                startTimer();
+                                setState(() {
+                                  resendOtp = true;
+                                });
                               }
-                              setState(() {
-                                resendOtp = true;
-                              });
                             },
                             child: Container(
                                 width: 100,
                                 height: 50,
                                 decoration: BoxDecoration(
-                                    color: Color.fromARGB(255, 247, 250, 255),
+                                    color: resendOtp
+                                        ? Color.fromARGB(255, 247, 250, 255)
+                                        : AppConstants.customBlue,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
                                   child: Text(
                                     resendOtp
-                                        ? "Resend OTP \n $timer"
+                                        ? "Resend OTP \n $timerSeconds"
                                         : "Send OTP",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                        fontFamily: 'man-r',
-                                        fontSize: 10,
-                                        color: AppConstants.customBlue),
+                                      fontFamily: 'man-r',
+                                      fontSize: 11,
+                                      color: resendOtp
+                                          ? AppConstants.customBlue
+                                          : Colors.white,
+                                    ),
                                   ),
                                 )),
                           )
                         ],
                       ),
                     ),
-                  ),*/
+                  ),
                   SizedBox(
                     height: 5,
                   ),
@@ -359,7 +357,7 @@ class _RegisterState extends State<Register> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      var err = await userController.verifyOTP();
+                      var err = await authController.verifyEmailOTP();
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,
@@ -369,9 +367,9 @@ class _RegisterState extends State<Register> {
                               );
                             });
                       } else {
-                        setState(() {
-                          isEmailVerified = true;
-                        });
+                        Get.to(const RegisterLocation(),
+                            transition: Transition.rightToLeft,
+                            duration: 300.milliseconds);
                       }
                     },
                     child: Padding(
@@ -403,51 +401,6 @@ class _RegisterState extends State<Register> {
                   SizedBox(
                     height: 20,
                   ),
-                  // InkWell(
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.all(12.0),
-                  //     child: Container(
-                  //         height: 50,
-                  //         width: w * 0.89,
-                  //         decoration: BoxDecoration(
-                  //             border: Border.all(
-                  //                 color: isEmailVerified
-                  //                     ? Color.fromARGB(47, 0, 0, 0)
-                  //                     : const Color.fromARGB(19, 0, 0, 0),
-                  //                 width: 2),
-                  //             color: isEmailVerified
-                  //                 ? AppConstants.customBlue
-                  //                 : Color.fromARGB(134, 0, 86, 224),
-                  //             borderRadius:
-                  //                 const BorderRadius.all(Radius.circular(10))),
-                  //         child: Center(
-                  //           child: Text(
-                  //             "Continue",
-                  //             style: TextStyle(
-                  //                 fontSize: 20,
-                  //                 color: isEmailVerified
-                  //                     ? Colors.white
-                  //                     : const Color.fromARGB(87, 255, 255, 255),
-                  //                 fontWeight: FontWeight.w300),
-                  //           ),
-                  //         )),
-                  //   ),
-                  //   onTap: () async {
-                  //     if (!isEmailVerified) {
-                  //       showModalBottomSheet(
-                  //           context: context,
-                  //           builder: (context) {
-                  //             return ErrorBottomSheet(
-                  //               error: "Please Verify your Email ID!",
-                  //             );
-                  //           });
-                  //     } else {
-                  //       Get.to(() => const RegisterLocation(),
-                  //           transition: Transition.rightToLeft,
-                  //           duration: 300.milliseconds);
-                  //     }
-                  //   },
-                  // ),
                   const SizedBox(
                     height: 5,
                   ),

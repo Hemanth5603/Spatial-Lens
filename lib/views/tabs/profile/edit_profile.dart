@@ -139,65 +139,74 @@ class _EditProfileState extends State<EditProfile> {
                   color: Color.fromARGB(255, 255, 255, 255),
                   child: Stack(
                     children: [
-                      Container(
-                          width: w * 0.35,
-                          height: w * 0.35,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            color: Color.fromARGB(255, 255, 255, 255),
-                          ),
-                          child: profileImage == "null"
-                              ? Center(
-                                  child: userController
-                                              .userModel.profile_image ==
-                                          "Default"
-                                      ? Container(
-                                          width: 140,
-                                          height: 140,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            border: Border.all(
-                                                color: AppConstants.customBlue,
-                                                width: 4),
-                                          ),
-                                          child: IconButton(
-                                              onPressed: () {},
-                                              icon: const Icon(
-                                                Icons.person_2_rounded,
-                                                size: 50,
-                                                color: Color.fromARGB(
-                                                    255, 204, 220, 255),
-                                              )),
-                                        )
-                                      : Container(
-                                          width: 140,
-                                          height: 140,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(100),
-                                            border: Border.all(
-                                                color: AppConstants.customBlue,
-                                                width: 4),
-                                            image: DecorationImage(
-                                              fit: BoxFit.cover,
-                                              image: NetworkImage(
-                                                  "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
+                      GestureDetector(
+                        onTap: () {
+                          pickImage();
+                        },
+                        child: Container(
+                            width: w * 0.35,
+                            height: w * 0.35,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(100),
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            child: profileImage == "null"
+                                ? Center(
+                                    child: userController
+                                                .userModel.profile_image ==
+                                            "Default"
+                                        ? Container(
+                                            width: 140,
+                                            height: 140,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              border: Border.all(
+                                                  color:
+                                                      AppConstants.customBlue,
+                                                  width: 4),
                                             ),
-                                          ),
-                                        ))
-                              : Container(
-                                  width: 140,
-                                  height: 140,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(
-                                          color: AppConstants.customBlue,
-                                          width: 4),
-                                      borderRadius: BorderRadius.circular(100),
-                                      image: DecorationImage(
-                                          image: FileImage(File(profileImage!)),
-                                          fit: BoxFit.cover)),
-                                )),
+                                            child: IconButton(
+                                                onPressed: () {},
+                                                icon: const Icon(
+                                                  Icons.person_2_rounded,
+                                                  size: 50,
+                                                  color: Color.fromARGB(
+                                                      255, 204, 220, 255),
+                                                )),
+                                          )
+                                        : Container(
+                                            width: 140,
+                                            height: 140,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              border: Border.all(
+                                                  color:
+                                                      AppConstants.customBlue,
+                                                  width: 4),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                    "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
+                                              ),
+                                            ),
+                                          ))
+                                : Container(
+                                    width: 140,
+                                    height: 140,
+                                    decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: AppConstants.customBlue,
+                                            width: 4),
+                                        borderRadius:
+                                            BorderRadius.circular(100),
+                                        image: DecorationImage(
+                                            image:
+                                                FileImage(File(profileImage!)),
+                                            fit: BoxFit.cover)),
+                                  )),
+                      ),
                       Positioned(
                         bottom: 0,
                         right: 10,
@@ -275,10 +284,12 @@ class _EditProfileState extends State<EditProfile> {
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
                   readOnly: true,
-                  controller: userController.phone,
-                  keyboardType: TextInputType.phone,
+                  controller: userController.email,
+                  keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
-                    labelText: "Phone Number",
+                    labelText: 'Email ID',
+                    labelStyle:
+                        const TextStyle(fontFamily: 'poppins', fontSize: 14),
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
                     focusedBorder: OutlineInputBorder(
@@ -292,12 +303,10 @@ class _EditProfileState extends State<EditProfile> {
                 margin: const EdgeInsets.symmetric(vertical: 8),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 child: TextField(
-                  controller: userController.email,
-                  keyboardType: TextInputType.emailAddress,
+                  controller: userController.phone,
+                  keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
-                    labelText: 'Email ID',
-                    labelStyle:
-                        const TextStyle(fontFamily: 'poppins', fontSize: 14),
+                    labelText: "Phone Number",
                     border: const OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey)),
                     focusedBorder: OutlineInputBorder(

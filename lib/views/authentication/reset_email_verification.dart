@@ -1,35 +1,77 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/utils/validate_email.dart';
 import 'package:iitt/views/authentication/register.dart';
-import 'package:iitt/views/authentication/reset_email_verification.dart';
+import 'package:iitt/views/authentication/reset_password.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/image_capture.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class ResetEmailVerification extends StatefulWidget {
+  const ResetEmailVerification({super.key});
 
   @override
-  State<Login> createState() => LoginState();
+  State<ResetEmailVerification> createState() => ResetEmailVerificationState();
 }
 
-class LoginState extends State<Login> {
+class ResetEmailVerificationState extends State<ResetEmailVerification> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
+
+  int timerSeconds = 90; // Initial timer value
+  bool resendOtp = false;
+  Timer? _timer;
+  bool _isObscured = true;
+
+  void startTimer() {
+    if (_timer != null) {
+      _timer!.cancel();
+    }
+
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        if (this.timerSeconds > 0) {
+          this.timerSeconds--;
+        } else {
+          _timer!.cancel();
+          timerSeconds = 90;
+          AuthController().handleExpiredOTP();
+          resendOtp = false;
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   @override
   void initState() {
     super.initState();
-    //requestPermissions();
-    userController.getCurrentLocation();
   }
 
   void requestPermissions() async {
     var status = await Permission.camera.request();
     var mic = await Permission.microphone.request();
+  }
+
+  String validator() {
+    if (userController.email.text.isEmpty) {
+      return "Please Enter Email Address to send OTP !";
+    }
+    if (!validateEmail(userController.email.text)) {
+      return "Invalid Email Address !";
+    }
+    return "";
   }
 
   @override
@@ -76,21 +118,12 @@ class LoginState extends State<Login> {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("Welcome to",
-                        textAlign: TextAlign.left,
-                        style: TextStyle(
-                            fontFamily: 'poppins',
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold)),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text("IITTNiF",
+                    child: Text("Verify Your Email",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             letterSpacing: 1.5,
                             fontFamily: 'poppins',
-                            fontSize: 50,
+                            fontSize: 30,
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(183, 0, 0, 0))),
                   ),
@@ -144,18 +177,19 @@ class LoginState extends State<Login> {
                         children: [
                           SizedBox(
                             height: h * 0.12,
-                            width: w * 0.8,
+                            width: w * 0.52,
                             child: Center(
                               child: TextField(
-                                controller: userController.password,
-                                keyboardType: TextInputType.visiblePassword,
+                                controller: userController.otp,
+                                keyboardType: TextInputType.number,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
                                 decoration: const InputDecoration(
-                                  hintText: "Password",
+                                  hintText: "Enter OTP",
                                   hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 106, 106, 106)),
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'man-r',
+                                      fontSize: 14),
                                   border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
@@ -165,30 +199,55 @@ class LoginState extends State<Login> {
                               ),
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      print("tap");
-                      Get.to(ResetEmailVerification(),
-                          transition: Transition.rightToLeft,
-                          duration: 300.milliseconds);
-                    },
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(),
-                          Text(
-                            "Forgot Password ?",
-                            style: TextStyle(
-                                fontFamily: 'man-r',
-                                fontSize: 12,
-                                color: AppConstants.customBlue),
+                          SizedBox(
+                            width: 10,
                           ),
+                          GestureDetector(
+                            onTap: () async {
+                              String err = validator();
+                              if (err != "") {
+                                showModalBottomSheet(
+                                    context: context,
+                                    builder: (context) {
+                                      return ErrorBottomSheet(
+                                        error: err,
+                                      );
+                                    });
+                              } else {
+                                if (!resendOtp) {
+                                  authController
+                                      .resetPasswordEmailVerification();
+                                }
+                                startTimer();
+                                setState(() {
+                                  resendOtp = true;
+                                });
+                              }
+                            },
+                            child: Container(
+                                width: 100,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                    color: resendOtp
+                                        ? Color.fromARGB(255, 247, 250, 255)
+                                        : AppConstants.customBlue,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                  child: Text(
+                                    resendOtp
+                                        ? "Resend OTP \n $timerSeconds"
+                                        : "Send OTP",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontFamily: 'man-r',
+                                      fontSize: 11,
+                                      color: resendOtp
+                                          ? AppConstants.customBlue
+                                          : Colors.white,
+                                    ),
+                                  ),
+                                )),
+                          )
                         ],
                       ),
                     ),
@@ -210,7 +269,7 @@ class LoginState extends State<Login> {
                                   const BorderRadius.all(Radius.circular(10))),
                           child: Center(
                             child: Text(
-                              "Sign in",
+                              "Verify OTP",
                               style: TextStyle(
                                   fontSize: 20,
                                   color: Colors.white,
@@ -219,7 +278,7 @@ class LoginState extends State<Login> {
                           )),
                     ),
                     onTap: () async {
-                      String err = await authController.loginUser();
+                      String err = await authController.verifyEmailOTP();
                       if (err != "") {
                         showModalBottomSheet(
                             context: context,
@@ -228,6 +287,10 @@ class LoginState extends State<Login> {
                                 error: err,
                               );
                             });
+                      } else {
+                        Get.to(const ResetPassword(),
+                            transition: Transition.rightToLeft,
+                            duration: 300.milliseconds);
                       }
                     },
                   ),

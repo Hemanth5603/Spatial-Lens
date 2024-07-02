@@ -20,6 +20,7 @@ class MapViewer extends StatelessWidget {
       margin: const EdgeInsets.all(20),
       width: double.infinity,
       decoration: BoxDecoration(
+        border: Border.all(color: Colors.white, width: 2),
         borderRadius: BorderRadius.circular(15),
       ),
       child: ClipRRect(

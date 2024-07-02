@@ -12,6 +12,7 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
+import 'package:iitt/views/components/map_viewer.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
 import 'package:iitt/views/image_capture.dart';
 
@@ -222,6 +223,12 @@ class _ActivityViewerState extends State<ActivityViewer> {
                     ),
                   ],
                 ),
+              ),
+              SizedBox(
+                height: 300,
+                child: MapViewer(
+                    latitude: double.parse(widget.latitude!),
+                    longitude: double.parse(widget.longitude!)),
               ),
               Container(
                 width: w,
