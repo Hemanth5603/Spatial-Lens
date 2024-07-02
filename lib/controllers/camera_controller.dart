@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
@@ -55,7 +53,7 @@ class Camera extends GetxController {
         if (kDebugMode) print("Camera permission denied");
       }
     } on CameraException catch (e) {
-      print('CameraException: ${e.code}\n${e.description}');
+      if (kDebugMode) print('CameraException: ${e.code}\n${e.description}');
     }
   }
 

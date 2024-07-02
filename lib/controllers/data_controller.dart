@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,11 +10,12 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/models/leaderboard_model.dart';
-import 'package:iitt/models/user_model.dart';
+
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DataController extends GetxController {
+  @override
   void onInit() {
     super.onInit();
     getActivity();
@@ -38,7 +38,6 @@ class DataController extends GetxController {
     }
     isLoading(true);
     try {
-      print(category);
       var request = http.MultipartRequest('POST', Uri.parse(url));
       request.fields['latitude'] = userController.latitude.toString();
       request.fields['longitude'] = userController.longitude.toString();
@@ -77,8 +76,6 @@ class DataController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       activityModel = ActivityModel.fromJson(data);
-
-      print(data.toString());
     } else {
       if (kDebugMode) print("Error fetcing activity data");
       Get.snackbar("Error", "Cannot fetch data");
@@ -106,7 +103,7 @@ class DataController extends GetxController {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String url = "${ApiConstants.baseUrl}${ApiConstants.getLeaderBoard}";
-    print(url);
+
     final body = {
       "limit": limitValue.toString(),
       "category": category ?? "Default"
@@ -119,8 +116,6 @@ class DataController extends GetxController {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body.toString());
       leaderboardModel = LeaderboardModel.fromJson(data);
-
-      print(data.toString());
     } else {
       if (kDebugMode) print("Error Fetching LeaderBoard");
       Get.snackbar("Error", "Cannot fetch LeaderBoard");

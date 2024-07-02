@@ -1,13 +1,9 @@
 import 'dart:convert';
-import 'dart:ffi';
-import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/get_rx.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
 import 'package:http/http.dart';
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
@@ -15,15 +11,13 @@ import 'package:iitt/models/otp_model.dart';
 import 'package:iitt/models/user_model.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+
 import 'package:http/http.dart' as http;
 import 'package:iitt/utils/generate_token.dart';
 import 'package:iitt/utils/validate_email.dart';
-import 'package:iitt/utils/validate_phone.dart';
+
 import 'package:iitt/views/authentication/location.dart';
-import 'package:iitt/views/authentication/login.dart';
-import 'package:iitt/views/home.dart';
-import 'package:iitt/views/image_capture.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserController extends GetxController {
@@ -66,18 +60,18 @@ class UserController extends GetxController {
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      print('Please keep your location enabled');
+      if (kDebugMode) print('Please keep your location enabled');
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
 
       if (permission == LocationPermission.denied) {
-        print('Location Permission denied!');
+        if (kDebugMode) print('Location Permission denied!');
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      print('Location Permission denied Forever!');
+      if (kDebugMode) print('Location Permission denied Forever!');
     }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -85,7 +79,7 @@ class UserController extends GetxController {
       List<Placemark> placemarks =
           await placemarkFromCoordinates(position.latitude, position.longitude);
       Placemark place = placemarks[0];
-      print(position.latitude);
+      if (kDebugMode) print(position.latitude);
 
       userModel.latitude = position.latitude;
       userModel.longitude = position.longitude;
@@ -102,7 +96,7 @@ class UserController extends GetxController {
       locality.value = place.locality ?? "";
       country.value = place.country ?? "";
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
     }
   }
 
@@ -144,12 +138,7 @@ class UserController extends GetxController {
       var data = jsonDecode(response.body.toString());
       otpModel = OTPModel.fromJson(data);
       otpRequestID = otpModel.requestId!;
-      if (kDebugMode)
-        print(
-            "${otpModel.requestId}////////////////////////////////////////////////////////////");
-      if (kDebugMode)
-        print(
-            "${otpModel.statusCode}////////////////////////////////////////////////////////////");
+
       Get.snackbar(
           "OTP Sent Successfully", "OTP has been sent to given phone number",
           margin: const EdgeInsets.all(15),
