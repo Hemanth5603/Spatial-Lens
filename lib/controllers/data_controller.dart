@@ -10,6 +10,7 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/models/leaderboard_model.dart';
+import 'package:iitt/views/home.dart';
 
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -121,5 +122,26 @@ class DataController extends GetxController {
       Get.snackbar("Error", "Cannot fetch LeaderBoard");
     }
     isLoading(false);
+  }
+
+  Future<String> deleteData(String dataId) async {
+    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.deleteData}");
+    isLoading(true);
+    final body = {"dataid": dataId};
+
+    var response = await http.post(
+      uri,
+      body: body,
+    );
+    isLoading(false);
+
+    if (response.statusCode == 200) {
+      Get.offAll(() => const Home(),
+          transition: Transition.leftToRight, duration: 300.milliseconds);
+    } else {
+      return "Something Went Wrong! Please Try Again";
+    }
+
+    return "";
   }
 }

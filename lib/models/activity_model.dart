@@ -55,7 +55,7 @@ class Data {
     time = json['Time'];
     date = json['Date'];
     isApproved = json['IsApproved'];
-    dataId = json['DateId'];
+    dataId = json['DataId'];
   }
 
   Map<String, dynamic> toJson() {

@@ -13,7 +13,9 @@ import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/components/map_viewer.dart';
+import 'package:iitt/views/components/success_bottom_sheet.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
+import 'package:iitt/views/components/warning_bottom_sheet.dart';
 import 'package:iitt/views/image_capture.dart';
 
 class ActivityViewer extends StatefulWidget {
@@ -26,6 +28,7 @@ class ActivityViewer extends StatefulWidget {
   String? date;
   String? time;
   int? isApproved;
+  int? dataId;
   ActivityViewer(
       {super.key,
       required this.imageUrl,
@@ -35,6 +38,7 @@ class ActivityViewer extends StatefulWidget {
       required this.address,
       required this.remarks,
       required this.date,
+      required this.dataId,
       required this.time,
       required this.isApproved});
 
@@ -58,6 +62,49 @@ class _ActivityViewerState extends State<ActivityViewer> {
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 231, 241, 247),
+        bottomNavigationBar: GestureDetector(
+          onTap: () {
+            showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return WarningBottomSheet(
+                    successMessage: "Are you sure you want to delete ?",
+                    onPressed: () {
+                      Get.back();
+                      dataController.deleteData(widget.dataId.toString());
+                    },
+                    buttonText: "Delete",
+                    textColor: AppConstants.customRedLight,
+                  );
+                });
+          },
+          child: Container(
+            margin: EdgeInsets.all(10),
+            width: MediaQuery.of(context).size.width,
+            height: 50,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                //color: AppConstants.customRedLight,
+
+                border:
+                    Border.all(color: AppConstants.customRedLight, width: 2)),
+            child: Center(
+                child: Obx(
+              () => dataController.isLoading.value
+                  ? const CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: Colors.white,
+                    )
+                  : Text(
+                      "Delete",
+                      style: TextStyle(
+                          fontFamily: 'man-r',
+                          fontSize: 18,
+                          color: AppConstants.customRed),
+                    ),
+            )),
+          ),
+        ),
         appBar: AppBar(
             title: const Text(
           'Your Activity',

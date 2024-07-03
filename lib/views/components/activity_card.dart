@@ -9,19 +9,19 @@ import 'package:iitt/models/activity_model.dart';
 import 'package:iitt/views/activity_viewer.dart';
 
 class activityCard extends StatelessWidget {
-  activityCard({
-    super.key,
-    required this.imageUrl,
-    required this.category,
-    required this.index,
-    required this.latitude,
-    required this.longitude,
-    required this.address,
-    required this.remarks,
-    required this.date,
-    required this.time,
-    required this.isApproved,
-  });
+  activityCard(
+      {super.key,
+      required this.imageUrl,
+      required this.category,
+      required this.index,
+      required this.latitude,
+      required this.longitude,
+      required this.address,
+      required this.remarks,
+      required this.date,
+      required this.time,
+      required this.isApproved,
+      required this.dataId});
   String? imageUrl;
   String? category;
   String? address;
@@ -31,6 +31,7 @@ class activityCard extends StatelessWidget {
   String? date;
   String? time;
   int? isApproved;
+  int? dataId;
 
   int index;
   @override
@@ -47,6 +48,7 @@ class activityCard extends StatelessWidget {
                 remarks: remarks ?? "No Remarks",
                 date: date!,
                 time: time!,
+                dataId: dataId!,
                 isApproved: isApproved!),
             transition: Transition.rightToLeft,
             duration: 300.milliseconds);

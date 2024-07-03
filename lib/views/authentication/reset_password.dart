@@ -215,6 +215,7 @@ class ResetPasswordState extends State<ResetPassword> {
                                   successMessage:
                                       "Reset Password Successfull, Plese Login in",
                                   buttonText: "Login",
+                                  textColor: Colors.green,
                                   onPressed: () => Get.offAll(const Login(),
                                       transition: Transition.leftToRight,
                                       duration: 300.milliseconds));

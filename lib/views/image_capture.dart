@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/controllers/camera_controller.dart';
@@ -5,6 +7,8 @@ import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/image_viewer.dart';
 import 'package:camera/camera.dart';
+import 'package:path/path.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 
 class ImageCapture extends StatefulWidget {
   @override
@@ -20,7 +24,6 @@ class _ImageCaptureState extends State<ImageCapture> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -28,7 +31,7 @@ class _ImageCaptureState extends State<ImageCapture> {
         children: [
           show == false
               ? Container(
-                  width: w,
+                  width: MediaQuery.of(context).size.width,
                   height: h * 0.8,
                   color: Colors.black,
                 )
@@ -50,7 +53,7 @@ class _ImageCaptureState extends State<ImageCapture> {
               _takePicture(camera);
             },
             child: Container(
-              width: w,
+              width: MediaQuery.of(context).size.width,
               height: h * 0.2,
               color: const Color.fromARGB(255, 0, 0, 0),
               child: Center(
@@ -85,6 +88,13 @@ class _ImageCaptureState extends State<ImageCapture> {
       XFile file = await camera.cameraController.takePicture();
       capturedImage = file.path;
       dataController.filePath = file.path;
+
+      // Save the image to the gallery
+      final Uint8List imageData = await file.readAsBytes();
+      final result = await ImageGallerySaver.saveImage(imageData,
+          quality: 80, name: basename(file.path));
+      print("Save result: $result");
+
       userController.getCurrentLocation();
       Get.to(
         ImageViewer(path: capturedImage),

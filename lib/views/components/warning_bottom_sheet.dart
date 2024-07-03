@@ -4,8 +4,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/views/home.dart';
 
-class SuccessBottomSheet extends StatelessWidget {
-  SuccessBottomSheet(
+class WarningBottomSheet extends StatelessWidget {
+  WarningBottomSheet(
       {super.key,
       required this.successMessage,
       required this.onPressed,
@@ -40,9 +40,9 @@ class SuccessBottomSheet extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                     color: Color.fromARGB(255, 238, 238, 238)),
                 child: Center(
-                    child: Image.asset(
-                  "assets/icons/accept.png",
-                  width: 25,
+                    child: Icon(
+                  Icons.warning_rounded,
+                  color: AppConstants.customRedLight,
                 )),
               ),
               Container(
@@ -54,7 +54,7 @@ class SuccessBottomSheet extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 16.0,
                       fontFamily: 'poppins',
-                      color: Colors.green,
+                      color: textColor,
                       fontWeight: FontWeight.bold),
                 ),
               ),
@@ -64,7 +64,6 @@ class SuccessBottomSheet extends StatelessWidget {
           GestureDetector(
             onTap: () {
               onPressed(); // Invoke the onPressed function
-              print("tapped");
             },
             child: Container(
               height: 50,

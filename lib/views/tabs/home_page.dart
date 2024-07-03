@@ -442,6 +442,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           isApproved: dataController
                                   .activityModel.data?[index].isApproved ??
                               0,
+                          dataId:
+                              dataController.activityModel.data?[index].dataId,
                         );
                       },
                     ),
