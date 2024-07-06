@@ -4,6 +4,7 @@ import 'package:iitt/controllers/user_controller.dart';
 
 import 'package:iitt/views/authentication/location.dart';
 import 'package:iitt/views/authentication/login.dart';
+import 'package:iitt/views/authentication/on_boarding.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/home.dart';
 import 'package:iitt/views/image_capture.dart';
@@ -43,7 +44,7 @@ class MainApp extends StatelessWidget {
           colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: isLoggedIn == 1 ? Home() : const Login(),
+        body: isLoggedIn == 1 ? const Home() : const Login(),
       ),
     );
   }

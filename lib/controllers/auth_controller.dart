@@ -284,6 +284,31 @@ class AuthController extends GetxController {
     return "";
   }
 
+  Future<String> deleteAccount() async {
+    final uri =
+        Uri.parse("${ApiConstants.baseUrl}${ApiConstants.deleteAccount}");
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String id = prefs.getString("id")!;
+
+    final body = {"id": id};
+
+    var response = await http.post(
+      uri,
+      body: body,
+    );
+    if (response.statusCode == 200) {
+      Get.offAll(() => const Login(),
+          transition: Transition.leftToRight, duration: 300.milliseconds);
+
+      if (kDebugMode) print("Account Deletion Succesfull");
+    } else {
+      if (kDebugMode) print("Cannot Delete account");
+      return "Something Went Wrong! Please Try Again";
+    }
+    return "";
+  }
+
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("isLoggedIn", 0);

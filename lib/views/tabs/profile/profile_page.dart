@@ -4,6 +4,7 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/components/warning_bottom_sheet.dart';
 import 'package:iitt/views/tabs/profile/edit_profile.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -352,7 +353,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildSettings() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 115,
+      height: 165,
       margin: EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -362,9 +363,9 @@ class _ProfilePageState extends State<ProfilePage> {
           SizedBox(height: 5),
           Container(
             width: MediaQuery.of(context).size.width,
-            height: 65,
+            height: 120,
             margin: EdgeInsets.all(5),
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.white,
@@ -377,12 +378,28 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             child: Column(
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 GestureDetector(
                   onTap: () {
                     authController.logOut();
                   },
-                  child: _buildProfileTile(Icons.logout, "Logout", " ", true),
+                  child: _buildProfileTile(Icons.logout, "Logout", " ", false),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                        context: context,
+                        builder: (context) {
+                          return WarningBottomSheet(
+                              successMessage:
+                                  "Do you really want to delete your account ?",
+                              onPressed: () => authController.deleteAccount(),
+                              buttonText: "Delete Account",
+                              textColor: AppConstants.customRedLight);
+                        });
+                  },
+                  child: _buildProfileTile(
+                      Icons.delete, "Delete Account", " ", true),
                 ),
               ],
             ),

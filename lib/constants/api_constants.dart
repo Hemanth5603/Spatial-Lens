@@ -16,4 +16,5 @@ class ApiConstants {
   static String resetPasswordEmail = "/iitt/resetPasswordEmail";
   static String resetPassword = "/iitt/resetPassword";
   static String deleteData = "/iitt/deleteData";
+  static String deleteAccount = "/iitt/deleteAccount";
 }
