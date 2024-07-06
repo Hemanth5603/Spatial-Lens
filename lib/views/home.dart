@@ -1,10 +1,13 @@
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
+import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/main.dart';
+import 'package:iitt/views/leaderboard.dart';
 import 'package:iitt/views/tabs/home_page.dart';
 import 'package:iitt/views/tabs/profile/profile_page.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -21,6 +24,7 @@ class _HomeState extends State<Home> {
   late PageController pageController;
   var isLoading = false;
   DataController dataController = Get.put(DataController());
+  UserController userController = Get.put(UserController());
 
   @override
   void initState() {
@@ -45,6 +49,8 @@ class _HomeState extends State<Home> {
       isLoading = true;
     });
     await dataController.getActivity();
+    await userController.getUser();
+    await dataController.getLeaderBoard("Top 0", "Default");
     setState(() {
       isLoading = false;
     });
@@ -53,43 +59,23 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Skeletonizer(enabled: isLoading, child: const HomePage()),
+      bottomNavigationBar: BottomBarDefault(
+        onTap: (index) {
+          setState(() {
+            selectedIndex = index;
+            pageController.jumpToPage(index);
+          });
+        },
+        items: AppConstants.items,
+        indexSelected: selectedIndex,
+        backgroundColor: Colors.white,
+        color: const Color.fromARGB(255, 210, 235, 255),
+        colorSelected: AppConstants.customBlue,
+      ),
+      body: PageView(
+        controller: pageController,
+        children: AppConstants.screens,
+      ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
- // bottomNavigationBar: BottomNavigationBar(
-      //     type: BottomNavigationBarType.fixed,
-      //     backgroundColor: Color.fromARGB(255, 255, 249, 249),
-      //     selectedItemColor: AppConstants.customRed,
-      //     unselectedItemColor: AppConstants.customRed,
-      //     elevation: 10,
-      //     currentIndex: selectedIndex,
-      //     onTap: (value) {
-      //       setState(() {
-      //         if (value == 0) {}
-      //         selectedIndex = value;
-      //       });
-      //       pageController.animateToPage(selectedIndex,
-      //           duration: const Duration(milliseconds: 600),
-      //           curve: Curves.easeOutQuad);
-      //     },
-      //     items: AppConstants.tabs),
-      // body: PageView(
-      //   controller: pageController,
-      //   children: const <Widget>[
-      //     HomePage(),
-      //     ProfilePage(),
-      //   ],
-      // ),

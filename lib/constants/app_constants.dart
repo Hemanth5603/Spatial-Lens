@@ -1,4 +1,8 @@
+import 'package:awesome_bottom_bar/tab_item.dart';
 import 'package:flutter/material.dart';
+import 'package:iitt/views/leaderboard.dart';
+import 'package:iitt/views/tabs/home_page.dart';
+import 'package:iitt/views/tabs/profile/profile_page.dart';
 
 class AppConstants {
   static List<BottomNavigationBarItem> tabs = const [
@@ -10,6 +14,24 @@ class AppConstants {
         icon: Icon(Icons.person_outline_outlined),
         activeIcon: Icon(Icons.person_2_rounded),
         label: 'Profile'),
+  ];
+
+  static List<Widget> screens = const [
+    HomePage(),
+    LeaderboardPage(),
+    ProfilePage(),
+  ];
+
+  static List<TabItem> items = const [
+    TabItem(icon: Icons.home_rounded, title: 'Home'),
+    TabItem(
+      icon: Icons.leaderboard,
+      title: 'LeaderBoard',
+    ),
+    TabItem(
+      icon: Icons.person_rounded,
+      title: 'profile',
+    ),
   ];
 
   static List<String> choices = [

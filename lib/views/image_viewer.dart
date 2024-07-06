@@ -1,12 +1,11 @@
-import 'dart:collection';
 import 'dart:io';
-import 'dart:ui';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
@@ -14,11 +13,10 @@ import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/components/map_viewer.dart';
 import 'package:iitt/views/components/success_upload_bottomsheet.dart';
 import 'package:iitt/views/home.dart';
-import 'package:iitt/views/image_capture.dart';
 
 class ImageViewer extends StatefulWidget {
-  String path;
-  ImageViewer({
+  final String path;
+  const ImageViewer({
     super.key,
     required this.path,
   });
@@ -28,9 +26,74 @@ class ImageViewer extends StatefulWidget {
 }
 
 class _ImageViewerState extends State<ImageViewer> {
+  List<String> filteredTags = [];
+  int selectedTag = 0;
+
+  TextEditingController searchController = TextEditingController();
+
   String? selectedItem = "Default";
   void setSelectedValue(String? value) {
     setState(() => selectedItem = value);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    filteredTags = AppConstants.choices;
+
+    searchController.addListener(() {
+      filterTags();
+    });
+  }
+
+  void filterTags() {
+    setState(() {
+      filteredTags = AppConstants.choices
+          .where((tag) =>
+              tag.toLowerCase().contains(searchController.text.toLowerCase()))
+          .toList();
+    });
+  }
+
+  void _showAddTagDialog() {
+    TextEditingController tagController = TextEditingController();
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Add New Tag',
+            style: TextStyle(fontFamily: 'man-r', fontSize: 16),
+          ),
+          content: TextField(
+            controller: tagController,
+            decoration: InputDecoration(
+                labelText: 'Tag Name',
+                labelStyle: TextStyle(fontSize: 14, fontFamily: 'man-r')),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                if (tagController.text.isNotEmpty) {
+                  setState(() {
+                    AppConstants.choices.insert(0, tagController.text);
+                    filterTags();
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -43,6 +106,52 @@ class _ImageViewerState extends State<ImageViewer> {
 
     return Scaffold(
         backgroundColor: Color.fromARGB(255, 231, 241, 247),
+        bottomNavigationBar: GestureDetector(
+          onTap: () async {
+            String res = await dataController.uploadData(selectedItem!);
+            if (res == "") {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return BottomSheetContent();
+                  });
+            } else {
+              showModalBottomSheet(
+                  context: context,
+                  builder: (context) {
+                    return ErrorBottomSheet(
+                      error: res,
+                    );
+                  });
+            }
+          },
+          child: Container(
+            width: w,
+            height: 45,
+            margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            decoration: BoxDecoration(
+                color: AppConstants.customBlue,
+                borderRadius: BorderRadius.circular(10)),
+            child: Obx(
+              () => dataController.isLoading.value
+                  ? const Center(
+                      child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Center(
+                      child: Text(
+                        "Upload Data",
+                        style: TextStyle(
+                            fontFamily: 'man-r',
+                            fontSize: 18,
+                            color: Color.fromARGB(255, 254, 253, 253),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+            ),
+          ),
+        ),
         appBar: AppBar(
             title: const Text(
           'Review Data',
@@ -274,61 +383,6 @@ class _ImageViewerState extends State<ImageViewer> {
               ),
               Container(
                 width: w,
-                height: 25,
-                margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Select Category :",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontFamily: 'poppins',
-                          color: AppConstants.customBlue,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
-              ),
-              InlineChoice<String>.single(
-                clearable: true,
-                value: selectedItem,
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedItem = value;
-                  });
-                },
-                itemCount: AppConstants.choices.length,
-                itemBuilder: (state, i) {
-                  return ChoiceChip(
-                    padding: EdgeInsets.all(3),
-                    selected: state.selected(AppConstants.choices[i]),
-                    onSelected: state.onSelected(AppConstants.choices[i]),
-                    label: Text(
-                      AppConstants.choices[i],
-                      style: const TextStyle(
-                          fontFamily: 'poppins',
-                          fontSize: 10,
-                          fontWeight: FontWeight.w300),
-                    ),
-                    selectedColor: Color.fromARGB(
-                        255, 136, 255, 156), // Change selected color to red
-                    avatar: state.selected(AppConstants.choices[i])
-                        ? Icon(Icons.check) // Show check mark if selected
-                        : null,
-                  );
-                },
-                listBuilder: ChoiceList.createWrapped(
-                  spacing: 10,
-                  runSpacing: 10,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 25,
-                  ),
-                ),
-              ),
-              Container(
-                width: w,
                 height: 20,
                 margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
                 child: Text(
@@ -341,7 +395,7 @@ class _ImageViewerState extends State<ImageViewer> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 width: w,
                 height: 100,
                 child: TextField(
@@ -364,8 +418,161 @@ class _ImageViewerState extends State<ImageViewer> {
                 ),
               ),
               SizedBox(
-                height: 15,
+                height: 10,
               ),
+              Container(
+                width: w,
+                height: 25,
+                margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Select Category :",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontFamily: 'poppins',
+                          color: AppConstants.customBlue,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: w,
+                height: 500,
+                child: Column(
+                  children: [
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15.0, vertical: 10),
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          labelText: 'Search Category',
+                          labelStyle:
+                              TextStyle(fontFamily: 'man-r', fontSize: 14),
+                          border: OutlineInputBorder(),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: ChipsChoice<int>.single(
+                          leading: GestureDetector(
+                            onTap: () {
+                              _showAddTagDialog();
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(5),
+                              width: 100,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: Color.fromRGBO(185, 229, 255, 1),
+                              ),
+                              child: Center(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.add_rounded,
+                                      size: 20,
+                                    ),
+                                    Text(
+                                      "Add Tag",
+                                      style: TextStyle(
+                                          fontFamily: 'man-r', fontSize: 12),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                          value: selectedTag,
+                          onChanged: (val) => setState(() {
+                            selectedTag = val;
+                            selectedItem = filteredTags[val];
+                          }),
+                          choiceItems: C2Choice.listFrom<int, String>(
+                            source: filteredTags,
+                            value: (i, v) => i,
+                            label: (i, v) => v,
+                            tooltip: (i, v) => v,
+                          ),
+                          choiceBuilder: (item, i) {
+                            return ChoiceChip(
+                              selectedColor: Color.fromRGBO(185, 229, 255, 1),
+                              padding: EdgeInsets.all(0),
+                              side: BorderSide(
+                                  color: Color.fromARGB(0, 255, 255, 255)),
+                              showCheckmark: true,
+                              checkmarkColor: AppConstants.customBlue,
+                              label: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    item.label,
+                                    style: TextStyle(
+                                        fontFamily: 'man-r',
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w200),
+                                  ),
+                                ],
+                              ),
+                              selected: item.selected,
+                              onSelected: item.select,
+                            );
+                          },
+                          wrapped: true,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // InlineChoice<String>.single(
+              //   clearable: true,
+              //   value: selectedItem,
+              //   onChanged: (String? value) {
+              //     setState(() {
+              //       selectedItem = value;
+              //     });
+              //   },
+              //   itemCount: AppConstants.choices.length,
+              //   itemBuilder: (state, i) {
+              //     return ChoiceChip(
+              //       padding: EdgeInsets.all(3),
+              //       selected: state.selected(AppConstants.choices[i]),
+              //       onSelected: state.onSelected(AppConstants.choices[i]),
+              //       label: Text(
+              //         AppConstants.choices[i],
+              //         style: const TextStyle(
+              //             fontFamily: 'poppins',
+              //             fontSize: 10,
+              //             fontWeight: FontWeight.w300),
+              //       ),
+              //       selectedColor: Color.fromARGB(
+              //           255, 136, 255, 156), // Change selected color to red
+              //       avatar: state.selected(AppConstants.choices[i])
+              //           ? Icon(Icons.check) // Show check mark if selected
+              //           : null,
+              //     );
+              //   },
+              //   listBuilder: ChoiceList.createWrapped(
+              //     spacing: 10,
+              //     runSpacing: 10,
+              //     padding: const EdgeInsets.symmetric(
+              //       horizontal: 20,
+              //       vertical: 25,
+              //     ),
+              //   ),
+              // ),
+
               GestureDetector(
                   onTap: () async {
                     Get.off(() => Home(),
@@ -392,52 +599,7 @@ class _ImageViewerState extends State<ImageViewer> {
                       ),
                     ),
                   )),
-              GestureDetector(
-                onTap: () async {
-                  String res = await dataController.uploadData(selectedItem!);
-                  if (res == "") {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return BottomSheetContent();
-                        });
-                  } else {
-                    showModalBottomSheet(
-                        context: context,
-                        builder: (context) {
-                          return ErrorBottomSheet(
-                            error: res,
-                          );
-                        });
-                  }
-                },
-                child: Container(
-                  width: w,
-                  height: h * 0.06,
-                  margin: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: AppConstants.customBlue,
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Obx(
-                    () => dataController.isLoading.value
-                        ? const Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.white,
-                            ),
-                          )
-                        : const Center(
-                            child: Text(
-                              "Upload Data",
-                              style: TextStyle(
-                                  fontFamily: 'man-r',
-                                  fontSize: 18,
-                                  color: Color.fromARGB(255, 254, 253, 253),
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ),
-                  ),
-                ),
-              ),
+
               Container(
                 width: w,
                 height: h * 0.25,

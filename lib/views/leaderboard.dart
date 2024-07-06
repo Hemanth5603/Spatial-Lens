@@ -30,7 +30,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
     // Delay the getLeaderBoard call to avoid issues during the build process
     callGetUser();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      dataController.getLeaderBoard(selectedLimit, selectedCategory);
+      //dataController.getLeaderBoard(selectedLimit, selectedCategory);
     });
     Future.delayed(const Duration(seconds: 2), () {});
   }

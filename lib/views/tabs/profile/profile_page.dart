@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/api_constants.dart';
@@ -38,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    userController.getUser();
+    //userController.getUser();
   }
 
   @override
@@ -48,11 +46,11 @@ class _ProfilePageState extends State<ProfilePage> {
       body: SafeArea(
         child: Obx(() {
           if (userController.isLoading.value) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           return SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
                 _buildProfileHeader(),
@@ -96,10 +94,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               userController.userModel.name ?? "User",
-              style: TextStyle(
+              style: const TextStyle(
                   fontSize: 18,
                   fontFamily: 'poppins',
                   fontWeight: FontWeight.bold),
@@ -111,16 +109,17 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget _buildBackButton() {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       height: 50,
       child: Row(
         children: [
           Padding(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             child: IconButton(
               onPressed: () => Get.back(),
-              icon: Icon(Icons.arrow_back_ios, size: 30, color: Colors.black),
+              icon: const Icon(Icons.arrow_back_ios,
+                  size: 30, color: Colors.black),
             ),
           ),
         ],

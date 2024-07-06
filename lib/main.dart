@@ -37,7 +37,7 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       theme: ThemeData(
-          fontFamily: 'poppins',
+          fontFamily: 'man-r',
           scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
           primaryColor: AppConstants.customBlue,
           colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),

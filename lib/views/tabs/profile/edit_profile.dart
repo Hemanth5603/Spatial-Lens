@@ -8,7 +8,7 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/home.dart';
-import 'package:iitt/views/tabs/profile/profile_page.dart';
+
 import 'package:image_picker/image_picker.dart';
 
 class EditProfile extends StatefulWidget {
@@ -136,7 +136,7 @@ class _EditProfileState extends State<EditProfile> {
                   width: w,
                   height: h * 0.2,
                   alignment: Alignment.center,
-                  color: Color.fromARGB(255, 255, 255, 255),
+                  color: const Color.fromARGB(255, 255, 255, 255),
                   child: Stack(
                     children: [
                       GestureDetector(
@@ -148,7 +148,7 @@ class _EditProfileState extends State<EditProfile> {
                             height: w * 0.35,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(100),
-                              color: Color.fromARGB(255, 255, 255, 255),
+                              color: const Color.fromARGB(255, 255, 255, 255),
                             ),
                             child: profileImage == "null"
                                 ? Center(

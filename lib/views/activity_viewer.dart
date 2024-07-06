@@ -1,22 +1,15 @@
-import 'dart:io';
-import 'dart:ui';
-
-import 'package:choice/choice.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
-import 'package:iitt/views/components/error_bottom_sheet.dart';
+
 import 'package:iitt/views/components/map_viewer.dart';
-import 'package:iitt/views/components/success_bottom_sheet.dart';
-import 'package:iitt/views/components/success_upload_bottomsheet.dart';
+
 import 'package:iitt/views/components/warning_bottom_sheet.dart';
-import 'package:iitt/views/image_capture.dart';
 
 class ActivityViewer extends StatefulWidget {
   String? imageUrl;
@@ -57,11 +50,10 @@ class _ActivityViewerState extends State<ActivityViewer> {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
 
-    UserController userController = Get.put(UserController());
     DataController dataController = Get.put(DataController());
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 241, 247),
+        backgroundColor: const Color.fromARGB(255, 231, 241, 247),
         bottomNavigationBar: GestureDetector(
           onTap: () {
             showModalBottomSheet(
@@ -79,7 +71,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                 });
           },
           child: Container(
-            margin: EdgeInsets.all(10),
+            margin: const EdgeInsets.all(10),
             width: MediaQuery.of(context).size.width,
             height: 50,
             decoration: BoxDecoration(
@@ -136,14 +128,14 @@ class _ActivityViewerState extends State<ActivityViewer> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 width: w,
                 height: 025,
-                child: Text(
+                child: const Text(
                   "Image Information :",
                   style: TextStyle(
                       fontFamily: 'poppins',
@@ -153,18 +145,18 @@ class _ActivityViewerState extends State<ActivityViewer> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 30,
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromARGB(255, 240, 248, 255),
                                 blurRadius: 10)
@@ -180,10 +172,10 @@ class _ActivityViewerState extends State<ActivityViewer> {
                                 fontWeight: FontWeight.bold,
                                 color: AppConstants.customBlue),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             "Latitude",
                             style: TextStyle(
                               fontFamily: 'man-r',
@@ -195,12 +187,12 @@ class _ActivityViewerState extends State<ActivityViewer> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 30,
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromARGB(255, 240, 248, 255),
                                 blurRadius: 10)
@@ -216,10 +208,10 @@ class _ActivityViewerState extends State<ActivityViewer> {
                                 fontWeight: FontWeight.bold,
                                 color: AppConstants.customBlue),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             "Longitude",
                             style: TextStyle(
                               fontFamily: 'man-r',
@@ -234,13 +226,13 @@ class _ActivityViewerState extends State<ActivityViewer> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(15),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(15),
                 height: 80,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         color: Color.fromARGB(255, 240, 248, 255),
                         blurRadius: 10)
@@ -250,7 +242,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(
+                    const Text(
                       "Address",
                       style: TextStyle(
                         fontFamily: 'man-r',
@@ -265,7 +257,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                           fontWeight: FontWeight.bold,
                           color: AppConstants.customBlue),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                   ],
@@ -281,7 +273,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                 width: w,
                 height: 25,
                 margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
@@ -327,7 +319,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                 ),
               ),
               Container(
-                  margin: EdgeInsets.symmetric(horizontal: 20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
                   width: w,
                   height: 100,
                   child: Text(
@@ -338,7 +330,7 @@ class _ActivityViewerState extends State<ActivityViewer> {
                         overflow: TextOverflow.ellipsis,
                         color: AppConstants.customBlue),
                   )),
-              Container(
+              SizedBox(
                 width: w,
                 height: h * 0.25,
               )
