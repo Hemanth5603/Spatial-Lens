@@ -44,7 +44,7 @@ class MainApp extends StatelessWidget {
           colorScheme: ColorScheme.light(primary: AppConstants.customBlue)),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: isLoggedIn == 1 ? const Home() : const Login(),
+        body: isLoggedIn == 1 ? const Home() : const OnBoarding(),
       ),
     );
   }

@@ -76,7 +76,6 @@ class _ProfilePageState extends State<ProfilePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildBackButton(),
             Stack(
               children: [
                 _buildProfileImage(),

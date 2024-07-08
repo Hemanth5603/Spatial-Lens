@@ -109,19 +109,6 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                 children: [
                   SizedBox(
                     height: 10,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: IconButton(
-                              onPressed: () {
-                                Get.back();
-                                print("ppreseed");
-                              },
-                              icon: Icon(Icons.arrow_back_ios_rounded)),
-                        )
-                      ],
-                    ),
                   ),
                   Center(
                     child: const Text(

@@ -15,6 +15,7 @@ import 'package:iitt/utils/generate_token.dart';
 import 'package:iitt/utils/validate_email.dart';
 
 import 'package:iitt/views/authentication/login.dart';
+import 'package:iitt/views/authentication/on_boarding.dart';
 import 'package:iitt/views/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -312,7 +313,7 @@ class AuthController extends GetxController {
   void logOut() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setInt("isLoggedIn", 0);
-    Get.offAll(const Login(),
+    Get.offAll(const OnBoarding(),
         transition: Transition.rightToLeft, duration: 300.milliseconds);
   }
 }

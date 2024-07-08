@@ -22,6 +22,17 @@ class AppConstants {
     ProfilePage(),
   ];
 
+  static List<String> onBoardTitles = [
+    "Capture Geo-Spatial Data",
+    "Review and Upload ",
+    "Grow Up on the LeaderBoard",
+  ];
+
+  static List<String> onboardDescriptions = [
+    "Capture Geo spatial images using camera and select appropriate category tag along with an optional comment ..",
+    "Review data throughly including latitude, longitude and address and upload the data. The Uploaded will be then be reviewed by admins and approved",
+    "Grow on the leaderboard on every successfull and valid contribution made by you !!"
+  ];
   static List<TabItem> items = const [
     TabItem(icon: Icons.home_rounded, title: 'Home'),
     TabItem(
