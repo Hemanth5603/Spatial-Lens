@@ -4,6 +4,7 @@ import 'package:iitt/constants/api_constants.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
+import 'package:iitt/views/about.dart';
 import 'package:iitt/views/components/warning_bottom_sheet.dart';
 import 'package:iitt/views/tabs/profile/edit_profile.dart';
 import 'package:image_picker/image_picker.dart';
@@ -58,6 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 _buildUserStats(),
                 _buildPersonalInformation(),
                 _buildSettings(),
+                _buildAbout(),
               ],
             ),
           );
@@ -87,7 +89,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       //pickImageFromGallery();
                       Get.to(() => const EditProfile(),
                           transition: Transition.rightToLeft,
-                          duration: 300.milliseconds);
+                          duration: const Duration(milliseconds: 300));
                     },
                     child: _buildEditIcon(),
                   ),
@@ -175,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
         borderRadius: BorderRadius.circular(50),
         color: AppConstants.customBlue,
       ),
-      child: Center(
+      child: const Center(
         child: Icon(
           Icons.edit,
           color: Colors.white,
@@ -193,17 +195,18 @@ class _ProfilePageState extends State<ProfilePage> {
           profileImage = "null";
         });
         Get.to(() => const EditProfile(),
-            transition: Transition.rightToLeft, duration: 300.milliseconds);
+            transition: Transition.rightToLeft,
+            duration: const Duration(milliseconds: 300));
       },
       child: Container(
-        margin: EdgeInsets.all(15),
+        margin: const EdgeInsets.all(15),
         width: MediaQuery.of(context).size.width,
         height: 50,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: AppConstants.customBlue,
         ),
-        child: Center(
+        child: const Center(
           child: Text(
             "Update Profile",
             style: TextStyle(
@@ -217,7 +220,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildUserStats() {
     return Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       height: 120,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,12 +235,12 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildContributionCard() {
     return Expanded(
       child: Container(
-        margin: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(5),
         height: 100,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
                 color: Color.fromARGB(101, 207, 207, 207), blurRadius: 20),
           ],
@@ -248,13 +251,13 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               userController.userModel.contributions.toString(),
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'poppins',
                   fontSize: 22,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 5),
-            Row(
+            const SizedBox(height: 5),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Total Contributions", style: TextStyle(fontSize: 12)),
@@ -270,11 +273,11 @@ class _ProfilePageState extends State<ProfilePage> {
     return Expanded(
       child: Container(
         height: 100,
-        margin: EdgeInsets.all(5),
+        margin: const EdgeInsets.all(5),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
                 color: Color.fromARGB(101, 207, 207, 207), blurRadius: 20),
           ],
@@ -285,13 +288,13 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             Text(
               userController.userModel.rank.toString(),
-              style: TextStyle(
+              style: const TextStyle(
                   fontFamily: 'poppins',
                   fontSize: 22,
                   fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 5),
-            Row(
+            const SizedBox(height: 5),
+            const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text("Rank", style: TextStyle(fontSize: 14)),
@@ -307,7 +310,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 260,
-      margin: EdgeInsets.all(20),
+      margin: const EdgeInsets.all(20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -315,24 +318,25 @@ class _ProfilePageState extends State<ProfilePage> {
             "Personal Information",
             style: TextStyle(fontFamily: 'poppins', fontSize: 14),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Container(
             width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             height: 220,
-            margin: EdgeInsets.all(5),
+            margin: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.white,
-              border: Border.all(color: Color.fromARGB(218, 211, 211, 211)),
-              boxShadow: [
+              border:
+                  Border.all(color: const Color.fromARGB(218, 211, 211, 211)),
+              boxShadow: const [
                 BoxShadow(
                     color: Color.fromARGB(54, 207, 207, 207), blurRadius: 20),
               ],
             ),
             child: Column(
               children: [
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 _buildProfileTile(Icons.email_outlined, "Email",
                     userController.userModel.email!),
                 _buildProfileTile(Icons.location_pin, "Location",
@@ -353,24 +357,24 @@ class _ProfilePageState extends State<ProfilePage> {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 165,
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Settings",
               style: TextStyle(fontFamily: 'poppins', fontSize: 14)),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Container(
             width: MediaQuery.of(context).size.width,
             height: 120,
-            margin: EdgeInsets.all(5),
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            margin: const EdgeInsets.all(5),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
               color: Colors.white,
               border: Border.all(
-                  color: Color.fromARGB(169, 201, 201, 201), width: 1),
-              boxShadow: [
+                  color: const Color.fromARGB(169, 201, 201, 201), width: 1),
+              boxShadow: const [
                 BoxShadow(
                     color: Color.fromARGB(54, 207, 207, 207), blurRadius: 20),
               ],
@@ -408,6 +412,48 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Widget _buildAbout() {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: 155,
+      margin: const EdgeInsets.all(15),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: 65,
+            margin: const EdgeInsets.all(5),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: Colors.white,
+              border: Border.all(
+                  color: const Color.fromARGB(169, 201, 201, 201), width: 1),
+              boxShadow: const [
+                BoxShadow(
+                    color: Color.fromARGB(54, 207, 207, 207), blurRadius: 20),
+              ],
+            ),
+            child: Column(
+              children: [
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    Get.to(() => const About(),
+                        transition: Transition.rightToLeft,
+                        duration: const Duration(milliseconds: 300));
+                  },
+                  child: _buildProfileTile(Icons.info, "About", " ", true),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProfileTile(IconData icon, String title, String value,
       [bool lastTile = false]) {
     return Container(
@@ -425,22 +471,22 @@ class _ProfilePageState extends State<ProfilePage> {
                   Container(
                     width: 25,
                     height: 25,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100),
-                      color: Color.fromARGB(255, 233, 236, 255),
+                      color: const Color.fromARGB(255, 233, 236, 255),
                     ),
                     child: Center(
                       child: Icon(
                         icon,
-                        color: Color.fromARGB(255, 117, 117, 117),
+                        color: const Color.fromARGB(255, 117, 117, 117),
                         size: 16,
                       ),
                     ),
                   ),
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 12,
                         fontFamily: 'poppins',
                         fontWeight: FontWeight.w300),
@@ -448,7 +494,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               Container(
-                margin: EdgeInsets.only(right: 15),
+                margin: const EdgeInsets.only(right: 15),
                 child: Text(
                   value == "" ? "Update your Profile" : value,
                   style: TextStyle(
@@ -466,7 +512,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               width: MediaQuery.of(context).size.width,
               height: 1,
-              color: Color.fromARGB(190, 224, 224, 224),
+              color: const Color.fromARGB(190, 224, 224, 224),
             ),
         ],
       ),
