@@ -131,7 +131,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 height: 50,
               ),
               Text(
-                "SpatialLens",
+                "Spatial Lens",
                 style: TextStyle(
                   fontFamily: 'man-r',
                   fontSize: 20,
@@ -175,7 +175,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 height: 50,
               ),
               Text(
-                "SpatialLens",
+                "Spatial Lens",
                 style: TextStyle(
                   fontFamily: 'man-r',
                   fontSize: 20,
@@ -219,7 +219,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 height: 50,
               ),
               Text(
-                "SpatialLens",
+                "Spatial Lens",
                 style: TextStyle(
                   fontFamily: 'man-r',
                   fontSize: 20,

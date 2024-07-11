@@ -40,7 +40,7 @@ class _ImageCaptureState extends State<ImageCapture> {
               ? Positioned(
                   child: Container(
                     width: MediaQuery.of(context).size.width,
-                    height: h * 0.7,
+                    height: h * 0.8,
                     color: Colors.black,
                   ),
                 )

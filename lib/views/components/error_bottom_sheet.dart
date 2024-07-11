@@ -38,10 +38,13 @@ class ErrorBottomSheet extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(
+                width: 10,
+              ),
               Container(
                 width: MediaQuery.of(context).size.width * 0.8,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+                    const EdgeInsets.symmetric(horizontal: 00.0, vertical: 10),
                 child: Text(
                   error,
                   style: TextStyle(

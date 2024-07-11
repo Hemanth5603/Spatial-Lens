@@ -135,7 +135,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                           null
                                                       ? "Hi ! 👋"
                                                       : "Hi ${userController.userModel.first_name} ! 👋",
-                                                  style: TextStyle(
+                                                  style: const TextStyle(
                                                     fontFamily: 'poppins',
                                                     fontSize: 30,
                                                     color: Colors.white,
@@ -161,34 +161,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                               ),
                                             ],
                                           ),
-                                          // Container(
-                                          //   width: 60,
-                                          //   height: 60,
-                                          //   margin: EdgeInsets.only(right: 10),
-                                          //   decoration: BoxDecoration(
-                                          //     borderRadius:
-                                          //         BorderRadius.circular(50),
-                                          //     border: Border.all(
-                                          //         color: Colors.white,
-                                          //         width: 1),
-                                          //   ),
-                                          //   child: Center(
-                                          //     child: IconButton(
-                                          //       onPressed: () {
-                                          //         Get.to(ProfilePage(),
-                                          //             transition: Transition
-                                          //                 .rightToLeft,
-                                          //             duration:
-                                          //                 300.milliseconds);
-                                          //       },
-                                          //       icon: const Icon(
-                                          //         Icons.person_outline_rounded,
-                                          //         size: 30,
-                                          //         color: Colors.white,
-                                          //       ),
-                                          //     ),
-                                          //   ),
-                                          // ),
                                         ],
                                       ),
                                       const SizedBox(
@@ -327,73 +299,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                           ),
                         ],
                       ),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     Get.to(() => const LeaderboardPage(),
-                      //         transition: Transition.rightToLeft,
-                      //         duration: 300.milliseconds);
-                      //   },
-                      //   child: Container(
-                      //     width: MediaQuery.of(context).size.width,
-                      //     height: 150,
-                      //     margin: const EdgeInsets.all(25),
-                      //     decoration: BoxDecoration(
-                      //       color: Color.fromARGB(255, 227, 243, 255),
-                      //       borderRadius: BorderRadius.circular(10),
-                      //     ),
-                      //     child: Stack(
-                      //       children: [
-                      //         Positioned(
-                      //           left: 15,
-                      //           top: 15,
-                      //           child: SizedBox(
-                      //             height: 100,
-                      //             child: Text(
-                      //               "Find Where You Rank !",
-                      //               style: TextStyle(
-                      //                 fontSize: 20,
-                      //                 color: AppConstants.customBlue,
-                      //                 fontWeight: FontWeight.bold,
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Positioned(
-                      //           bottom: 15,
-                      //           left: 15,
-                      //           child: Text(
-                      //             "Leaderboard",
-                      //             style: TextStyle(
-                      //               fontFamily: 'poppins',
-                      //               fontSize: 14,
-                      //               color: AppConstants.customBlue,
-                      //             ),
-                      //           ),
-                      //         ),
-                      //         Positioned(
-                      //           right: -20,
-                      //           bottom: -20,
-                      //           child: Transform.rotate(
-                      //             angle: -95.05,
-                      //             child: Container(
-                      //               width: 130,
-                      //               height: 130,
-                      //               decoration: const BoxDecoration(
-                      //                 image: DecorationImage(
-                      //                   colorFilter:
-                      //                       ColorFilter.linearToSrgbGamma(),
-                      //                   image: AssetImage(
-                      //                     "assets/icons/podium.png",
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ),
-                      //           ),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                         margin: const EdgeInsets.all(15),
                         child: const Text(

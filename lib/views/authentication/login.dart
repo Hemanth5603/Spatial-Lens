@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
@@ -20,16 +21,20 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
+  bool _isObscured = true;
+  String locationErr = "";
+
   @override
   void initState() {
     super.initState();
     //requestPermissions();
-    userController.getCurrentLocation();
+    //userController.getCurrentLocation();
   }
 
   void requestPermissions() async {
     var status = await Permission.camera.request();
     var mic = await Permission.microphone.request();
+    var loc = await Permission.location.request();
   }
 
   @override
@@ -85,14 +90,14 @@ class LoginState extends State<Login> {
                   ),
                   const Padding(
                     padding: EdgeInsets.only(left: 10.0),
-                    child: Text("IITTNiF",
+                    child: Text("Spatial Lens",
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             letterSpacing: 1.5,
                             fontFamily: 'poppins',
-                            fontSize: 50,
+                            fontSize: 40,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(183, 0, 0, 0))),
+                            color: Color.fromARGB(200, 0, 0, 0))),
                   ),
                   const SizedBox(
                     height: 25,
@@ -149,17 +154,31 @@ class LoginState extends State<Login> {
                               child: TextField(
                                 controller: userController.password,
                                 keyboardType: TextInputType.visiblePassword,
+                                obscureText: _isObscured,
                                 textAlignVertical: TextAlignVertical.bottom,
                                 style: const TextStyle(fontFamily: 'poppins'),
-                                decoration: const InputDecoration(
+                                decoration: InputDecoration(
                                   hintText: "Password",
-                                  hintStyle: TextStyle(
-                                      color:
-                                          Color.fromARGB(255, 106, 106, 106)),
-                                  border: UnderlineInputBorder(
+                                  hintStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 106, 106, 106),
+                                      fontFamily: 'man-r'),
+                                  border: const UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         width: 5),
+                                  ),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isObscured
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                      color: AppConstants.customBlue,
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _isObscured = !_isObscured;
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
@@ -208,7 +227,7 @@ class LoginState extends State<Login> {
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Sign in",
                               style: TextStyle(
@@ -228,6 +247,8 @@ class LoginState extends State<Login> {
                                 error: err,
                               );
                             });
+                        userController.getCurrentLocation();
+                        //await Geolocator.requestPermission();
                       }
                     },
                   ),

@@ -1,7 +1,7 @@
 name: iitt
 description: A new Flutter project.
 publish_to: 'none'
-version: 0.1.0
+version: 0.1.2
 
 environment:
   sdk: '>=3.1.0 <4.0.0'
@@ -24,6 +24,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.3.9
   
+  flutter_sliding_box: ^1.1.5
   geocoding: ^2.1.1
   geolocator: ^10.1.0
   get: ^4.6.6
@@ -45,7 +46,7 @@ dependencies:
  
 
 flutter_native_splash:
-  image: assets/icons/iittnif.png
+  image: assets/icons/logo2.png
   color: "#ffffff"
   android: true
 
@@ -81,6 +82,6 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/icons/logo.jpeg"
+  image_path: "assets/icons/logo2.png"
   remove_alpha_ios: true
 

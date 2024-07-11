@@ -2,6 +2,7 @@ import 'package:awesome_bottom_bar/tab_item.dart';
 import 'package:flutter/material.dart';
 import 'package:iitt/views/leaderboard.dart';
 import 'package:iitt/views/tabs/home_page.dart';
+import 'package:iitt/views/tabs/home_page1.dart';
 import 'package:iitt/views/tabs/profile/profile_page.dart';
 
 class AppConstants {
@@ -17,7 +18,7 @@ class AppConstants {
   ];
 
   static List<Widget> screens = const [
-    HomePage(),
+    HomePage1(),
     LeaderboardPage(),
     ProfilePage(),
   ];

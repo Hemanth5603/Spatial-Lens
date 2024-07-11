@@ -50,12 +50,13 @@ class UserController extends GetxController {
   OTPModel otpModel = OTPModel();
 
   @override
-  onInit() {
+  onInit() async {
     super.onInit();
-    getCurrentLocation();
+    await getCurrentLocation();
   }
 
-  Future<void> getCurrentLocation() async {
+  Future<String> getCurrentLocation() async {
+    isLoading(true);
     bool serviceEnabled = false;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -68,10 +69,12 @@ class UserController extends GetxController {
 
       if (permission == LocationPermission.denied) {
         if (kDebugMode) print('Location Permission denied!');
+        return "Location Permission is required to access all the functionalities of the application !!";
       }
     }
     if (permission == LocationPermission.deniedForever) {
       if (kDebugMode) print('Location Permission denied Forever!');
+      return "Location Permission is required to access all the functionalities of the application !!";
     }
     Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high);
@@ -95,9 +98,11 @@ class UserController extends GetxController {
       street = place.street!;
       locality.value = place.locality ?? "";
       country.value = place.country ?? "";
+      isLoading(false);
     } catch (e) {
       if (kDebugMode) print(e);
     }
+    return "";
   }
 
   // Future<void> googleSignIn() async {

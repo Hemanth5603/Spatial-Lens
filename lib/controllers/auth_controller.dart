@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
@@ -17,6 +18,7 @@ import 'package:iitt/utils/validate_email.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/authentication/on_boarding.dart';
 import 'package:iitt/views/home.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends GetxController {
@@ -25,6 +27,7 @@ class AuthController extends GetxController {
   var token = "";
 
   Future<String> loginUser() async {
+    LocationPermission permission;
     if (userController.email.text.isEmpty) {
       return "Email Cannot be empty !";
     }
@@ -55,8 +58,13 @@ class AuthController extends GetxController {
       userModel = UserModel.fromJson(data);
       prefs.setInt("isLoggedIn", 1);
       prefs.setString("id", userModel.id.toString());
-      Get.offAll(const Home(),
-          transition: Transition.rightToLeft, duration: 300.milliseconds);
+      if (await Permission.location.isDenied == true ||
+          await Permission.location.isPermanentlyDenied == true) {
+        return "Location Permission is neccessary to use the application !!";
+      } else {
+        Get.offAll(const Home(),
+            transition: Transition.rightToLeft, duration: 300.milliseconds);
+      }
     } else {
       if (kDebugMode) print("Error Logining User");
       return "Incorrect Password !!";
