@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:chips_choice/chips_choice.dart';
-import 'package:choice/choice.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -27,7 +26,7 @@ class ImageViewer extends StatefulWidget {
 
 class _ImageViewerState extends State<ImageViewer> {
   List<String> filteredTags = [];
-  int selectedTag = 0;
+  int selectedTag = -1;
 
   TextEditingController searchController = TextEditingController();
 
@@ -67,7 +66,7 @@ class _ImageViewerState extends State<ImageViewer> {
           ),
           content: TextField(
             controller: tagController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
                 labelText: 'Tag Name',
                 labelStyle: TextStyle(fontSize: 14, fontFamily: 'man-r')),
           ),
@@ -76,7 +75,12 @@ class _ImageViewerState extends State<ImageViewer> {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  fontFamily: 'man-r',
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -88,7 +92,10 @@ class _ImageViewerState extends State<ImageViewer> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Add'),
+              child: const Text(
+                'Add',
+                style: TextStyle(fontFamily: 'man-r'),
+              ),
             ),
           ],
         );
@@ -105,7 +112,7 @@ class _ImageViewerState extends State<ImageViewer> {
     DataController dataController = Get.put(DataController());
 
     return Scaffold(
-        backgroundColor: Color.fromARGB(255, 231, 241, 247),
+        backgroundColor: const Color.fromARGB(255, 231, 241, 247),
         bottomNavigationBar: GestureDetector(
           onTap: () async {
             String res = await dataController.uploadData(selectedItem!);
@@ -113,7 +120,7 @@ class _ImageViewerState extends State<ImageViewer> {
               showModalBottomSheet(
                   context: context,
                   builder: (context) {
-                    return BottomSheetContent();
+                    return bottomSheetContent();
                   });
             } else {
               showModalBottomSheet(
@@ -128,7 +135,7 @@ class _ImageViewerState extends State<ImageViewer> {
           child: Container(
             width: w,
             height: 45,
-            margin: EdgeInsets.only(left: 10, right: 10, bottom: 10),
+            margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
             decoration: BoxDecoration(
                 color: AppConstants.customBlue,
                 borderRadius: BorderRadius.circular(10)),
@@ -181,7 +188,7 @@ class _ImageViewerState extends State<ImageViewer> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               GestureDetector(
@@ -191,7 +198,7 @@ class _ImageViewerState extends State<ImageViewer> {
                   child: Container(
                     width: w,
                     height: h * 0.06,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.transparent,
                         border: Border.all(
@@ -206,7 +213,7 @@ class _ImageViewerState extends State<ImageViewer> {
                             Icons.restart_alt_rounded,
                             color: AppConstants.customBlue,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
                           Text(
@@ -221,11 +228,11 @@ class _ImageViewerState extends State<ImageViewer> {
                       ),
                     ),
                   )),
-              SizedBox(
+              const SizedBox(
                 height: 15,
               ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 width: w,
                 height: 025,
                 child: Text(
@@ -238,18 +245,18 @@ class _ImageViewerState extends State<ImageViewer> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 30,
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       height: 70,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromARGB(255, 240, 248, 255),
                                 blurRadius: 10)
@@ -265,10 +272,10 @@ class _ImageViewerState extends State<ImageViewer> {
                                 fontWeight: FontWeight.bold,
                                 color: AppConstants.customBlue),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             "Latitude",
                             style: TextStyle(
                               fontFamily: 'man-r',
@@ -280,12 +287,12 @@ class _ImageViewerState extends State<ImageViewer> {
                     ),
                     Container(
                       width: MediaQuery.of(context).size.width / 2 - 30,
-                      margin: EdgeInsets.all(8),
+                      margin: const EdgeInsets.all(8),
                       height: 80,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           color: Colors.white,
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromARGB(255, 240, 248, 255),
                                 blurRadius: 10)
@@ -301,10 +308,10 @@ class _ImageViewerState extends State<ImageViewer> {
                                 fontWeight: FontWeight.bold,
                                 color: AppConstants.customBlue),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
-                          Text(
+                          const Text(
                             "Longitude",
                             style: TextStyle(
                               fontFamily: 'man-r',
@@ -319,13 +326,13 @@ class _ImageViewerState extends State<ImageViewer> {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                padding: EdgeInsets.all(15),
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.all(15),
                 height: 160,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                         color: Color.fromARGB(255, 240, 248, 255),
                         blurRadius: 10)
@@ -343,10 +350,10 @@ class _ImageViewerState extends State<ImageViewer> {
                           color: AppConstants.customBlue,
                           fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
-                    Container(
+                    SizedBox(
                       width: w,
                       height: 90,
                       child: TextField(
@@ -369,7 +376,7 @@ class _ImageViewerState extends State<ImageViewer> {
                         ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                   ],
@@ -395,7 +402,8 @@ class _ImageViewerState extends State<ImageViewer> {
                 ),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
                 width: w,
                 height: 100,
                 child: TextField(
@@ -417,7 +425,7 @@ class _ImageViewerState extends State<ImageViewer> {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Container(
@@ -438,12 +446,12 @@ class _ImageViewerState extends State<ImageViewer> {
                   ],
                 ),
               ),
-              Container(
+              SizedBox(
                 width: w,
                 height: 500,
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Padding(
@@ -451,7 +459,7 @@ class _ImageViewerState extends State<ImageViewer> {
                           horizontal: 15.0, vertical: 10),
                       child: TextField(
                         controller: searchController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Search Category',
                           labelStyle:
                               TextStyle(fontFamily: 'man-r', fontSize: 14),
@@ -468,14 +476,14 @@ class _ImageViewerState extends State<ImageViewer> {
                               _showAddTagDialog();
                             },
                             child: Container(
-                              padding: EdgeInsets.all(5),
+                              padding: const EdgeInsets.all(5),
                               width: 100,
                               height: 32,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(5),
-                                color: Color.fromRGBO(185, 229, 255, 1),
+                                color: const Color.fromRGBO(185, 229, 255, 1),
                               ),
-                              child: Center(
+                              child: const Center(
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -506,9 +514,10 @@ class _ImageViewerState extends State<ImageViewer> {
                           ),
                           choiceBuilder: (item, i) {
                             return ChoiceChip(
-                              selectedColor: Color.fromRGBO(185, 229, 255, 1),
-                              padding: EdgeInsets.all(0),
-                              side: BorderSide(
+                              selectedColor:
+                                  const Color.fromRGBO(185, 229, 255, 1),
+                              padding: const EdgeInsets.all(0),
+                              side: const BorderSide(
                                   color: Color.fromARGB(0, 255, 255, 255)),
                               showCheckmark: true,
                               checkmarkColor: AppConstants.customBlue,
@@ -517,7 +526,7 @@ class _ImageViewerState extends State<ImageViewer> {
                                 children: [
                                   Text(
                                     item.label,
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontFamily: 'man-r',
                                         fontSize: 12,
                                         fontWeight: FontWeight.w200),
@@ -535,54 +544,16 @@ class _ImageViewerState extends State<ImageViewer> {
                   ],
                 ),
               ),
-              // InlineChoice<String>.single(
-              //   clearable: true,
-              //   value: selectedItem,
-              //   onChanged: (String? value) {
-              //     setState(() {
-              //       selectedItem = value;
-              //     });
-              //   },
-              //   itemCount: AppConstants.choices.length,
-              //   itemBuilder: (state, i) {
-              //     return ChoiceChip(
-              //       padding: EdgeInsets.all(3),
-              //       selected: state.selected(AppConstants.choices[i]),
-              //       onSelected: state.onSelected(AppConstants.choices[i]),
-              //       label: Text(
-              //         AppConstants.choices[i],
-              //         style: const TextStyle(
-              //             fontFamily: 'poppins',
-              //             fontSize: 10,
-              //             fontWeight: FontWeight.w300),
-              //       ),
-              //       selectedColor: Color.fromARGB(
-              //           255, 136, 255, 156), // Change selected color to red
-              //       avatar: state.selected(AppConstants.choices[i])
-              //           ? Icon(Icons.check) // Show check mark if selected
-              //           : null,
-              //     );
-              //   },
-              //   listBuilder: ChoiceList.createWrapped(
-              //     spacing: 10,
-              //     runSpacing: 10,
-              //     padding: const EdgeInsets.symmetric(
-              //       horizontal: 20,
-              //       vertical: 25,
-              //     ),
-              //   ),
-              // ),
-
               GestureDetector(
                   onTap: () async {
-                    Get.off(() => Home(),
+                    Get.off(() => const Home(),
                         transition: Transition.leftToRight,
                         duration: 300.milliseconds);
                   },
                   child: Container(
                     width: w,
                     height: h * 0.06,
-                    margin: EdgeInsets.all(10),
+                    margin: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: Colors.transparent,
                         border:
@@ -599,8 +570,7 @@ class _ImageViewerState extends State<ImageViewer> {
                       ),
                     ),
                   )),
-
-              Container(
+              SizedBox(
                 width: w,
                 height: h * 0.25,
               )

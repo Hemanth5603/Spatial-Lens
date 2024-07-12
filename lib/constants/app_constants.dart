@@ -49,7 +49,7 @@ class AppConstants {
   static List<String> choices = [
     "Agriculture",
     "Hydrology",
-    "Medicine",
+    "Hospital",
     "Gaming",
     "Park",
     "Temple",
@@ -67,18 +67,19 @@ class AppConstants {
     "Airport",
     "Restaurant",
     "Parking Spot",
-    "Trakking Spot",
-    "Oceono",
+    "Trekking Spot",
+    "Ocean",
     "Remote Sensing",
     "Transport",
     "Drones",
     "Ground",
     "Water",
-    "Forestry",
+    "Forest",
     "Geology",
     "Office",
     "Lakes",
     "Shop",
+    "Steet Vendor"
   ];
 
   static List<String> limits = [
@@ -126,10 +127,10 @@ class AppConstants {
     "Jammu and Kashmir",
   ];
 
-  static Color customRed = Color.fromARGB(255, 149, 27, 42);
-  static Color customRedLight = Color.fromARGB(235, 172, 32, 48);
-  static Color customRedLight2 = Color.fromARGB(252, 255, 223, 227);
+  static Color customRed = const Color.fromARGB(255, 149, 27, 42);
+  static Color customRedLight = const Color.fromARGB(235, 172, 32, 48);
+  static Color customRedLight2 = const Color.fromARGB(252, 255, 223, 227);
   static Color customGreen = const Color.fromARGB(255, 27, 133, 84);
   static Color customYellow = const Color.fromARGB(255, 194, 178, 138);
-  static Color customBlue = Color.fromARGB(255, 0, 86, 224);
+  static Color customBlue = const Color.fromARGB(255, 0, 86, 224);
 }

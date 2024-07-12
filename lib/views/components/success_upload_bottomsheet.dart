@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+
 import 'package:iitt/views/home.dart';
 
-class BottomSheetContent extends StatelessWidget {
+class bottomSheetContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
-    return Container(
+    return SizedBox(
       height: 300,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -16,17 +16,25 @@ class BottomSheetContent extends StatelessWidget {
           Container(
             width: w,
             height: h * 0.1,
-            margin: EdgeInsets.only(top: 30),
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.only(top: 20),
+            decoration: const BoxDecoration(
                 image: DecorationImage(
                     image: AssetImage("assets/icons/check.png"))),
           ),
           const SizedBox(height: 20),
-          Text(
+          const Text(
             'Data Uploaded Successfully ',
-            style: TextStyle(fontSize: 20.0, fontFamily: 'poppins'),
+            style: TextStyle(fontSize: 22.0, fontFamily: 'man-r'),
           ),
-          Spacer(), // Push the bottom container to the bottom
+          const SizedBox(
+            height: 10,
+          ),
+          const Text(
+            'Your Uploaded data will be reviewed \n soon and approved',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 14.0, fontFamily: 'man-r'),
+          ),
+          const Spacer(), // Push the bottom container to the bottom
           GestureDetector(
             onTap: () {
               // Get.offAll(ImageCapture(),
@@ -38,13 +46,13 @@ class BottomSheetContent extends StatelessWidget {
             },
             child: Container(
               height: 50,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 0, 0, 0),
                   borderRadius: BorderRadius.circular(10)),
-              child: Center(
+              child: const Center(
                 child: Text(
-                  'Go Back !',
+                  'Go Back',
                   style: TextStyle(
                       fontSize: 16.0,
                       fontFamily: 'poppins',
