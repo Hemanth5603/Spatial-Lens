@@ -1,11 +1,10 @@
-import 'dart:typed_data';
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iitt/controllers/camera_controller.dart';
 import 'package:iitt/controllers/data_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
-import 'package:iitt/main.dart';
+
 import 'package:iitt/views/image_viewer.dart';
 import 'package:camera/camera.dart';
 import 'package:path/path.dart';
@@ -45,7 +44,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                   ),
                 )
               : Positioned(
-                  child: Container(
+                  child: SizedBox(
                     height: h * 0.8,
                     width: 1000,
                     child: GestureDetector(
@@ -83,7 +82,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                       child: Container(
                         width: 50,
                         height: 50,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.white,
                         ),
@@ -102,7 +101,7 @@ class _ImageCaptureState extends State<ImageCapture> {
               height: 30,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: Color.fromARGB(34, 0, 0, 0)),
+                  color: const Color.fromARGB(34, 0, 0, 0)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -161,7 +160,7 @@ class _ImageCaptureState extends State<ImageCapture> {
                             ? Colors.white
                             : const Color.fromARGB(68, 255, 255, 255),
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "2x",
                           style: TextStyle(
@@ -190,8 +189,8 @@ class _ImageCaptureState extends State<ImageCapture> {
       // Save the image to the gallery
       final Uint8List imageData = await file.readAsBytes();
       final result = await ImageGallerySaver.saveImage(imageData,
-          quality: 80, name: basename(file.path));
-      print("Save result: $result");
+          quality: 50, name: basename(file.path));
+      if (kDebugMode) print("Save result: $result");
 
       userController.getCurrentLocation();
       Get.to(
@@ -200,8 +199,8 @@ class _ImageCaptureState extends State<ImageCapture> {
         duration: 300.milliseconds,
       );
     } on CameraException catch (e) {
-      print(e.code);
-      print(e.description);
+      if (kDebugMode) print(e.code);
+      if (kDebugMode) print(e.description);
     }
   }
 }

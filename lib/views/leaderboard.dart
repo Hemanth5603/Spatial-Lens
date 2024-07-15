@@ -1,4 +1,5 @@
 import 'package:choice/choice.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_launcher_icons/main.dart';
@@ -46,28 +47,17 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
           width: MediaQuery.of(context).size.width,
           height: 60,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(15), topRight: Radius.circular(15)),
             color: AppConstants.customBlue,
           ),
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Row(
+                const Row(
                   children: [
-                    // Container(
-                    //   width: 40,
-                    //   height: 40,
-                    //   decoration: BoxDecoration(
-                    //       borderRadius: BorderRadius.circular(150),
-                    //       image: DecorationImage(
-                    //           image: NetworkImage(
-                    //               "${ApiConstants.s3Url}${userController.userModel.profile_image}"),
-                    //           fit: BoxFit.cover),
-                    //       color: Colors.white),
-                    // ),
                     SizedBox(
                       width: 10,
                     ),
@@ -80,7 +70,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     )
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Container(
@@ -98,19 +88,19 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
             ),
           ),
         ),
-        backgroundColor: Color.fromARGB(255, 248, 252, 255),
+        backgroundColor: const Color.fromARGB(255, 248, 252, 255),
         body: SafeArea(
           child: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
+            physics: const BouncingScrollPhysics(),
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Center(
+                  const Center(
                     child: const Text(
                       "LeaderBoard",
                       style: TextStyle(
@@ -119,7 +109,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           fontWeight: FontWeight.bold),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Center(
@@ -128,8 +118,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       height: 100,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(150),
-                          color: Color.fromARGB(255, 207, 233, 255),
-                          boxShadow: [
+                          color: const Color.fromARGB(255, 207, 233, 255),
+                          boxShadow: const [
                             BoxShadow(
                                 color: Color.fromARGB(255, 190, 215, 255),
                                 blurRadius: 100)
@@ -156,8 +146,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                       itemCount: AppConstants.limits.length,
                       itemBuilder: (state, i) {
                         return ChoiceChip(
-                          padding:
-                              EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 0),
                           selected: state.selected(AppConstants.limits[i]),
                           onSelected: state.onSelected(AppConstants.limits[i]),
                           label: Text(
@@ -203,8 +193,8 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     itemCount: AppConstants.choices.length,
                     itemBuilder: (state, i) {
                       return ChoiceChip(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 10, vertical: 5),
                         selected: state.selected(AppConstants.choices[i]),
                         onSelected: state.onSelected(AppConstants.choices[i]),
                         label: Text(
@@ -242,15 +232,16 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: 50,
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.all(15),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15),
                         color: AppConstants.customBlue),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Text(
+                        const Text(
                           "Rank",
                           style: TextStyle(
                               fontFamily: 'man-r',
@@ -262,7 +253,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           height: 10,
                           color: const Color.fromARGB(195, 255, 255, 255),
                         ),
-                        Text(
+                        const Text(
                           "Name",
                           style: TextStyle(
                               fontFamily: 'man-r',
@@ -274,7 +265,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                           height: 10,
                           color: const Color.fromARGB(195, 255, 255, 255),
                         ),
-                        Text(
+                        const Text(
                           "Contributions",
                           style: TextStyle(
                               fontFamily: 'man-r',
@@ -287,12 +278,12 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                   Container(
                     width: MediaQuery.of(context).size.width,
                     height: MediaQuery.of(context).size.height * 0.47,
-                    margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+                    margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
                             color: Color.fromARGB(190, 221, 221, 221)),
-                        boxShadow: [
+                        boxShadow: const [
                           BoxShadow(
                               color: Color.fromARGB(200, 240, 248, 255),
                               blurRadius: 15)
@@ -307,8 +298,10 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                                 itemCount: dataController
                                     .leaderboardModel.leaderboard!.length,
                                 itemBuilder: (context, index) {
-                                  print(
-                                      "${userController.userModel.rank} = ${index}");
+                                  if (kDebugMode) {
+                                    print(
+                                        "${userController.userModel.rank} = $index");
+                                  }
                                   return LeaderboardTile(
                                     userRank: userController.userModel.rank!,
                                     profileImage: dataController
@@ -374,13 +367,13 @@ class LeaderboardTile extends StatelessWidget {
           decoration: BoxDecoration(
               // color: userRank == index + 1 && contributions != "0"
               //     ? AppConstants.customBlue
-              color: Color.fromARGB(255, 255, 255, 255),
+              color: const Color.fromARGB(255, 255, 255, 255),
               borderRadius: index == 0
-                  ? BorderRadius.only(
+                  ? const BorderRadius.only(
                       topLeft: Radius.circular(15),
                       topRight: Radius.circular(15))
                   : BorderRadius.circular(15)),
-          padding: EdgeInsets.only(bottom: 10, top: 5),
+          padding: const EdgeInsets.only(bottom: 10, top: 5),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
@@ -393,21 +386,21 @@ class LeaderboardTile extends StatelessWidget {
                     children: [
                       if (index + 1 == 1)
                         Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Image.asset(
                               "assets/icons/first.png",
                               width: 25,
                             ))
                       else if (index + 1 == 2)
                         Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Image.asset(
                               "assets/icons/second.png",
                               width: 25,
                             ))
                       else if (index + 1 == 3)
                         Padding(
-                            padding: EdgeInsets.only(left: 15),
+                            padding: const EdgeInsets.only(left: 15),
                             child: Image.asset(
                               "assets/icons/third.png",
                               width: 25,
@@ -417,7 +410,7 @@ class LeaderboardTile extends StatelessWidget {
                             padding:
                                 const EdgeInsets.only(left: 20.0, right: 10),
                             child: Text((index + 1).toString())),
-                      SizedBox(
+                      const SizedBox(
                         width: 16,
                       ),
                       profileImage == "Default"
@@ -425,9 +418,10 @@ class LeaderboardTile extends StatelessWidget {
                               width: 35,
                               height: 35,
                               decoration: BoxDecoration(
-                                  color: Color.fromARGB(255, 233, 243, 255),
+                                  color:
+                                      const Color.fromARGB(255, 233, 243, 255),
                                   borderRadius: BorderRadius.circular(30)),
-                              child: Icon(Icons.person_rounded,
+                              child: const Icon(Icons.person_rounded,
                                   size: 16,
                                   color: Color.fromARGB(190, 23, 110, 182)),
                             )
@@ -441,20 +435,20 @@ class LeaderboardTile extends StatelessWidget {
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
                                       image: NetworkImage(
-                                          "${ApiConstants.s3Url}${profileImage}"))),
+                                          "${ApiConstants.s3Url}$profileImage"))),
                             ),
-                      SizedBox(
+                      const SizedBox(
                         width: 15,
                       ),
                       Text(
                         name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 12,
                           fontFamily: 'man-r',
                           fontWeight: FontWeight.w500,
                           color: //userRank == index + 1 && contributions != "0"
                               //? Colors.white
-                              const Color.fromARGB(255, 48, 48, 48),
+                              Color.fromARGB(255, 48, 48, 48),
                         ),
                       ),
                     ],
@@ -462,13 +456,13 @@ class LeaderboardTile extends StatelessWidget {
                   Container(
                     width: 25,
                     height: 25,
-                    margin: EdgeInsets.only(right: 20),
+                    margin: const EdgeInsets.only(right: 20),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
                         color: const Color.fromARGB(255, 184, 223, 255)),
                     child: Center(
                       child: Text(contributions.toString(),
-                          style: TextStyle(
+                          style: const TextStyle(
                               fontFamily: 'poppins', color: Colors.white)),
                     ),
                   )
@@ -481,91 +475,18 @@ class LeaderboardTile extends StatelessWidget {
             ? Container(
                 width: MediaQuery.of(context).size.width,
                 height: 1,
-                color: Color.fromARGB(132, 206, 206, 206),
+                color: const Color.fromARGB(132, 206, 206, 206),
               )
-            : Container(
+            : const SizedBox(
                 width: 0,
                 height: 0,
               ),
         last == true
-            ? SizedBox(
+            ? const SizedBox(
                 height: 60,
               )
-            : SizedBox()
+            : const SizedBox()
       ],
     );
   }
 }
-
-
-
-// Container(
-//                             width: MediaQuery.of(context).size.width,
-//                             height: 200,
-//                             margin: EdgeInsets.fromLTRB(20, 5, 20, 10),
-//                             decoration: BoxDecoration(
-//                                 color: Colors.white,
-//                                 border: Border.all(
-//                                     color: Color.fromARGB(190, 221, 221, 221)),
-//                                 boxShadow: [
-//                                   BoxShadow(
-//                                       color: Color.fromARGB(200, 240, 248, 255),
-//                                       blurRadius: 15)
-//                                 ],
-//                                 borderRadius: BorderRadius.circular(15)),
-//                             child: Column(
-//                               children: [
-//                                 SizedBox(
-//                                   height: 15,
-//                                 ),
-//                                 LeaderboardTile(
-//                                   userRank: userController.userModel.rank!,
-//                                   index: 0,
-//                                   icon: "assets/icons/first.png",
-//                                   name: dataController.leaderboardModel
-//                                           .leaderboard![0].name ??
-//                                       "User 1",
-//                                   contributions: dataController.leaderboardModel
-//                                       .leaderboard![0].contributions
-//                                       .toString(),
-//                                   profileImage: dataController.leaderboardModel
-//                                       .leaderboard![0].profileImage
-//                                       .toString(),
-//                                   last: false,
-//                                   isIcon: true,
-//                                 ),
-//                                 LeaderboardTile(
-//                                   userRank: userController.userModel.rank!,
-//                                   index: 0,
-//                                   icon: "assets/icons/second.png",
-//                                   name: dataController.leaderboardModel
-//                                           .leaderboard![1].name ??
-//                                       "User 2",
-//                                   contributions: dataController.leaderboardModel
-//                                       .leaderboard![1].contributions
-//                                       .toString(),
-//                                   profileImage: dataController.leaderboardModel
-//                                       .leaderboard![1].profileImage
-//                                       .toString(),
-//                                   last: false,
-//                                   isIcon: true,
-//                                 ),
-//                                 LeaderboardTile(
-//                                   userRank: userController.userModel.rank!,
-//                                   index: 0,
-//                                   icon: "assets/icons/third.png",
-//                                   name: dataController.leaderboardModel
-//                                           .leaderboard![2].name ??
-//                                       "User 3",
-//                                   profileImage: dataController.leaderboardModel
-//                                       .leaderboard![2].profileImage
-//                                       .toString(),
-//                                   contributions: dataController.leaderboardModel
-//                                       .leaderboard![2].contributions
-//                                       .toString(),
-//                                   last: true,
-//                                   isIcon: true,
-//                                 )
-//                               ],
-//                             ),
-//                           ),

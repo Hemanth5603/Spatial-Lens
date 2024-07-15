@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sliding_box/flutter_sliding_box.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/camera_controller.dart';
@@ -24,6 +23,7 @@ class HomePage1 extends StatefulWidget {
 class _HomePage1State extends State<HomePage1> {
   UserController userController = Get.put(UserController());
   DataController dataController = Get.put(DataController());
+  final Camera camera = Get.put(Camera());
   late CameraPosition _cameraPosition =
       const CameraPosition(target: LatLng(21.7845737, 77.921099), zoom: 10);
   final Completer<GoogleMapController> _controller = Completer();
@@ -53,9 +53,6 @@ class _HomePage1State extends State<HomePage1> {
   Set<Marker> _createMarkers() {
     final markers = <Marker>{};
     if (dataController.activityModel.data!.isNotEmpty) {
-      print(
-          "latitude : ------------------------------- ${userController.latitude}");
-
       for (var activity in dataController.activityModel.data!) {
         final marker = Marker(
             markerId: MarkerId(activity.dataId.toString()),
@@ -83,13 +80,12 @@ class _HomePage1State extends State<HomePage1> {
 
   @override
   Widget build(BuildContext context) {
-    final Camera camera = Get.put(Camera());
     return Scaffold(
       body: Column(
         children: [
           Stack(
             children: [
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.9,
                 child: Obx(() {
@@ -144,12 +140,12 @@ class _HomePage1State extends State<HomePage1> {
                     ),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * 0.7,
-                      child: Text(
+                      child: const Text(
                         // userController.userModel.first_name == null
                         //     ? "Hi ! 👋"
                         //     : "Hi ${userController.userModel.first_name} ! 👋",
                         "Spatial Lens",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'poppins',
                           fontSize: 25,
                           color: Colors.white,
@@ -181,7 +177,7 @@ class _HomePage1State extends State<HomePage1> {
                 left: MediaQuery.of(context).size.width / 3.5,
                 child: GestureDetector(
                   onTap: () {
-                    Get.to(ImageCapture(),
+                    Get.to(() => ImageCapture(),
                         transition: Transition.rightToLeft,
                         duration: 300.milliseconds);
                   },
@@ -206,7 +202,7 @@ class _HomePage1State extends State<HomePage1> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               width: 5,
                             ),
                             Icon(
@@ -231,7 +227,7 @@ class _HomePage1State extends State<HomePage1> {
                   animationCurve: Curves.ease,
                   animationDuration: 300.milliseconds,
                   draggableIconBackColor: Colors.white,
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(20),
                       topLeft: Radius.circular(20)),
                   body: Column(
@@ -239,7 +235,7 @@ class _HomePage1State extends State<HomePage1> {
                       Container(
                         width: MediaQuery.of(context).size.width,
                         height: 70,
-                        padding: EdgeInsets.all(15),
+                        padding: const EdgeInsets.all(15),
                         child: const Text(
                           "Your Activity",
                           style: TextStyle(
@@ -249,7 +245,7 @@ class _HomePage1State extends State<HomePage1> {
                           ),
                         ),
                       ),
-                      Container(
+                      SizedBox(
                         width: MediaQuery.of(context).size.width,
                         height: 650,
                         child: Obx(
@@ -257,8 +253,9 @@ class _HomePage1State extends State<HomePage1> {
                               ? const Center(
                                   child: CircularProgressIndicator(),
                                 )
-                              : dataController.activityModel.data?.length == 0
-                                  ? Center(
+                              : dataController.activityModel.data?.isEmpty ==
+                                      true
+                                  ? const Center(
                                       child: Text(
                                       "No Activity Yet !",
                                       style: TextStyle(

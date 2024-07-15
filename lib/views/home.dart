@@ -69,7 +69,7 @@ class _HomeState extends State<Home> {
         items: AppConstants.items,
         indexSelected: selectedIndex,
         backgroundColor: Colors.white,
-        color: Color.fromARGB(255, 168, 216, 255),
+        color: const Color.fromARGB(255, 168, 216, 255),
         colorSelected: AppConstants.customBlue,
       ),
       body: PageView(

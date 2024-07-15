@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:674705689666:android:c5759cd6b30e10481cf1db",
         "android_client_info": {
-          "package_name": "com.example.iittnif"
+          "package_name": "com.iittnif.spatiallens"
         }
       },
       "oauth_client": [
@@ -17,7 +17,7 @@
           "client_id": "674705689666-o5qrskj7aape6a236eq1fikjl69sfjt1.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.iittnif",
+            "package_name": "com.iittnif.spatiallens",
             "certificate_hash": "194c5ab4ed283635e0b9fb282aace6e1e4e6614b"
           }
         },
@@ -42,7 +42,7 @@
               "client_id": "674705689666-nvaea84ls4ce93c1ngs2disateo1pl5q.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.iittnif"
+                "bundle_id": "com.iittnif.spatiallens"
               }
             }
           ]
