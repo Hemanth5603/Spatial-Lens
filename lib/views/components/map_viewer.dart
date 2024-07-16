@@ -34,7 +34,7 @@ class MapViewer extends StatelessWidget {
           ),
           markers: {
             Marker(
-              markerId: MarkerId('selected-location'),
+              markerId: const MarkerId('selected-location'),
               position: LatLng(latitude, longitude),
             ),
           },

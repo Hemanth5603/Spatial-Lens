@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:iitt/constants/app_constants.dart';
-import 'package:iitt/views/home.dart';
 
 class ErrorBottomSheet extends StatelessWidget {
   ErrorBottomSheet({super.key, required this.error});
@@ -11,9 +10,7 @@ class ErrorBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-    return Container(
+    return SizedBox(
       height: 160,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -22,7 +19,7 @@ class ErrorBottomSheet extends StatelessWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Container(
@@ -56,18 +53,18 @@ class ErrorBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          Spacer(), // Push the bottom container to the bottom
+          const Spacer(), // Push the bottom container to the bottom
           GestureDetector(
             onTap: () {
               Get.back();
             },
             child: Container(
               height: 50,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 0, 0, 0),
                   borderRadius: BorderRadius.circular(10)),
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Go Back !',
                   style: TextStyle(

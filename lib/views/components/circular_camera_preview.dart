@@ -4,20 +4,20 @@ import 'package:flutter/material.dart';
 class CircularCameraPreview extends StatelessWidget {
   final CameraController controller;
 
-  CircularCameraPreview({required this.controller});
+  const CircularCameraPreview({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 220,
       height: 220,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
       ),
       child: ClipOval(
         child: FittedBox(
           fit: BoxFit.none,
-          child: Container(
+          child: SizedBox(
             width: 387.87,
             height: 720,
             child: CameraPreview(controller),

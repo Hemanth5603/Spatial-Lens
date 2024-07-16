@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:iitt/constants/app_constants.dart';
-import 'package:iitt/views/home.dart';
 
 class SuccessBottomSheet extends StatelessWidget {
   SuccessBottomSheet(
@@ -19,9 +15,7 @@ class SuccessBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
-    double h = MediaQuery.of(context).size.height;
-    return Container(
+    return SizedBox(
       height: 160,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -30,7 +24,7 @@ class SuccessBottomSheet extends StatelessWidget {
           const SizedBox(height: 20),
           Row(
             children: [
-              SizedBox(
+              const SizedBox(
                 width: 15,
               ),
               Container(
@@ -38,7 +32,7 @@ class SuccessBottomSheet extends StatelessWidget {
                 height: 50,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    color: Color.fromARGB(255, 238, 238, 238)),
+                    color: const Color.fromARGB(255, 238, 238, 238)),
                 child: Center(
                     child: Image.asset(
                   "assets/icons/accept.png",
@@ -51,7 +45,7 @@ class SuccessBottomSheet extends StatelessWidget {
                     const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
                 child: Text(
                   successMessage,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16.0,
                       fontFamily: 'poppins',
                       color: Colors.green,
@@ -64,18 +58,17 @@ class SuccessBottomSheet extends StatelessWidget {
           GestureDetector(
             onTap: () {
               onPressed(); // Invoke the onPressed function
-              print("tapped");
             },
             child: Container(
               height: 50,
-              margin: EdgeInsets.all(10),
+              margin: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                   color: const Color.fromARGB(255, 0, 0, 0),
                   borderRadius: BorderRadius.circular(10)),
               child: Center(
                 child: Text(
                   buttonText,
-                  style: TextStyle(
+                  style: const TextStyle(
                       fontSize: 16.0,
                       fontFamily: 'poppins',
                       color: Colors.white),
