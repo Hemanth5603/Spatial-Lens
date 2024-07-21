@@ -36,6 +36,7 @@ class UserController extends GetxController {
   TextEditingController otp = TextEditingController();
   TextEditingController newPassword = TextEditingController();
   TextEditingController confirmPassword = TextEditingController();
+  String selectedGender = '';
 
   var isLoading = false.obs;
   double latitude = 0;
@@ -56,7 +57,6 @@ class UserController extends GetxController {
   }
 
   Future<String> getCurrentLocation() async {
-    isLoading(true);
     bool serviceEnabled = false;
     LocationPermission permission;
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -98,7 +98,6 @@ class UserController extends GetxController {
       street = place.street!;
       locality.value = place.locality ?? "";
       country.value = place.country ?? "";
-      isLoading(false);
     } catch (e) {
       if (kDebugMode) print(e);
     }
@@ -147,7 +146,7 @@ class UserController extends GetxController {
       Get.snackbar(
           "OTP Sent Successfully", "OTP has been sent to given phone number",
           margin: const EdgeInsets.all(15),
-          backgroundColor: Color.fromARGB(255, 240, 249, 255),
+          backgroundColor: const Color.fromARGB(255, 240, 249, 255),
           colorText: AppConstants.customBlue,
           duration: const Duration(seconds: 3));
 
@@ -161,7 +160,7 @@ class UserController extends GetxController {
 
   Future<String> verifyOTP() async {
     // Vonage Code ---------------------
-    final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifySms}");
+    //final uri = Uri.parse("${ApiConstants.baseUrl}${ApiConstants.verifySms}");
     String err = fieldsValidator();
     if (err != "") {
       return err;

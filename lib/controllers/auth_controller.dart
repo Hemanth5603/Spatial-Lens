@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 
 import 'package:http/http.dart' as http;
@@ -27,7 +26,6 @@ class AuthController extends GetxController {
   var token = "";
 
   Future<String> loginUser() async {
-    LocationPermission permission;
     if (userController.email.text.isEmpty) {
       return "Email Cannot be empty !";
     }
@@ -203,6 +201,7 @@ class AuthController extends GetxController {
       "city": userController.city.text,
       "pincode": userController.pincode.text,
       "occupation": "Default",
+      "gender": userController.selectedGender
     };
 
     var response = await http.post(

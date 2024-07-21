@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -7,11 +5,9 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
-import 'package:iitt/views/authentication/register.dart';
+
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 import 'package:iitt/views/components/success_bottom_sheet.dart';
-import 'package:iitt/views/image_capture.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
@@ -36,14 +32,12 @@ class ResetPasswordState extends State<ResetPassword> {
     double h = MediaQuery.of(context).size.height;
     double w = MediaQuery.of(context).size.width;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Color.fromARGB(
-          255, 255, 255, 255), // Change the color to your desired color
-      statusBarIconBrightness:
-          Brightness.dark, // Change the brightness of icons
+      statusBarColor: Color.fromARGB(255, 255, 255, 255),
+      statusBarIconBrightness: Brightness.dark,
     ));
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -52,12 +46,12 @@ class ResetPasswordState extends State<ResetPassword> {
             Container(
               width: w,
               height: h * 0.3,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
                   width: w * 0.6,
                   height: h * 0.2,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
@@ -156,10 +150,10 @@ class ResetPasswordState extends State<ResetPassword> {
                                 obscureText: true,
                                 decoration: const InputDecoration(
                                   hintText: "Confirm New Password",
-                                  hintStyle: const TextStyle(
+                                  hintStyle: TextStyle(
                                       color: Color.fromARGB(255, 106, 106, 106),
                                       fontFamily: 'man-r'),
-                                  border: const UnderlineInputBorder(
+                                  border: UnderlineInputBorder(
                                     borderSide: BorderSide(
                                         color: Color.fromARGB(255, 0, 0, 0),
                                         width: 5),
@@ -183,11 +177,12 @@ class ResetPasswordState extends State<ResetPassword> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                                  color: const Color.fromARGB(22, 0, 0, 0),
+                                  width: 2),
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Reset Password",
                               style: TextStyle(

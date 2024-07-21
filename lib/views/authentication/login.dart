@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:geolocator/geolocator.dart';
+
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
@@ -8,7 +8,7 @@ import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/authentication/reset_email_verification.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
-import 'package:iitt/views/image_capture.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 
 class Login extends StatefulWidget {
@@ -49,7 +49,7 @@ class LoginState extends State<Login> {
     ));
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -58,12 +58,12 @@ class LoginState extends State<Login> {
             Container(
               width: w,
               height: h * 0.3,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
                   width: w * 0.6,
                   height: h * 0.2,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
@@ -190,17 +190,16 @@ class LoginState extends State<Login> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      print("tap");
-                      Get.to(ResetEmailVerification(),
+                      Get.to(() => const ResetEmailVerification(),
                           transition: Transition.rightToLeft,
                           duration: 300.milliseconds);
                     },
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 32),
+                      padding: const EdgeInsets.symmetric(horizontal: 32),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          SizedBox(),
+                          const SizedBox(),
                           Text(
                             "Forgot Password ?",
                             style: TextStyle(
@@ -223,7 +222,8 @@ class LoginState extends State<Login> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                                  color: const Color.fromARGB(22, 0, 0, 0),
+                                  width: 2),
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),

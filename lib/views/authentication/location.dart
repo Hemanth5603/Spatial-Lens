@@ -7,8 +7,6 @@ import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
-import 'package:iitt/views/home.dart';
-import 'package:iitt/views/image_capture.dart';
 
 class RegisterLocation extends StatefulWidget {
   const RegisterLocation({super.key});
@@ -20,6 +18,7 @@ class RegisterLocation extends StatefulWidget {
 class _RegisterLocationState extends State<RegisterLocation> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
+
   String? selectedState;
   @override
   void initState() {
@@ -209,6 +208,62 @@ class _RegisterLocationState extends State<RegisterLocation> {
                       ),
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(24, 20, 12, 0),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Gender ",
+                            style: TextStyle(fontFamily: 'man-r', fontSize: 18),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                width: 50,
+                              ),
+                              ChoiceChip(
+                                label: const Text(
+                                  'Male',
+                                  style: TextStyle(
+                                      fontFamily: 'man-r', fontSize: 14),
+                                ),
+                                selected:
+                                    userController.selectedGender == 'Male',
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    userController.selectedGender =
+                                        selected ? 'Male' : '';
+                                  });
+                                },
+                                selectedColor: AppConstants.customBlue,
+                              ),
+                              const SizedBox(width: 10),
+                              ChoiceChip(
+                                label: Text(
+                                  'Female',
+                                  style: TextStyle(
+                                      fontFamily: 'man-r', fontSize: 14),
+                                ),
+                                selected:
+                                    userController.selectedGender == 'Female',
+                                onSelected: (bool selected) {
+                                  setState(() {
+                                    userController.selectedGender =
+                                        selected ? 'Female' : '';
+                                  });
+                                },
+                                selectedColor: AppConstants.customBlue,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -223,7 +278,8 @@ class _RegisterLocationState extends State<RegisterLocation> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(47, 0, 0, 0), width: 2),
+                                  color: const Color.fromARGB(47, 0, 0, 0),
+                                  width: 2),
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),

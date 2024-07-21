@@ -22,7 +22,8 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   UserController userController = Get.put(UserController());
   AuthController authController = Get.put(AuthController());
-  int timerSeconds = 90; // Initial timer value
+
+  int timerSeconds = 60; // Initial timer value
   bool resendOtp = false;
   Timer? _timer;
   bool _isObscured = true;
@@ -38,7 +39,7 @@ class _RegisterState extends State<Register> {
           this.timerSeconds--;
         } else {
           _timer!.cancel();
-          timerSeconds = 90;
+          timerSeconds = 60;
           AuthController().handleExpiredOTP();
           resendOtp = false;
         }
@@ -94,7 +95,7 @@ class _RegisterState extends State<Register> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text("Hi There!",
                         style: TextStyle(
@@ -297,7 +298,7 @@ class _RegisterState extends State<Register> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           GestureDetector(
@@ -326,7 +327,8 @@ class _RegisterState extends State<Register> {
                                 height: 50,
                                 decoration: BoxDecoration(
                                     color: resendOtp
-                                        ? Color.fromARGB(255, 247, 250, 255)
+                                        ? const Color.fromARGB(
+                                            255, 247, 250, 255)
                                         : AppConstants.customBlue,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
@@ -349,7 +351,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   const SizedBox(
@@ -380,7 +382,8 @@ class _RegisterState extends State<Register> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             border: Border.all(
-                                color: Color.fromARGB(47, 0, 0, 0), width: 2),
+                                color: const Color.fromARGB(47, 0, 0, 0),
+                                width: 2),
                             color: AppConstants.customBlue),
                         child: Center(
                             child: Obx(
@@ -398,7 +401,7 @@ class _RegisterState extends State<Register> {
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   const SizedBox(

@@ -86,7 +86,7 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
     ));
     return Scaffold(
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: SafeArea(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -95,12 +95,12 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
             Container(
               width: w,
               height: h * 0.3,
-              decoration: BoxDecoration(),
+              decoration: const BoxDecoration(),
               child: Center(
                 child: Container(
                   width: w * 0.6,
                   height: h * 0.2,
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       image: DecorationImage(
@@ -199,7 +199,7 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           GestureDetector(
@@ -229,7 +229,8 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
                                 height: 50,
                                 decoration: BoxDecoration(
                                     color: resendOtp
-                                        ? Color.fromARGB(255, 247, 250, 255)
+                                        ? const Color.fromARGB(
+                                            255, 247, 250, 255)
                                         : AppConstants.customBlue,
                                     borderRadius: BorderRadius.circular(10)),
                                 child: Center(
@@ -263,11 +264,12 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
                           width: w * 0.89,
                           decoration: BoxDecoration(
                               border: Border.all(
-                                  color: Color.fromARGB(22, 0, 0, 0), width: 2),
+                                  color: const Color.fromARGB(22, 0, 0, 0),
+                                  width: 2),
                               color: AppConstants.customBlue,
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(10))),
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               "Verify OTP",
                               style: TextStyle(
