@@ -7,6 +7,7 @@ import 'package:iitt/constants/app_constants.dart';
 import 'package:iitt/controllers/auth_controller.dart';
 import 'package:iitt/controllers/user_controller.dart';
 import 'package:iitt/utils/validate_email.dart';
+import 'package:iitt/views/authentication/login.dart';
 import 'package:iitt/views/authentication/register.dart';
 import 'package:iitt/views/authentication/reset_password.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
@@ -325,20 +326,27 @@ class ResetEmailVerificationState extends State<ResetEmailVerification> {
                   SizedBox(height: h * 0.22),
                   Container(
                     margin: const EdgeInsets.only(left: 80),
-                    child: const Column(
+                    child: Column(
                       children: [
-                        Text(
+                        const Text(
                           "By Continuing you agree ",
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontFamily: 'poppins'))
+                        GestureDetector(
+                          onTap: (){
+                            launchPrivacyPolicy();
+                          },
+                          child:const Text("Terms of Service   Privacy Policy ",
+                          
+                              style: TextStyle(
+
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontFamily: 'poppins')),
+                        )
                       ],
                     ),
                   )

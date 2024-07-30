@@ -282,7 +282,7 @@ class _LeaderboardPageState extends State<LeaderboardPage> {
                     decoration: BoxDecoration(
                         color: Colors.white,
                         border: Border.all(
-                            color: Color.fromARGB(190, 221, 221, 221)),
+                            color:const Color.fromARGB(190, 221, 221, 221)),
                         boxShadow: const [
                           BoxShadow(
                               color: Color.fromARGB(200, 240, 248, 255),

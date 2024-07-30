@@ -38,8 +38,8 @@ class _OnBoardingState extends State<OnBoarding> {
               ),
               Text(
                 AppConstants.onBoardTitles[currentIndex],
-                style: const TextStyle(
-                    fontFamily: 'man-b', fontSize: 25, color: Colors.white),
+                style: TextStyle(
+                    fontFamily: 'man-b', fontSize: MediaQuery.of(context).size.width * 0.055, color: Colors.white),
               ),
               const SizedBox(
                 height: 20,
@@ -48,7 +48,7 @@ class _OnBoardingState extends State<OnBoarding> {
                 AppConstants.onboardDescriptions[currentIndex],
                 textAlign: TextAlign.center,
                 style: const TextStyle(
-                    fontFamily: 'man-r', fontSize: 14, color: Colors.white),
+                    fontFamily: 'man-r', fontSize: 13, color: Color.fromARGB(255, 255, 255, 255)),
               ),
               const SizedBox(
                 height: 40,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
 import 'package:iitt/constants/app_constants.dart';
@@ -10,6 +11,7 @@ import 'package:iitt/views/authentication/reset_email_verification.dart';
 import 'package:iitt/views/components/error_bottom_sheet.dart';
 
 import 'package:permission_handler/permission_handler.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -281,20 +283,25 @@ class LoginState extends State<Login> {
                   SizedBox(height: h * 0.22),
                   Container(
                     margin: const EdgeInsets.only(left: 80),
-                    child: const Column(
+                    child: Column(
                       children: [
-                        Text(
+                        const Text(
                           "By Continuing you agree ",
                           style: TextStyle(fontSize: 12, color: Colors.grey),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Text("Terms of Service   Privacy Policy ",
-                            style: TextStyle(
-                                fontSize: 12,
-                                color: Colors.grey,
-                                fontFamily: 'poppins'))
+                        GestureDetector(
+                          onTap: (){
+                            launchPrivacyPolicy();
+                          },
+                          child:const Text("Terms of Service   Privacy Policy ",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.grey,
+                                  fontFamily: 'poppins')),
+                        )
                       ],
                     ),
                   )
@@ -308,6 +315,14 @@ class LoginState extends State<Login> {
   }
 }
 
+Future<void> launchPrivacyPolicy() async {
+    var url =
+        Uri.parse("https://docs.google.com/document/d/1pRSXIenWtY8LrvmI2n3BK5-Wdse9g-_8H6f40qNgSoY/edit?usp=sharing");
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+  
 Widget customTextField(w, h, maxLines, keyboardType, hint) {
   return Padding(
     padding: EdgeInsets.symmetric(horizontal: w * 0.09, vertical: 12.0),
